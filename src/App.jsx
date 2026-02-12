@@ -1,8 +1,11 @@
 import Router from './pages/Router'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const App = () => {
   return (
-    <Router />
+    <TooltipProvider>
+      <Router />
+    </TooltipProvider>
   )
 }
 
