@@ -14,15 +14,28 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Activity, Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FcGoogle } from 'react-icons/fc'
 import { FaFacebookSquare } from 'react-icons/fa'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
+import { useNavigate } from 'react-router-dom'
+import { loginAction, registerAction } from '@/pages/auth/actions'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '@/store/slices/authSlice'
 
-export function LoginForm({ className, ...props }) {
-  const [page, setPage] = useState('login')
+export function LoginForm({ className, path, ...props }) {
+  const [page, setPage] = useState(path)
   const [showPassword, setShowPassword] = useState(false)
+  const nav = useNavigate()
+  const dispatch = useDispatch()
+
+  // Sync page state with path prop when it changes
+  useEffect(() => {
+    setPage(path)
+  }, [path])
 
   const UserLoginSchema = yup.object({
     email: yup.string().email('Invalid email address').required('Email is required'),
@@ -31,6 +44,29 @@ export function LoginForm({ className, ...props }) {
       .required('Password is required')
       .min(8, 'Password must be at least 8 characters long')
       .max(20, 'Password must be at most 20 characters long'),
+  })
+
+  const {
+    mutateAsync: loginMutation,
+    data,
+    error,
+    isPending,
+  } = useMutation({
+    mutationFn: loginAction,
+    queryKey: ['Login'],
+    onSuccess: data => {
+      console.log(data)
+      dispatch(setUser(data.user))
+      toast.success('Login successful!', {
+        description: `Welcome back ${data.user.name}!`,
+      })
+      nav('/dashboard')
+    },
+    onError: e => {
+      toast.error('Login failed!', {
+        description: e.response.data.message,
+      })
+    },
   })
 
   const UserRegisterSchema = yup.object({
@@ -51,10 +87,7 @@ export function LoginForm({ className, ...props }) {
       .matches(/[!@#$%^&*()_+={}[\]:;"'<,>.?/~-]/, 'Password must contain at least one special character')
       .test('no-whitespace', 'Password must not contain whitespaces', value => !value || !/\s/.test(value)),
     repeatPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
-    mobileNumber: yup
-      .string()
-      .required('Mobile Number is required')
-      .matches(/^[0-9]{10}$/, 'Enter 10 digit mobile number'),
+    phone: yup.string().matches(/^[0-9]{10}$/, 'Enter 10 digit mobile number'),
     dateofbirth: yup.date().required('Date of Birth is required'),
   })
 
@@ -64,7 +97,7 @@ export function LoginForm({ className, ...props }) {
       password: '',
     },
     onSubmit: values => {
-      console.log(values)
+      loginMutation(values)
     },
     validationSchema: UserLoginSchema,
   })
@@ -74,7 +107,7 @@ export function LoginForm({ className, ...props }) {
       email: '',
       password: '',
       repeatPassword: '',
-      mobileNumber: '',
+      phone: '',
       dateofbirth: '',
     },
     onSubmit: values => {
@@ -101,14 +134,14 @@ export function LoginForm({ className, ...props }) {
           <Button
             variant={page === 'login' ? 'outline' : 'secondary'}
             className="col-span-1 hover:bg-white "
-            onClick={() => setPage('login')}
+            onClick={() => nav('/authenticate/login')}
           >
             Login
           </Button>
           <Button
             variant={page === 'register' ? 'outline' : 'secondary'}
             className="col-span-1 hover:bg-white "
-            onClick={() => setPage('register')}
+            onClick={() => nav('/authenticate/register')}
           >
             Register
           </Button>
@@ -190,7 +223,12 @@ export function LoginForm({ className, ...props }) {
 
                 <div className="grid grid-cols-2 w-[90%]   gap-3 items-center mx-auto  rounded-xl">
                   <Field>
-                    <Button className="col-span-1" variant="outline" type="button">
+                    <Button
+                      onClick={() => window.open('http://localhost:4000/api/v1/oauth/google', '_self')}
+                      className="col-span-1"
+                      variant="outline"
+                      type="button"
+                    >
                       <FcGoogle />
                       Login with Google
                     </Button>
@@ -251,14 +289,14 @@ export function LoginForm({ className, ...props }) {
                 </Field>
 
                 <Field>
-                  <FieldLabel htmlFor="mobileNumber">Mobile Number</FieldLabel>
+                  <FieldLabel htmlFor="phone">Mobile Number</FieldLabel>
                   <InputGroup>
                     <InputGroupInput
                       // type="number"
                       maxLength={10}
-                      name="mobileNumber"
+                      name="phone"
                       placeholder="9876543210"
-                      value={formikRegister.values.mobileNumber}
+                      value={formikRegister.values.phone}
                       onChange={formikRegister.handleChange}
                       onBlur={formikRegister.handleBlur}
                       required
@@ -267,8 +305,8 @@ export function LoginForm({ className, ...props }) {
                       <Phone />
                     </InputGroupAddon>
                   </InputGroup>
-                  {formikRegister.touched.mobileNumber && formikRegister.errors.mobileNumber && (
-                    <p className="text-red-500 text-sm">{formikRegister.errors.mobileNumber}</p>
+                  {formikRegister.touched.phone && formikRegister.errors.phone && (
+                    <p className="text-red-500 text-sm">{formikRegister.errors.phone}</p>
                   )}
                 </Field>
 

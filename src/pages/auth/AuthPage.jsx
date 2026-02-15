@@ -1,7 +1,10 @@
 import { Button } from '@/components/ui/Button'
 import { LoginForm } from '@/components/login-form'
 import { toast } from 'sonner'
-const LoginPage = () => {
+import { useParams } from 'react-router-dom'
+const AuthPage = () => {
+  const { path } = useParams()
+  console.log(path)
   return (
     <div>
       {/* <h1>Login</h1>
@@ -14,11 +17,11 @@ const LoginPage = () => {
             </div>
             Acme Inc.
           </a>
-          <LoginForm />
+          <LoginForm path={path} />
         </div>
       </div>
     </div>
   )
 }
 
-export default LoginPage
+export default AuthPage
