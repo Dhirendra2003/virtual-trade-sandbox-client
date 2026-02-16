@@ -48,9 +48,9 @@ export function LoginForm({ className, path, ...props }) {
 
   const {
     mutateAsync: loginMutation,
-    data,
-    error,
-    isPending,
+    data: loginData,
+    error: loginError,
+    isPending: loginIsPending,
   } = useMutation({
     mutationFn: loginAction,
     queryKey: ['Login'],
@@ -64,6 +64,29 @@ export function LoginForm({ className, path, ...props }) {
     },
     onError: e => {
       toast.error('Login failed!', {
+        description: e.response.data.message,
+      })
+    },
+  })
+
+  const {
+    mutateAsync: registerMutation,
+    data: registerData,
+    error: registerError,
+    isPending: registerIsPending,
+  } = useMutation({
+    mutationFn: registerAction,
+    queryKey: ['Register'],
+    onSuccess: data => {
+      console.log(data)
+      dispatch(setUser(data.user))
+      toast.success('Registration successful!', {
+        description: `Welcome ${data.user.name}!`,
+      })
+      nav('/dashboard')
+    },
+    onError: e => {
+      toast.error('Registration failed!', {
         description: e.response.data.message,
       })
     },
@@ -111,7 +134,7 @@ export function LoginForm({ className, path, ...props }) {
       dateofbirth: '',
     },
     onSubmit: values => {
-      console.log(values)
+      registerMutation(values)
     },
     validationSchema: UserRegisterSchema,
   })
@@ -234,7 +257,12 @@ export function LoginForm({ className, path, ...props }) {
                     </Button>
                   </Field>
                   <Field>
-                    <Button className="col-span-1" variant="outline" type="button">
+                    <Button
+                      onClick={() => window.open('http://localhost:4000/api/v1/oauth/facebook', '_self')}
+                      className="col-span-1"
+                      variant="outline"
+                      type="button"
+                    >
                       <FaFacebookSquare color="blue" />
                       Login with Facebook
                     </Button>
@@ -299,7 +327,7 @@ export function LoginForm({ className, path, ...props }) {
                       value={formikRegister.values.phone}
                       onChange={formikRegister.handleChange}
                       onBlur={formikRegister.handleBlur}
-                      required
+                      // required
                     />
                     <InputGroupAddon>
                       <Phone />

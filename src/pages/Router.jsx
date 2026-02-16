@@ -20,6 +20,10 @@ const AppRoutes = () => {
       element: <RequestUserData />,
     },
     {
+      path: '/authenticate/facebook',
+      element: <RequestUserData />,
+    },
+    {
       path: '/dashboard',
       element: (
         <RouteProtector>
