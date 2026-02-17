@@ -131,3 +131,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+.primary-gradient {
+  background: linear-gradient(135deg, #49176d 0%, #6c499e 100%);
+}
+.glass-bg {
+  background: radial-gradient(circle at top left, #ffdab9 0%, #e6e6fa 40%, #ffffff 100%);
+  background-attachment: fixed;
+}
+.glass-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 1);
+  box-shadow: 0 8px 32px 0 rgba(73, 23, 109, 0.08);
+}

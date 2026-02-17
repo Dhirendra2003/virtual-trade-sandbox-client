@@ -141,29 +141,32 @@ export function LoginForm({ className, path, ...props }) {
 
   return (
     <div className={cn('flex flex-col gap-4', className)} {...props}>
-      <Card>
+      <Card className="glass-card">
         <CardHeader className="text-center">
-          <Badge variant="secondary" className="mx-auto font-bold px-3 mb-1">
-            <Activity data-icon="inline-start" />
+          <Badge
+            variant="secondary"
+            className="mx-auto font-bold px-3 mb-1  bg-green-100/50 border border-green-200/50 text-green-700"
+          >
+            <Activity color="#22c55e" />
             MARKET OPEN
           </Badge>
-          <CardTitle className="text-3xl font-bold">Welcome back</CardTitle>
+          <CardTitle className="text-3xl font-bold text-slate-800">Welcome back</CardTitle>
           <CardDescription className="text-xs">
-            Join 1K+ People practicing trade with Virtual Trade Sandbox
+            Join 1K+ People practicing trade with <span className="text-black">Virtual Trade Sandbox</span>
           </CardDescription>
         </CardHeader>
 
-        <div className="grid grid-cols-2 w-[90%] p-2  gap-3 items-center mx-auto bg-gray-100 rounded-xl">
+        <div className="grid  grid-cols-2 w-[90%] p-1 gap-1 items-center mx-auto bg-gray-100 rounded-xl">
           <Button
             variant={page === 'login' ? 'outline' : 'secondary'}
-            className="col-span-1 hover:bg-white "
+            className="col-span-1 hover:bg-white text-slate-800 "
             onClick={() => nav('/authenticate/login')}
           >
             Login
           </Button>
           <Button
             variant={page === 'register' ? 'outline' : 'secondary'}
-            className="col-span-1 hover:bg-white "
+            className="col-span-1 hover:bg-white text-slate-800"
             onClick={() => nav('/authenticate/register')}
           >
             Register
@@ -172,15 +175,17 @@ export function LoginForm({ className, path, ...props }) {
         {page === 'login' && (
           <CardContent>
             <form onSubmit={formikLogin.handleSubmit}>
-              <FieldGroup className="gap-6">
+              <FieldGroup className="gap-4">
                 <Field>
                   <FieldLabel htmlFor="email">Email</FieldLabel>
 
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
                       placeholder="m@example.com"
                       required
                       name="email"
+                      type="email"
+                      autoComplete="email"
                       value={formikLogin.values.email}
                       onChange={formikLogin.handleChange}
                       onBlur={formikLogin.handleBlur}
@@ -202,8 +207,9 @@ export function LoginForm({ className, path, ...props }) {
                     </a>
                   </div>
 
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
+                      autoComplete="password"
                       placeholder="password"
                       name="password"
                       value={formikLogin.values.password}
@@ -236,11 +242,15 @@ export function LoginForm({ className, path, ...props }) {
                     <p className="text-red-500 text-sm">{formikLogin.errors.password}</p>
                   )}
                 </Field>
-                <Button disabled={!formikLogin.isValid} className="py-5" type="submit">
+                <Button
+                  disabled={!formikLogin.isValid}
+                  className="py-5 rounded-lg text-md primary-gradient cursor-pointer"
+                  type="submit"
+                >
                   Sign In
                 </Button>
 
-                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card my-1">
+                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-transparent my-1">
                   Or continue with
                 </FieldSeparator>
 
@@ -275,10 +285,10 @@ export function LoginForm({ className, path, ...props }) {
         {page === 'register' && (
           <CardContent>
             <form onSubmit={formikRegister.handleSubmit}>
-              <FieldGroup className="gap-5">
+              <FieldGroup className="gap-4">
                 <Field>
                   <FieldLabel htmlFor="username">Username</FieldLabel>
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
                       name="username"
                       placeholder="username"
@@ -298,14 +308,16 @@ export function LoginForm({ className, path, ...props }) {
 
                 <Field>
                   <FieldLabel htmlFor="email">Email</FieldLabel>
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
+                      autoComplete="email"
                       name="email"
                       placeholder="m@example.com"
                       value={formikRegister.values.email}
                       onChange={formikRegister.handleChange}
                       onBlur={formikRegister.handleBlur}
                       required
+                      type="email"
                     />
                     <InputGroupAddon>
                       <Mail />
@@ -318,7 +330,7 @@ export function LoginForm({ className, path, ...props }) {
 
                 <Field>
                   <FieldLabel htmlFor="phone">Mobile Number</FieldLabel>
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
                       // type="number"
                       maxLength={10}
@@ -340,8 +352,9 @@ export function LoginForm({ className, path, ...props }) {
 
                 <Field>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
+                      autoComplete="password"
                       name="password"
                       placeholder="password"
                       value={formikRegister.values.password}
@@ -377,7 +390,7 @@ export function LoginForm({ className, path, ...props }) {
 
                 <Field>
                   <FieldLabel htmlFor="repeatPassword">Repeat Password</FieldLabel>
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
                       name="repeatPassword"
                       placeholder="repeat password"
@@ -398,7 +411,7 @@ export function LoginForm({ className, path, ...props }) {
 
                 <Field>
                   <FieldLabel htmlFor="dateofbirth">Date of Birth</FieldLabel>
-                  <InputGroup>
+                  <InputGroup className="bg-white">
                     <InputGroupInput
                       type="date"
                       name="dateofbirth"
@@ -417,7 +430,11 @@ export function LoginForm({ className, path, ...props }) {
                   )}
                 </Field>
 
-                <Button className="py-5" disabled={!formikRegister.isValid} type="submit">
+                <Button
+                  className="py-5 rounded-lg text-md primary-gradient cursor-pointer"
+                  disabled={!formikRegister.isValid}
+                  type="submit"
+                >
                   Sign Up
                 </Button>
                 <Field></Field>
