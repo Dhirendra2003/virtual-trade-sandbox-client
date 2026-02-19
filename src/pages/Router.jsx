@@ -4,6 +4,7 @@ import Dashboard from './dashboard/Dashboard'
 import InsideOutlet from './dashboard/InsideOutlet'
 import RouteProtector from '@/components/RouteProtector'
 import RequestUserData from './auth/RequestUserData'
+import Home from './dashboard/Home'
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -31,7 +32,7 @@ const AppRoutes = () => {
         </RouteProtector>
       ),
       children: [
-        { path: '', element: <h1>Dashboard base component</h1> },
+        { path: '', element: <Home /> },
         { path: 'inside-outlet', element: <InsideOutlet /> },
       ],
     },

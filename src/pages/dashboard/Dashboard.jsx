@@ -9,7 +9,7 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   return (
-    <div>
+    <div className="glass-bg min-h-screen">
       <h1>Dashboard parent</h1>
       <Button
         onClick={() => {
