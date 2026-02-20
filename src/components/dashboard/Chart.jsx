@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { AgCharts } from 'ag-charts-react'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { Button } from '@/components/ui/button'
 import {
-  AnimationModule,
   CandlestickSeriesModule,
   ContextMenuModule,
   CrosshairModule,
@@ -16,9 +17,9 @@ import {
   AreaSeriesModule,
   CategoryAxisModule,
 } from 'ag-charts-enterprise'
+import { ChartCandlestick, ChartLine, LineChart, Maximize, Minimize } from 'lucide-react'
 
 ModuleRegistry.registerModules([
-  AnimationModule,
   CandlestickSeriesModule,
   AreaSeriesModule,
   CrosshairModule,
@@ -36,12 +37,62 @@ ModuleRegistry.registerModules([
 const Chart = ({ className = '' }) => {
   const [timeFrame, setTimeframe] = useState(1)
   const timeFrameOptions = [1, 5, 15, 30, 60]
-  const chartOptions = ['candlestick', 'line']
+  const chartOptions = [<ChartCandlestick />, <ChartLine />]
   const [chartType, setChartType] = useState('candlestick')
   const [daysArray, setDaysArray] = useState(new Set())
+  const [maximize, setMaximize] = useState(false)
   const stockCode = 'INE081A01020'
+  const stockSymbol = 'TATA STEEL LTD.'
   const dataURL = `https://api.upstox.com/v3/historical-candle/NSE_EQ%7C${stockCode}/minutes/${timeFrame}/2026-02-19/2026-02-12`
   const [data, setData] = useState(null)
+
+  const elemRef = useRef(null)
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', exitHandler, false)
+    return () => {
+      document.removeEventListener('fullscreenchange', exitHandler, false)
+    }
+  }, [])
+
+  function exitHandler() {
+    if (!document.fullscreenElement) {
+      console.log('exited')
+      // if (maximize) {
+      //   toggleFullScreen()
+      // }
+      setMaximize(false)
+    } else {
+      console.log('entered')
+      setMaximize(true)
+    }
+  }
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      // Enter fullscreen mode
+      if (elemRef.current.requestFullscreen) {
+        elemRef.current.requestFullscreen()
+      } else if (elemRef.current.webkitRequestFullscreen) {
+        /* Chrome, Safari & Opera */
+        elemRef.current.webkitRequestFullscreen()
+      } else if (elemRef.current.mozRequestFullScreen) {
+        /* Firefox */
+        elemRef.current.mozRequestFullScreen()
+      }
+    } else {
+      // Exit fullscreen mode
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if (document.webkitExitFullscreen) {
+        /* Chrome, Safari & Opera */
+        document.webkitExitFullscreen()
+      } else if (document.mozCancelFullScreen) {
+        /* Firefox */
+        document.mozCancelFullScreen()
+      }
+    }
+  }
 
   const candlestickSeries = {
     type: 'candlestick',
@@ -117,27 +168,25 @@ const Chart = ({ className = '' }) => {
   // Derive options directly from data
   const options = {
     data: data || [],
-    // title: {
-    //   text: 'S&P 500 Index',
-    // },
-    // subtitle: {
-    //   text: 'Daily High and Low Prices',
-    // },
-    // footnote: {
-    //   text: '1 Aug 2023 - 1 Nov 2023',
-    // },
+    background: {
+      fill: '#00000000',
+    },
     zoom: {
       enabled: true,
     },
-    // navigator: {
-    //   enabled: true,
-    //   miniChart: {
-    //     enabled: true,
-    //   },
-    // },
+    navigator: {
+      enabled: true,
+      height: 8,
+      mask: {
+        fill: '#6c499e',
+        strokeWidth: 0.5,
+        stroke: '#6c499e',
+        fillOpacity: 1,
+      },
+    },
     initialState: {
       zoom: {
-        ratioX: { start: 0.0, end: 1.0 },
+        ratioX: { start: 0.7, end: 1.0 },
         ratioY: chartType === 'candlestick' ? { start: 0.0, end: 1.0 } : { start: 0.95, end: 1.0 },
       },
     },
@@ -195,43 +244,94 @@ const Chart = ({ className = '' }) => {
         },
         interval: { step: 2 },
         line: {
-          stroke: 'red',
-          width: 3,
+          stroke: '#6c499e',
+          width: 2,
         },
+        crossLines: [
+          {
+            type: 'line',
+            value: data && data[0]?.close,
+            stroke: '#0000FF',
+            lineDash: [2, 4],
+            label: {
+              text: `${data && data[0]?.close}`,
+              position: 'right',
+              fontSize: 14,
+              fill: '#000000',
+              fillOpacity: 1,
+              color: '#FFFFFF',
+              cornerRadius: 4,
+            },
+          },
+        ],
       },
     },
     series: [chartType === 'candlestick' ? candlestickSeries : lineSeries],
   }
 
   return (
-    <div className={`glass-card ${className}`}>
-      <div>
-        {timeFrameOptions.map(option => (
-          <button
-            key={option}
-            onClick={() => setTimeframe(option)}
-            style={{
-              marginRight: '5px',
-              fontWeight: timeFrame === option ? 'bold' : 'normal',
-            }}
-          >
-            {option} min
-          </button>
-        ))}
-        {chartOptions.map(option => (
-          <button
-            key={option}
-            onClick={() => setChartType(option)}
-            style={{
-              marginRight: '5px',
-              fontWeight: chartType === option ? 'bold' : 'normal',
-            }}
-          >
-            {option} min
-          </button>
-        ))}
+    <div
+      ref={elemRef}
+      className={`${maximize ? 'bg-white flex flex-col w-full items-center justify-center' : 'glass-card col-span-2'}  ${className}`}
+    >
+      <Button
+        className="absolute bottom-3 z-50 right-3 rounded-xl primary-gradient cursor-pointer"
+        onClick={() => {
+          // setMaximize(!maximize)
+          toggleFullScreen()
+        }}
+      >
+        {maximize ? <Minimize /> : <Maximize />}
+      </Button>
+      <div className={`flex justify-between ${maximize ? 'w-full p-3 m-auto' : 'mx-3 mt-2'} `} id="parent">
+        <div className="text-lg pl-2 font-bold text-slate-800">{stockSymbol}</div>
+
+        {/* Timeframe buttons */}
+        <div id="timeframe" className="flex gap-2">
+          {timeFrameOptions.map(option => (
+            <Button
+              key={option}
+              variant={timeFrame === option ? 'default' : 'outline'}
+              onClick={() => setTimeframe(option)}
+              className={`cursor-pointer ${timeFrame === option ? 'primary-gradient' : 'outline'} px-3  rounded-lg`}
+            >
+              {option} min
+            </Button>
+          ))}
+        </div>
+
+        {/* Chart type buttons */}
+        <div className="flex gap-2">
+          <Tooltip>
+            <TooltipTrigger
+              onClick={() => setChartType('candlestick')}
+              className={`cursor-pointer ${chartType === 'candlestick' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
+            >
+              <ChartCandlestick color={chartType === 'candlestick' ? '#FFF' : '#000'} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Line Chart</p>
+            </TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger
+              onClick={() => setChartType('line')}
+              className={`cursor-pointer ${chartType === 'line' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
+            >
+              <LineChart color={chartType === 'line' ? '#FFF' : '#000'} />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Line Chart</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
-      {data && data.length > 0 ? <AgCharts options={options} /> : <div>Loading data...</div>}
+      {data && data.length > 0 ? (
+        <AgCharts options={options} className="w-full h-full transition-all duration-300 ease-in-out" />
+      ) : (
+        <div>Loading data...</div>
+      )}
     </div>
   )
 }

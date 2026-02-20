@@ -16,13 +16,13 @@ const PortFolioWindow = () => {
         <p>+ ₹ {(12500.59).toLocaleString()} (2.5%) Today</p>
       </span>
       <div className="flex flex-col gap-4 mt-4">
-        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-lg shadow-black/5">
-          <Landmark className="w-4 " color="#0000FF" />
+        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
+          <Landmark className="w-4 " color="#4B50F0" />
           <p className="text-sm">Buying Power</p>
           <h3 className="ml-auto text-lg font-bold">₹ 88,240</h3>
         </div>
-        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-lg shadow-black/5">
-          <FaChartPie className="w-5 " color="#0000FF" />
+        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
+          <FaChartPie className="w-5 " color="#3B82F6" />
           <p className="text-sm">Active Trades</p>
           <h3 className="ml-auto text-lg font-bold">18</h3>
         </div>
