@@ -3,6 +3,7 @@ import { LoginForm } from '@/components/login-form'
 import { toast } from 'sonner'
 import { useParams, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Logo from '/logo_v1.png'
 
 const AuthPage = () => {
   const { path } = useParams()
@@ -17,12 +18,12 @@ const AuthPage = () => {
     <div className="primary-gradient">
       <div className="glass-bg flex min-h-svh flex-col items-center justify-center gap-6 p-6 ">
         <div className="flex w-full max-w-md flex-col gap-6">
-          <a href="#" className="flex fixed top-10 left-10 items-center gap-2 self-center font-medium">
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              {/* <GalleryVerticalEnd className="size-4" /> */}
-            </div>
-            Virtual Trade Sandbox
-          </a>
+          <div className="fixed top-10 left-10 flex items-center gap-2 ">
+            <img src={Logo} alt="Virtual Trade Sandbox " className="h-10 w-10  " />
+            <h1 className="text-xs/3 font-bold text-slate-800">
+              Virtual <br /> Trade <br /> Sandbox
+            </h1>
+          </div>
           <LoginForm path={path} />
         </div>
       </div>

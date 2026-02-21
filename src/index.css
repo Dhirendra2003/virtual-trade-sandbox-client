@@ -136,7 +136,7 @@
   background: linear-gradient(135deg, #49176d 0%, #6c499e 100%);
 }
 .glass-bg {
-  background: radial-gradient(circle at top left, #ffdab9 0%, #e6e6fa 40%, #ffffff 100%);
+  background: radial-gradient(circle at top left, #ffebe6 0%, #ede6fa 50%, #fff5e7 100%);
   background-attachment: fixed;
 }
 .glass-card {

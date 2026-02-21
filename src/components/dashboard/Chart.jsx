@@ -283,7 +283,7 @@ const Chart = ({ className = '' }) => {
       >
         {maximize ? <Minimize /> : <Maximize />}
       </Button>
-      <div className={`flex justify-between ${maximize ? 'w-full p-3 m-auto' : 'mx-3 mt-2'} `} id="parent">
+      <div className={`flex justify-between ${maximize ? 'w-full p-3 m-auto' : 'mx-2 mt-2'} `} id="parent">
         <div className="text-lg pl-2 font-bold text-slate-800">{stockSymbol}</div>
 
         {/* Timeframe buttons */}

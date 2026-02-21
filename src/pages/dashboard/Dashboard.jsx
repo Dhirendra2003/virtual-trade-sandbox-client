@@ -4,31 +4,22 @@ import { Button } from '@/components/ui/Button'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { clearState } from '@/store/slices/authSlice'
+import { SidebarProvider } from '@/components/ui/sidebar'
+import AppSidebar from '@/components/app-sidebar'
 
 const Dashboard = () => {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
   return (
-    <div className="glass-bg min-h-screen">
-      <h1>Dashboard parent</h1>
-      <Button
-        onClick={() => {
-          axiosInstance
-            .get('/user/logout')
-            .then(res => {
-              console.log(res)
-              dispatch(clearState())
-              navigate('/authenticate/login')
-            })
-            .catch(err => {
-              console.log(err)
-            })
-        }}
-      >
-        Logout
-      </Button>
-      <Outlet />
-    </div>
+    <SidebarProvider
+      style={{
+        '--sidebar-width': '10rem',
+        '--sidebar-width-mobile': '10rem',
+      }}
+    >
+      <AppSidebar />
+      <div className="glass-bg min-h-screen w-[100%] m-0 p-0">
+        <Outlet />
+      </div>
+    </SidebarProvider>
   )
 }
 
