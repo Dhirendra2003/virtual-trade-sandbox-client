@@ -17,7 +17,20 @@ import {
   AreaSeriesModule,
   CategoryAxisModule,
 } from 'ag-charts-enterprise'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { ChartCandlestick, ChartLine, LineChart, Maximize, Minimize } from 'lucide-react'
+import { useLocation } from 'react-router-dom'
+import { getStockData } from '../../pages/dashboard/actions.js'
+import { useQuery } from '@tanstack/react-query'
+import moment from 'moment/moment.js'
 
 ModuleRegistry.registerModules([
   CandlestickSeriesModule,
@@ -34,17 +47,30 @@ ModuleRegistry.registerModules([
   CategoryAxisModule,
 ])
 
-const Chart = ({ className = '' }) => {
-  const [timeFrame, setTimeframe] = useState(1)
+const Chart = ({ className = '', stockId }) => {
+  const daysRangeOptions = [
+    { label: '5 Days', value: 5 },
+    { label: '10 Days', value: 10 },
+    { label: '15 Days', value: 15 },
+    { label: '20 Days', value: 20 },
+    { label: '30 Days', value: 30 },
+  ]
   const timeFrameOptions = [1, 5, 15, 30, 60]
-  const chartOptions = [<ChartCandlestick />, <ChartLine />]
+  const stockData = useLocation()
+  const stock = stockData?.state?.stock
+  const [timeFrame, setTimeframe] = useState(1)
+  const [daysRange, setDaysRange] = useState(daysRangeOptions[0].value)
   const [chartType, setChartType] = useState('candlestick')
   const [daysArray, setDaysArray] = useState(new Set())
   const [maximize, setMaximize] = useState(false)
-  const stockCode = 'INE081A01020'
-  const stockSymbol = 'TATA STEEL LTD.'
-  const dataURL = `https://api.upstox.com/v3/historical-candle/NSE_EQ%7C${stockCode}/minutes/${timeFrame}/2026-02-19/2026-02-12`
+  const stockCode = stockId || 'NSE_INDEX|Nifty 50'
+  // Date range for chart data — adjust as needed
+  const [to, setTo] = useState(moment().format('YYYY-MM-DD'))
+  const from = moment().subtract(daysRange, 'days').format('YYYY-MM-DD')
   const [data, setData] = useState(null)
+  // Custom dropdown open state (no portals — works in fullscreen)
+  const [timeFrameOpen, setTimeFrameOpen] = useState(false)
+  const [daysRangeOpen, setDaysRangeOpen] = useState(false)
 
   const elemRef = useRef(null)
 
@@ -102,6 +128,7 @@ const Chart = ({ className = '' }) => {
     highKey: 'high',
     openKey: 'open',
     closeKey: 'close',
+    tooltip: { renderer },
   }
   const lineSeries = {
     type: 'area',
@@ -119,51 +146,55 @@ const Chart = ({ className = '' }) => {
         { color: '#6600ff', stop: 1.0 }, //will continue to the end
       ],
     },
+    tooltip: { renderer },
   }
 
+  // useEffect(() => {
+  //   fetch(dataURL)
+  //     .then(response => response.json())
+  //     .then(responseData => {
+  //       console.log('API Response:', responseData) // Debug log
+  //       let days = new Set()
+  //       responseData?.data?.candles?.map(candle => days.add(candle[0].slice(0, 10)))
+  //       console.log(days)
+  //       setDaysArray(days)
+  //       const modifiedData = responseData?.data?.candles?.map(candle => ({
+  //         date2: candle[0],
+  //         open: candle[1],
+  //         high: candle[2],
+  //         low: candle[3],
+  //         close: candle[4],
+  //         volume: candle[5],
+  //       }))
+
+  //       console.log('Modified Data:', modifiedData) // Debug log
+
+  //       if (modifiedData && modifiedData.length > 0) {
+  //         setData(modifiedData)
+  //       } else {
+  //         console.warn('No data received from API')
+  //         setData([])
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Fetch error:', error)
+  //       setData([])
+  //     })
+  // }, [stockCode, timeFrame, dataURL])
+
+  const { data: stockChartData } = useQuery({
+    queryKey: ['stockData', stockCode, timeFrame, from, to],
+    queryFn: () => getStockData({ stockCode, timeFrame, from, to }),
+    enabled: !!stockCode && !!timeFrame && !!from && !!to,
+  })
+
+  // Sync chart data from React Query response (onSuccess is deprecated in RQ v5)
   useEffect(() => {
-    fetch(dataURL)
-      .then(response => response.json())
-      .then(responseData => {
-        console.log('API Response:', responseData) // Debug log
-        let days = new Set()
-        responseData?.data?.candles?.map(candle => days.add(candle[0].slice(0, 10)))
-        console.log(days)
-        setDaysArray(days)
-        const modifiedData = responseData?.data?.candles?.map(candle => ({
-          // date: new Date(candle[0]).toLocaleDateString() + ' ' + new Date(candle[0]).toLocaleTimeString(),
-          // date1: new Date(candle[0]).toTimeString().split(' ')[0].slice(0, 5),
-          // date2: candle[0].slice(8, 16),
-          date2: candle[0],
-          open: candle[1],
-          high: candle[2],
-          low: candle[3],
-          close: candle[4],
-          volume: candle[5],
-        }))
-
-        //for linechart
-        // const modifiedData = responseData?.data?.candles?.map((candle) => (
-        //   {
-        //     date: new Date(candle[0]).toTimeString().split(" ")[0], // Extract time in HH:MM:SS format
-        //     close: candle[4],
-        //   }
-        // ));
-
-        console.log('Modified Data:', modifiedData) // Debug log
-
-        if (modifiedData && modifiedData.length > 0) {
-          setData(modifiedData)
-        } else {
-          console.warn('No data received from API')
-          setData([])
-        }
-      })
-      .catch(error => {
-        console.error('Fetch error:', error)
-        setData([])
-      })
-  }, [stockCode, timeFrame, dataURL])
+    if (stockChartData?.data) {
+      setData(stockChartData.data)
+      setDaysArray(new Set(stockChartData.days))
+    }
+  }, [stockChartData])
 
   // Derive options directly from data
   const options = {
@@ -242,7 +273,7 @@ const Chart = ({ className = '' }) => {
         gridLine: {
           enabled: true,
         },
-        interval: { step: 2 },
+        interval: { minSpacing: 20, maxSpacing: 50 },
         line: {
           stroke: '#6c499e',
           width: 2,
@@ -283,29 +314,103 @@ const Chart = ({ className = '' }) => {
       >
         {maximize ? <Minimize /> : <Maximize />}
       </Button>
-      <div className={`flex justify-between ${maximize ? 'w-full p-3 m-auto' : 'mx-2 mt-2'} `} id="parent">
-        <div className="text-lg pl-2 font-bold text-slate-800">{stockSymbol}</div>
+      <div className={`flex flex-wrap  space-y-2 ${maximize ? 'w-full p-3 m-auto' : 'mx-2 mt-2'} `} id="parent">
+        {/* Stock Info */}
+        <div className="mr-auto">
+          <h2 className="text-md pl-2 font-bold text-slate-800 ">{stock?.name || 'NIFTY 50'}</h2>
+          <h2 className="text-xs pl-2  w-full flex">
+            <span>{stock?.trading_symbol || 'NIFTY 50'}</span>
+            <span className="text-slate-500 ml-2">
+              {` ${stock?.exchange || 'NSE'} `}
+              {stock?.segment && ` - (${stock?.instrument_type === 'EQ' ? 'EQUITY' : 'UNKNOWN_SEGMENT'})`}
+            </span>
+          </h2>
+        </div>
 
-        {/* Timeframe buttons */}
-        <div id="timeframe" className="flex gap-2">
-          {timeFrameOptions.map(option => (
-            <Button
-              key={option}
-              variant={timeFrame === option ? 'default' : 'outline'}
-              onClick={() => setTimeframe(option)}
-              className={`cursor-pointer ${timeFrame === option ? 'primary-gradient' : 'outline'} px-3  rounded-lg`}
-            >
-              {option} min
-            </Button>
-          ))}
+        {/* Timeframe — custom inline dropdown, works in fullscreen */}
+        <div
+          className="relative mx-2"
+          onBlur={e => {
+            if (!e.currentTarget.contains(e.relatedTarget)) setTimeFrameOpen(false)
+          }}
+        >
+          <button
+            onClick={() => {
+              setTimeFrameOpen(o => !o)
+              setDaysRangeOpen(false)
+            }}
+            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-28 justify-between"
+          >
+            <span>{timeFrame} min</span>
+            <span className="text-purple-700">{timeFrameOpen ? '▲' : '▼'}</span>
+          </button>
+          {timeFrameOpen && (
+            <div className="absolute top-full mt-1 left-0 bg-white border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
+              <p className="text-xs text-slate-400 px-3 pt-2 pb-1 font-semibold">Time Frame</p>
+              {timeFrameOptions.map(option => (
+                <button
+                  key={option}
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => {
+                    setTimeframe(option)
+                    setTimeFrameOpen(false)
+                  }}
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-purple-50 font-medium ${
+                    timeFrame === option ? 'text-purple-700 bg-purple-50' : 'text-slate-700'
+                  }`}
+                >
+                  {option} min
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Days Range — custom inline dropdown, works in fullscreen */}
+        <div
+          className="relative mx-2"
+          onBlur={e => {
+            if (!e.currentTarget.contains(e.relatedTarget)) setDaysRangeOpen(false)
+          }}
+        >
+          <button
+            onClick={() => {
+              setDaysRangeOpen(o => !o)
+              setTimeFrameOpen(false)
+            }}
+            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-28 justify-between"
+          >
+            <span>{daysRangeOptions.find(o => o.value === daysRange)?.label ?? 'Range'}</span>
+            <span className="text-purple-700">{daysRangeOpen ? '▲' : '▼'}</span>
+          </button>
+          {daysRangeOpen && (
+            <div className="absolute top-full mt-1 left-0 bg-white border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
+              <p className="text-xs text-slate-400 px-3 pt-2 pb-1 font-semibold">Days Range</p>
+              {daysRangeOptions.map(option => (
+                <button
+                  key={option.value}
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => {
+                    setDaysRange(option.value)
+                    setDaysRangeOpen(false)
+                  }}
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-purple-50 font-medium ${
+                    daysRange === option.value ? 'text-purple-700 bg-purple-50' : 'text-slate-700'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Chart type buttons */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 ">
           <Tooltip>
             <TooltipTrigger
               onClick={() => setChartType('candlestick')}
-              className={`cursor-pointer ${chartType === 'candlestick' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
+              className={`cursor-pointer h-9 w-9 flex items-center justify-center ${chartType === 'candlestick' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
             >
               <ChartCandlestick color={chartType === 'candlestick' ? '#FFF' : '#000'} />
             </TooltipTrigger>
@@ -317,7 +422,7 @@ const Chart = ({ className = '' }) => {
           <Tooltip>
             <TooltipTrigger
               onClick={() => setChartType('line')}
-              className={`cursor-pointer ${chartType === 'line' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
+              className={`cursor-pointer h-9 w-9 flex items-center justify-center ${chartType === 'line' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
             >
               <LineChart color={chartType === 'line' ? '#FFF' : '#000'} />
             </TooltipTrigger>
@@ -337,3 +442,11 @@ const Chart = ({ className = '' }) => {
 }
 
 export default Chart
+
+function renderer({ datum, xKey, yKey, yName }) {
+  console.log(datum, xKey, yKey, yName)
+  return {
+    heading: moment(datum?.date2).format('DD-MMM-YYYY HH:mm'),
+    data: datum,
+  }
+}

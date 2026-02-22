@@ -10,6 +10,7 @@ import AppSidebar from '@/components/app-sidebar'
 const Dashboard = () => {
   return (
     <SidebarProvider
+      variant={'floating'}
       style={{
         '--sidebar-width': '10rem',
         '--sidebar-width-mobile': '10rem',

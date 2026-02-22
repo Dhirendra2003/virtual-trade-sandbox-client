@@ -60,7 +60,7 @@ export function LoginForm({ className, path, ...props }) {
       toast.success('Login successful!', {
         description: `Welcome back ${data.user.name}!`,
       })
-      nav('/dashboard')
+      nav('/app/home')
     },
     onError: e => {
       toast.error('Login failed!', {
@@ -83,7 +83,7 @@ export function LoginForm({ className, path, ...props }) {
       toast.success('Registration successful!', {
         description: `Welcome ${data.user.name}!`,
       })
-      nav('/dashboard')
+      nav('/app/home')
     },
     onError: e => {
       toast.error('Registration failed!', {

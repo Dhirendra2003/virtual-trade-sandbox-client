@@ -19,7 +19,7 @@ const RequestUserData = () => {
       .then(response => {
         console.log(response.data)
         dispatch(setUser(response.data.user))
-        return nav('/dashboard')
+        return nav('/app/home')
       })
       .catch(error => {
         console.log(error)

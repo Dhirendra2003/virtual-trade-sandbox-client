@@ -11,7 +11,7 @@ const AuthPage = () => {
 
   // Redirect to dashboard if already logged in
   if (isAuthenticated && user) {
-    return <Navigate to="/dashboard" replace />
+    return <Navigate to="/app/home" replace />
   }
 
   return (

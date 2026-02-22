@@ -5,12 +5,13 @@ import InsideOutlet from './dashboard/InsideOutlet'
 import RouteProtector from '@/components/RouteProtector'
 import RequestUserData from './auth/RequestUserData'
 import Home from './dashboard/Home'
+import Stock from './dashboard/Stock'
 
 const AppRoutes = () => {
   const routes = useRoutes([
     {
       path: '/',
-      element: <Navigate to="/dashboard" />,
+      element: <Navigate to="/app/home" />,
     },
     {
       path: '/authenticate/:path',
@@ -25,15 +26,17 @@ const AppRoutes = () => {
       element: <RequestUserData />,
     },
     {
-      path: '/dashboard',
+      path: '/app',
       element: (
         <RouteProtector>
           <Dashboard />
         </RouteProtector>
       ),
       children: [
-        { path: '', element: <Home /> },
-        { path: 'inside-outlet', element: <InsideOutlet /> },
+        { path: 'home', element: <Home /> },
+        { path: 'stock/:id', element: <Stock /> },
+
+        { path: 'profile', element: <h1>profile</h1> },
       ],
     },
   ])

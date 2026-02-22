@@ -31,6 +31,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
+import { useLocation } from 'react-router-dom'
 
 const data = {
   user: {
@@ -41,118 +42,45 @@ const data = {
   navMain: [
     {
       title: 'Dashboard',
-      url: '#',
+      key: 'home',
+      url: '/app/home',
       icon: LayoutDashboard,
     },
     {
       title: 'Lifecycle',
+      key: 'lifecycle',
       url: '#',
       icon: ListOrdered,
     },
     {
       title: 'Analytics',
+      key: 'analytics',
       url: '#',
       icon: BarChart2,
     },
     {
-      title: 'Projects',
-      url: '#',
+      title: 'Profile',
+      key: 'profile',
+      url: '/app/profile',
       icon: Folder,
     },
     {
       title: 'Team',
+      key: 'team',
       url: '#',
       icon: Users,
-    },
-  ],
-  navClouds: [
-    {
-      title: 'Capture',
-      icon: Camera,
-      isActive: true,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Proposal',
-      icon: FileText,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Prompts',
-      icon: BrainCircuit,
-      url: '#',
-      items: [
-        {
-          title: 'Active Proposals',
-          url: '#',
-        },
-        {
-          title: 'Archived',
-          url: '#',
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings,
-    },
-    {
-      title: 'Get Help',
-      url: '#',
-      icon: HelpCircle,
-    },
-    {
-      title: 'Search',
-      url: '#',
-      icon: Search,
-    },
-  ],
-  documents: [
-    {
-      name: 'Data Library',
-      url: '#',
-      icon: Database,
-    },
-    {
-      name: 'Reports',
-      url: '#',
-      icon: ClipboardList,
-    },
-    {
-      name: 'Word Assistant',
-      url: '#',
-      icon: FileType,
     },
   ],
 }
 
 export default function AppSidebar({ ...props }) {
+  const { pathname } = useLocation()
+  console.log('location', pathname)
+  const exactPath = pathname.split('/')[2]
+  console.log('exactPath', exactPath)
   return (
     <Sidebar collapsible="offcanvas" {...props} className="max-w-40">
-      <SidebarHeader className="py-4">
+      <SidebarHeader className="py-4 ">
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild className=" h-12">
@@ -167,11 +95,8 @@ export default function AppSidebar({ ...props }) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        {/* <NavDocuments items={data.documents} /> */}
-        {/* <NavSecondary items={data.navSecondary} className="mt-auto" /> */}
+        <NavMain items={data.navMain} currentPath={exactPath} />
       </SidebarContent>
-      <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
     </Sidebar>
   )
 }

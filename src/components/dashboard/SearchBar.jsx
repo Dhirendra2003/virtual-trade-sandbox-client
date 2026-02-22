@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Logo from '/logo_v1.png'
 import {
   InputGroup,
@@ -23,8 +23,50 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { searchStock } from '../../pages/dashboard/actions'
+import { toast } from 'sonner'
 
 const SearchBar = () => {
+  // const stockData = useLocation()
+  // console.log('stockData', stockData)
+  const [query, setQuery] = useState('')
+  const [debounceQuery, setDebounceQuery] = useState('')
+  const [isInputFocused, setIsInputFocused] = useState(false)
+  // const [searchResult, setSearchResult] = useState([])
+
+  const { data, error, isPending } = useQuery({
+    queryFn: () => searchStock({ query: debounceQuery }),
+    queryKey: ['SearchStock', debounceQuery],
+    enabled: debounceQuery.length > 0,
+
+    // placeholderData: previousData => previousData,
+    // staleTime: 1000 * 60 * 5, // Data
+  })
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (query?.length > 0) {
+        setDebounceQuery(query)
+        setIsInputFocused(true)
+      }
+      // setSearchResult(data?.data)
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [query])
+
+  useEffect(() => {
+    const err = error
+    if (err) {
+      toast.error('Search failed!', {
+        description: err?.response?.data?.message,
+      })
+    }
+  }, [error])
+
+  const navigate = useNavigate()
+
   const { user } = useSelector(state => state.auth)
   console.log(user)
   const notifications = [
@@ -56,23 +98,55 @@ const SearchBar = () => {
           Virtual <br /> Trade <br /> Sandbox
         </h1>
       </div>
-
-      <InputGroup className="bg-white --border-purple-500 max-w-sm shadow-none">
-        <InputGroupInput
-          placeholder="Stocks , mutual funds , options"
-          required
-          name="search"
-          type="text"
-          className=""
-          // value=""
-          // onChange={() => {}}
-          // onBlur={() => {}}
-        />
-        <InputGroupAddon className="">
-          <Search />
-        </InputGroupAddon>
-      </InputGroup>
-
+      .
+      <div className="w-96">
+        <InputGroup className="bg-white --border-purple-500 max-w-sm shadow-none">
+          <InputGroupInput
+            placeholder="Stocks , mutual funds , options"
+            required
+            // name="search"
+            type="text"
+            className=""
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onFocus={() => setIsInputFocused(true)}
+            onBlur={() => setIsInputFocused(false)}
+          />
+          <InputGroupAddon className="">
+            <Search />
+          </InputGroupAddon>
+        </InputGroup>
+        {isInputFocused &&
+          (query.length > 0 ? (
+            <div className="absolute top-full w-96 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+              {data?.data?.map(stock => (
+                <div
+                  onMouseDown={e => e.preventDefault()}
+                  onClick={() => {
+                    navigate(`/app/stock/${stock?.instrument_key}`, { state: { stock: stock } })
+                    console.log(stock?.instrument_key)
+                    setTimeout(() => {
+                      console.log('xxx')
+                      setIsInputFocused(false)
+                      setQuery('')
+                      setDebounceQuery('')
+                    }, 100)
+                  }}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  key={stock?.instrument_key}
+                >
+                  {stock?.name}
+                  {stock?.trading_symbol}
+                  <Separator />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="absolute top-full  w-96 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+              <h1 className="p-2 text-slate-500">type something .... </h1>
+            </div>
+          ))}
+      </div>
       <div className="flex items-center gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

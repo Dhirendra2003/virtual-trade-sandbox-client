@@ -13,12 +13,13 @@ import { axiosInstance } from '../API/axios'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { clearState } from '../store/slices/authSlice'
+import { Link } from 'react-router-dom'
 
-export default function NavMain({ items }) {
+export default function NavMain({ items, currentPath }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   return (
-    <SidebarGroup className="h-full">
+    <SidebarGroup className="h-full ">
       <SidebarGroupContent className="flex flex-col gap-2 justify-between h-full">
         <SidebarMenu>
           <SidebarMenuItem className="flex items-center gap-2"></SidebarMenuItem>
@@ -26,9 +27,16 @@ export default function NavMain({ items }) {
         <SidebarMenu>
           {items.map(item => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
+              <SidebarMenuButton
+                className="bg-purple-600 hover:bg-purple-800 hover:text-white text-white transition-all duration-300 ease-in-out"
+                tooltip={item.title}
+                asChild
+                isActive={currentPath !== item.key}
+              >
+                <Link to={item.url} className="bg-purple-600 text-white">
+                  {item.icon && <item.icon />}
+                  <span className="">{item.title}</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
