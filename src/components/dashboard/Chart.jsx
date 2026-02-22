@@ -17,15 +17,6 @@ import {
   AreaSeriesModule,
   CategoryAxisModule,
 } from 'ag-charts-enterprise'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { ChartCandlestick, ChartLine, LineChart, Maximize, Minimize } from 'lucide-react'
 import { useLocation } from 'react-router-dom'
 import { getStockData } from '../../pages/dashboard/actions.js'
