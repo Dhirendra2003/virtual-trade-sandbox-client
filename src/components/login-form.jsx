@@ -1,3 +1,5 @@
+import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,8 +15,7 @@ import {
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Activity, Eye, EyeOff, Lock, Mail, Phone, User } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { Activity, Eye, EyeOff, Lock, Mail, Phone, User, X } from 'lucide-react'
 import { FcGoogle } from 'react-icons/fc'
 import { FaFacebookSquare } from 'react-icons/fa'
 import { useFormik } from 'formik'
@@ -25,10 +26,15 @@ import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '@/store/slices/authSlice'
+import PhotoUpload from './photo-upload'
 
 export function LoginForm({ className, path, ...props }) {
   const [page, setPage] = useState(path)
   const [showPassword, setShowPassword] = useState(false)
+  const [pfp, setPfp] = useState(null)
+  const [croppedPfp, setCroppedPfp] = useState(null)
+  const [cropperOpen, setCropperOpen] = useState(false)
+  const pfpInputRef = useRef(null)
   const nav = useNavigate()
   const dispatch = useDispatch()
 
@@ -62,11 +68,6 @@ export function LoginForm({ className, path, ...props }) {
       })
       nav('/app/home')
     },
-    onError: e => {
-      toast.error('Login failed!', {
-        description: e.response.data.message,
-      })
-    },
   })
 
   const {
@@ -84,11 +85,6 @@ export function LoginForm({ className, path, ...props }) {
         description: `Welcome ${data.user.name}!`,
       })
       nav('/app/home')
-    },
-    onError: e => {
-      toast.error('Registration failed!', {
-        description: e.response.data.message,
-      })
     },
   })
 
@@ -134,7 +130,15 @@ export function LoginForm({ className, path, ...props }) {
       dateofbirth: '',
     },
     onSubmit: values => {
-      registerMutation(values)
+      const formData = new FormData()
+      formData.append('email', values.email)
+      formData.append('username', values.username)
+      formData.append('password', values.password)
+      formData.append('repeatPassword', values.repeatPassword)
+      formData.append('phone', values.phone)
+      formData.append('dateofbirth', values.dateofbirth)
+      formData.append('pfp', croppedPfp.blob, 'profile.jpg')
+      registerMutation(formData)
     },
     validationSchema: UserRegisterSchema,
   })
@@ -284,7 +288,7 @@ export function LoginForm({ className, path, ...props }) {
         )}
         {page === 'register' && (
           <CardContent>
-            <form onSubmit={formikRegister.handleSubmit}>
+            <form onSubmit={formikRegister.handleSubmit} encType="multipart/form-data">
               <FieldGroup className="gap-4">
                 <Field>
                   <FieldLabel htmlFor="username">Username</FieldLabel>
@@ -429,6 +433,56 @@ export function LoginForm({ className, path, ...props }) {
                     <p className="text-red-500 text-sm">{formikRegister.errors.dateofbirth}</p>
                   )}
                 </Field>
+
+                <Field>
+                  <FieldLabel htmlFor="pfp">Profile Photo</FieldLabel>
+                  <InputGroup className="bg-white">
+                    <InputGroupInput
+                      ref={pfpInputRef}
+                      type="file"
+                      accept="image/*"
+                      name="pfp"
+                      placeholder="Upload your profile photo"
+                      onChange={e => {
+                        setPfp(e.target.files[0])
+                        setCropperOpen(true)
+                      }}
+                      required
+                    />
+                  </InputGroup>
+                </Field>
+                {pfp && croppedPfp && (
+                  <div className="flex justify-center gap-2">
+                    <div className="relative min-w-36 min-h-36 w-36 h-36 border-2 border-slate-800 rounded-full">
+                      <button
+                        type="button"
+                        className="absolute -top-1 -right-1 bg-red-500 hover:bg-red-700 text-white rounded-full p-1 border-2"
+                        onClick={() => {
+                          setPfp(null)
+                          setCroppedPfp(null)
+                          if (pfpInputRef.current) pfpInputRef.current.value = ''
+                        }}
+                      >
+                        <X size={18} />
+                      </button>
+                      <img
+                        className="w-full h-full object-cover rounded-full"
+                        src={croppedPfp.url}
+                        alt="profile photo preview"
+                      />
+                    </div>
+                  </div>
+                )}
+                {pfp &&
+                  cropperOpen &&
+                  createPortal(
+                    <PhotoUpload
+                      image={URL.createObjectURL(pfp)}
+                      setCropperOpen={setCropperOpen}
+                      setCroppedPfp={setCroppedPfp}
+                    />,
+                    document.body
+                  )}
 
                 <Button
                   className="py-5 rounded-lg text-md primary-gradient cursor-pointer"

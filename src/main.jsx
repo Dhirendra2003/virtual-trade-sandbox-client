@@ -12,7 +12,18 @@ createRoot(document.getElementById('root')).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <App />
-        <Toaster position="top-left" theme="dark" richColors={true} visibleToasts={5} />
+        <Toaster
+          position="top-left"
+          closeButton={true}
+          theme="dark"
+          richColors={true}
+          visibleToasts={5}
+          toastOptions={{
+            classNames: {
+              closeButton: '!-right-3 !left-auto',
+            },
+          }}
+        />
       </PersistGate>
     </Provider>
   </StrictMode>

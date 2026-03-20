@@ -57,7 +57,9 @@ const Chart = ({ className = '', stockId }) => {
   const stockCode = stockId || 'NSE_INDEX|Nifty 50'
   // Date range for chart data — adjust as needed
   const [to, setTo] = useState(moment().format('YYYY-MM-DD'))
-  const from = moment().subtract(daysRange, 'days').format('YYYY-MM-DD')
+  const from = moment()
+    .subtract(daysRange - 1, 'days')
+    .format('YYYY-MM-DD')
   const [data, setData] = useState(null)
   // Custom dropdown open state (no portals — works in fullscreen)
   const [timeFrameOpen, setTimeFrameOpen] = useState(false)
@@ -330,7 +332,7 @@ const Chart = ({ className = '', stockId }) => {
               setTimeFrameOpen(o => !o)
               setDaysRangeOpen(false)
             }}
-            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-28 justify-between"
+            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-12 justify-between"
           >
             <span>{timeFrame} min</span>
             <span className="text-purple-700">{timeFrameOpen ? '▲' : '▼'}</span>
@@ -369,7 +371,7 @@ const Chart = ({ className = '', stockId }) => {
               setDaysRangeOpen(o => !o)
               setTimeFrameOpen(false)
             }}
-            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-28 justify-between"
+            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-12 justify-between"
           >
             <span>{daysRangeOptions.find(o => o.value === daysRange)?.label ?? 'Range'}</span>
             <span className="text-purple-700">{daysRangeOpen ? '▲' : '▼'}</span>

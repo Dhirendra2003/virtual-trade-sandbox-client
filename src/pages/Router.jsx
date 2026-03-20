@@ -6,6 +6,7 @@ import RouteProtector from '@/components/RouteProtector'
 import RequestUserData from './auth/RequestUserData'
 import Home from './dashboard/Home'
 import Stock from './dashboard/Stock'
+import ErrorPage from './error/ErrorPage'
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -38,6 +39,11 @@ const AppRoutes = () => {
 
         { path: 'profile', element: <h1>profile</h1> },
       ],
+    },
+    //ERROR PAGE
+    {
+      path: '*',
+      element: <ErrorPage />,
     },
   ])
   return routes

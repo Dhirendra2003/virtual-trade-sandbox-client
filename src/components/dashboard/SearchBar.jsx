@@ -152,7 +152,7 @@ const SearchBar = () => {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex gap-4">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" />
+                <AvatarImage src={user?.profilePicURL || 'https://github.com/shadcn.png '} alt="shadcn" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <h2 className="font-bold capitalize pt-1">{user?.name || 'User name'}</h2>

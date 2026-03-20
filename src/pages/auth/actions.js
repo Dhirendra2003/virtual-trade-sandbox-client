@@ -9,9 +9,9 @@ const loginAction = async values => {
   }
 }
 
-const registerAction = async values => {
+const registerAction = async formData => {
   try {
-    const response = await axiosInstance.post('/user/register', values)
+    const response = await axiosInstance.post('/user/register', formData)
     return response.data
   } catch (error) {
     console.log(error)
