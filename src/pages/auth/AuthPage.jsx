@@ -3,6 +3,9 @@ import { toast } from 'sonner'
 import { useParams, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Logo from '/logo_v1.png'
+import { useQuery } from '@tanstack/react-query'
+import { getMarketStatus } from '../dashboard/actions.js'
+import { useEffect } from 'react'
 
 const AuthPage = () => {
   const { path } = useParams()
@@ -12,6 +15,12 @@ const AuthPage = () => {
   if (isAuthenticated && user) {
     return <Navigate to="/app/home" replace />
   }
+
+  const { data: marketStatus } = useQuery({
+    queryKey: ['marketStatus'],
+    queryFn: getMarketStatus,
+    refetchInterval: 1000 * 30,
+  })
 
   return (
     <div className="primary-gradient">
@@ -23,7 +32,7 @@ const AuthPage = () => {
               Virtual <br /> Trade <br /> Sandbox
             </h1>
           </div>
-          <LoginForm path={path} />
+          <LoginForm path={path} marketState={marketStatus} />
         </div>
       </div>
     </div>

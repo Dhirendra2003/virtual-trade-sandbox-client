@@ -28,7 +28,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { setUser } from '@/store/slices/authSlice'
 import PhotoUpload from './photo-upload'
 
-export function LoginForm({ className, path, ...props }) {
+export function LoginForm({ className, path, marketState, ...props }) {
   const [page, setPage] = useState(path)
   const [showPassword, setShowPassword] = useState(false)
   const [pfp, setPfp] = useState(null)
@@ -149,10 +149,10 @@ export function LoginForm({ className, path, ...props }) {
         <CardHeader className="text-center">
           <Badge
             variant="secondary"
-            className="mx-auto font-bold px-3 mb-1  bg-green-100/50 border border-green-200/50 text-green-700"
+            className={`mx-auto font-bold px-3 mb-1 ${marketState?.isMarketOpen ? 'bg-green-100/50 border border-green-200/50 text-green-700' : 'bg-red-100/50 border border-red-200/50 text-red-700'}`}
           >
-            <Activity color="#22c55e" />
-            MARKET OPEN
+            <Activity color={marketState?.isMarketOpen ? '#22c55e' : '#ef4444'} />
+            {marketState?.isMarketOpen ? 'MARKET OPEN' : 'MARKET CLOSED'}
           </Badge>
           <CardTitle className="text-3xl font-bold text-slate-800">Welcome back</CardTitle>
           <CardDescription className="text-xs">

@@ -1,4 +1,15 @@
 import { axiosInstance } from '../../API/axios.js'
+
+const getMarketStatus = async () => {
+  try {
+    const response = await axiosInstance.get('/stocks/get-market-status')
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 const searchStock = async ({ query }) => {
   console.log(query)
   try {
@@ -22,4 +33,4 @@ const getStockData = async ({ stockCode, timeFrame, from, to }) => {
   }
 }
 
-export { searchStock, getStockData }
+export { searchStock, getStockData, getMarketStatus }
