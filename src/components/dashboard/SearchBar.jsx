@@ -90,7 +90,7 @@ const SearchBar = () => {
     },
   ]
   return (
-    <div className="mb-2 rounded-2xl sticky top-2 z-50 glass-card flex items-center justify-between py-2 px-6">
+    <div className=" rounded-2xl  glass-card flex items-center justify-between py-2 px-6">
       <SidebarTrigger className="-ml-1" />
       <div className="flex items-center gap-2 ">
         <img src={Logo} alt="Virtual Trade Sandbox " className="h-10 w-10  " />
@@ -124,7 +124,6 @@ const SearchBar = () => {
                   onMouseDown={e => e.preventDefault()}
                   onClick={() => {
                     navigate(`/app/stock/${stock?.instrument_key}`, { state: { stock: stock } })
-                    console.log(stock?.instrument_key)
                     setTimeout(() => {
                       console.log('xxx')
                       setIsInputFocused(false)

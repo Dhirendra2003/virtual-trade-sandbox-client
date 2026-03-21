@@ -22,6 +22,8 @@ import { useLocation } from 'react-router-dom'
 import { getStockData } from '../../pages/dashboard/actions.js'
 import { useQuery } from '@tanstack/react-query'
 import moment from 'moment/moment.js'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLatestPrice, clearStockState, setStock } from '../../store/slices/stockSlice'
 
 ModuleRegistry.registerModules([
   CandlestickSeriesModule,
@@ -39,6 +41,15 @@ ModuleRegistry.registerModules([
 ])
 
 const Chart = ({ className = '', stockId }) => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    // console.log('stockId', stockId)
+    // clear the redux
+    if (!stockId) {
+      dispatch(clearStockState())
+    }
+  }, [stockId])
   const daysRangeOptions = [
     { label: '5 Days', value: 5 },
     { label: '10 Days', value: 10 },
@@ -47,8 +58,8 @@ const Chart = ({ className = '', stockId }) => {
     { label: '30 Days', value: 30 },
   ]
   const timeFrameOptions = [1, 5, 15, 30, 60]
-  const stockData = useLocation()
-  const stock = stockData?.state?.stock
+  // const stockData = useLocation()
+  const stock = useSelector(state => state.stock.stock)
   const [timeFrame, setTimeframe] = useState(1)
   const [daysRange, setDaysRange] = useState(daysRangeOptions[0].value)
   const [chartType, setChartType] = useState('candlestick')
@@ -185,6 +196,9 @@ const Chart = ({ className = '', stockId }) => {
   useEffect(() => {
     if (stockChartData?.data) {
       setData(stockChartData.data)
+      //set latest price in redux
+      dispatch(setStock(stockChartData.stockDetails))
+      dispatch(setLatestPrice(stockChartData.data[0].close))
       setDaysArray(new Set(stockChartData.days))
     }
   }, [stockChartData])
@@ -408,7 +422,7 @@ const Chart = ({ className = '', stockId }) => {
               <ChartCandlestick color={chartType === 'candlestick' ? '#FFF' : '#000'} />
             </TooltipTrigger>
             <TooltipContent>
-              <p>Line Chart</p>
+              <p>Candlestick Chart</p>
             </TooltipContent>
           </Tooltip>
 

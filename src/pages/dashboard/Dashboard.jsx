@@ -17,7 +17,7 @@ const Dashboard = () => {
       }}
     >
       <AppSidebar />
-      <div className="glass-bg min-h-screen w-[100%] m-0 p-0">
+      <div className="glass-bg min-h-screen w-[100%] min-w-0 m-0 p-0">
         <Outlet />
       </div>
     </SidebarProvider>
