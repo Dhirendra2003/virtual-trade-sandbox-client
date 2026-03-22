@@ -7,6 +7,7 @@ import RequestUserData from './auth/RequestUserData'
 import Home from './dashboard/Home'
 import Stock from './dashboard/Stock'
 import ErrorPage from './error/ErrorPage'
+import Watchlist from './dashboard/Watchlist'
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -36,7 +37,7 @@ const AppRoutes = () => {
       children: [
         { path: 'home', element: <Home /> },
         { path: 'stock/:id', element: <Stock /> },
-
+        { path: 'watchlist', element: <Watchlist /> },
         { path: 'profile', element: <h1>profile</h1> },
       ],
     },

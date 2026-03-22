@@ -18,10 +18,10 @@ import {
   CategoryAxisModule,
 } from 'ag-charts-enterprise'
 import { ChartCandlestick, ChartLine, LineChart, Maximize, Minimize } from 'lucide-react'
-import { useLocation } from 'react-router-dom'
 import { getStockData } from '../../pages/dashboard/actions.js'
 import { useQuery } from '@tanstack/react-query'
 import moment from 'moment/moment.js'
+import { Spinner } from '@/components/ui/spinner'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLatestPrice, clearStockState, setStock } from '../../store/slices/stockSlice'
 
@@ -40,7 +40,7 @@ ModuleRegistry.registerModules([
   CategoryAxisModule,
 ])
 
-const Chart = ({ className = '', stockId }) => {
+const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -186,10 +186,11 @@ const Chart = ({ className = '', stockId }) => {
   //     })
   // }, [stockCode, timeFrame, dataURL])
 
-  const { data: stockChartData } = useQuery({
+  const { data: stockChartData, isFetching } = useQuery({
     queryKey: ['stockData', stockCode, timeFrame, from, to],
     queryFn: () => getStockData({ stockCode, timeFrame, from, to }),
     enabled: !!stockCode && !!timeFrame && !!from && !!to,
+    gcTime: 0,
   })
 
   // Sync chart data from React Query response (onSuccess is deprecated in RQ v5)
@@ -197,7 +198,7 @@ const Chart = ({ className = '', stockId }) => {
     if (stockChartData?.data) {
       setData(stockChartData.data)
       //set latest price in redux
-      dispatch(setStock(stockChartData.stockDetails))
+      dispatch(setStock({ ...stockChartData.stockDetails, isAddedToWatchlist: stockChartData.isAddedToWatchlist }))
       dispatch(setLatestPrice(stockChartData.data[0].close))
       setDaysArray(new Set(stockChartData.days))
     }
@@ -213,7 +214,7 @@ const Chart = ({ className = '', stockId }) => {
       enabled: true,
     },
     navigator: {
-      enabled: true,
+      enabled: zoomEnabled,
       height: 8,
       mask: {
         fill: '#6c499e',
@@ -224,7 +225,7 @@ const Chart = ({ className = '', stockId }) => {
     },
     initialState: {
       zoom: {
-        ratioX: { start: 0.7, end: 1.0 },
+        ratioX: { start: zoomEnabled ? 0.7 : 0, end: 1.0 },
         ratioY: chartType === 'candlestick' ? { start: 0.0, end: 1.0 } : { start: 0.95, end: 1.0 },
       },
     },
@@ -270,7 +271,7 @@ const Chart = ({ className = '', stockId }) => {
           type: 'line',
           value: `${day}T09:15:00+05:30`,
           stroke: 'grey',
-          strokeWidth: 1,
+          strokeWidth: 0.5,
         })),
       },
       y: {
@@ -280,7 +281,7 @@ const Chart = ({ className = '', stockId }) => {
         gridLine: {
           enabled: true,
         },
-        interval: { minSpacing: 20, maxSpacing: 50 },
+        interval: { minSpacing: 2, maxSpacing: 100 },
         line: {
           stroke: '#6c499e',
           width: 2,
@@ -439,10 +440,16 @@ const Chart = ({ className = '', stockId }) => {
           </Tooltip>
         </div>
       </div>
-      {data && data.length > 0 ? (
-        <AgCharts options={options} className="w-full h-full transition-all duration-300 ease-in-out" />
+      {!isFetching ? (
+        data && data.length > 0 ? (
+          <AgCharts options={options} className="w-full h-full transition-all duration-300 ease-in-out" />
+        ) : (
+          <div className="w-full h-full transition-all duration-300 ease-in-out">Loading data...</div>
+        )
       ) : (
-        <div>Loading data...</div>
+        <div className=" z-50 top-48 left-48 min-h-[300px] w-full flex items-center justify-center transition-all duration-300 ease-in-out">
+          <Spinner className="size-8" color="purple" />
+        </div>
       )}
     </div>
   )

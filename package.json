@@ -14,6 +14,7 @@
     "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.21",
+    "@tanstack/react-table": "^8.21.3",
     "ag-charts-enterprise": "^13.1.0",
     "ag-charts-react": "^13.1.0",
     "axios": "^1.13.5",

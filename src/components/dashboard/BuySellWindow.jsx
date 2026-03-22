@@ -2,24 +2,29 @@ import { Button } from '@/components/ui/Button'
 import { FaChartPie } from 'react-icons/fa'
 
 import { ListPlus, ListX, TrendingUp } from 'lucide-react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { addToWatchlist, removeFromWatchlist } from '@/pages/dashboard/actions'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
+import { setStock } from '../../store/slices/stockSlice'
+import { Spinner } from '@/components/ui/spinner'
 
 const BuySellWindow = () => {
   const stock = useSelector(state => state.stock)
+  const dispatch = useDispatch()
   const addToWatchlistMutation = useMutation({
     mutationFn: () => addToWatchlist(stock?.stock?.instrument_key),
     onSuccess: data => {
       toast.success('Stock added to watchlist!')
+      dispatch(setStock({ ...stock?.stock, isAddedToWatchlist: true }))
     },
   })
   const removeFromWatchlistMutation = useMutation({
     mutationFn: () => removeFromWatchlist(stock?.stock?.instrument_key),
     onSuccess: data => {
       toast.success('Stock removed from watchlist!')
+      dispatch(setStock({ ...stock?.stock, isAddedToWatchlist: false }))
     },
   })
   return (
@@ -30,35 +35,45 @@ const BuySellWindow = () => {
           <h3 className="text-md font-bold mb-2 text-slate-600 ">{stock?.stock?.trading_symbol}</h3>
         </div>
 
-        <Tooltip>
-          <TooltipTrigger
-            onClick={e => {
-              e.preventDefault()
-              addToWatchlistMutation.mutate()
-            }}
-            className={`cursor-pointer h-9 w-9 flex items-center justify-center ${true ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
-          >
-            <ListPlus className="w-4 h-4" color="white" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Add to Watchlist</p>
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger
-            onClick={e => {
-              e.preventDefault()
-              removeFromWatchlistMutation.mutate()
-            }}
-            className={`cursor-pointer h-9 w-9 flex items-center justify-center ${true ? 'bg-red-500' : 'outline'} p-1.5 rounded-lg`}
-          >
-            <ListX className="w-4 h-4" color="white" />
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Remove from Watchlist</p>
-          </TooltipContent>
-        </Tooltip>
+        {!stock?.stock?.isAddedToWatchlist ? (
+          <Tooltip>
+            <TooltipTrigger
+              onClick={e => {
+                e.preventDefault()
+                addToWatchlistMutation.mutate()
+              }}
+              className={`cursor-pointer hover:scale-105 transition-all duration-200 h-9 w-9 flex items-center justify-center ${true ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
+            >
+              {addToWatchlistMutation.isPending ? (
+                <Spinner color="white" />
+              ) : (
+                <ListPlus className="w-4 h-4" color="white" />
+              )}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Add to Watchlist</p>
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          <Tooltip>
+            <TooltipTrigger
+              onClick={e => {
+                e.preventDefault()
+                removeFromWatchlistMutation.mutate()
+              }}
+              className={`cursor-pointer hover:scale-105 transition-all duration-200 h-9 w-9 flex items-center justify-center ${true ? 'bg-red-500' : 'outline'} p-1.5 rounded-lg`}
+            >
+              {removeFromWatchlistMutation.isPending ? (
+                <Spinner color="white" />
+              ) : (
+                <ListX className="w-4 h-4" color="white" />
+              )}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Remove from Watchlist</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
       </div>
       <h1 className="text-3xl font-bold tracking-tight text-slate-800">
         ₹ {stock?.latestPrice?.toFixed(2).toLocaleString()}{' '}

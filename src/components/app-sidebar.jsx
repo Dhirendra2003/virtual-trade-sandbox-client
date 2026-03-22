@@ -47,9 +47,9 @@ const data = {
       icon: LayoutDashboard,
     },
     {
-      title: 'Lifecycle',
-      key: 'lifecycle',
-      url: '#',
+      title: 'Watchlist',
+      key: 'watchlist',
+      url: '/app/watchlist',
       icon: ListOrdered,
     },
     {
