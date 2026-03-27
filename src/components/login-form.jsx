@@ -147,13 +147,15 @@ export function LoginForm({ className, path, marketState, ...props }) {
     <div className={cn('flex flex-col gap-4', className)} {...props}>
       <Card className="glass-card">
         <CardHeader className="text-center">
-          <Badge
-            variant="secondary"
-            className={`mx-auto font-bold px-3 mb-1 ${marketState?.isMarketOpen ? 'bg-green-100/50 border border-green-200/50 text-green-700' : 'bg-red-100/50 border border-red-200/50 text-red-700'}`}
-          >
-            <Activity color={marketState?.isMarketOpen ? '#22c55e' : '#ef4444'} />
-            {marketState?.isMarketOpen ? 'MARKET OPEN' : 'MARKET CLOSED'}
-          </Badge>
+          {marketState && (
+            <Badge
+              variant="secondary"
+              className={`mx-auto font-bold px-3 mb-1 ${marketState?.isMarketOpen ? 'bg-green-100/50 border border-green-200/50 text-green-700' : 'bg-red-100/50 border border-red-200/50 text-red-700'}`}
+            >
+              <Activity color={marketState?.isMarketOpen ? '#22c55e' : '#ef4444'} />
+              {marketState?.isMarketOpen ? 'MARKET OPEN' : 'MARKET CLOSED'}
+            </Badge>
+          )}
           <CardTitle className="text-3xl font-bold text-slate-800">Welcome back</CardTitle>
           <CardDescription className="text-xs">
             Join 1K+ People practicing trade with <span className="text-black">Virtual Trade Sandbox</span>

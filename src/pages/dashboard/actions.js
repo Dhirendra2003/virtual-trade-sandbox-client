@@ -19,6 +19,16 @@ const getNews = async () => {
   }
 }
 
+const getTredingStocks = async () => {
+  try {
+    const response = await axiosInstance.get('/stocks/get-trending-stock')
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 const searchStock = async ({ query }) => {
   console.log(query)
   try {
@@ -69,4 +79,13 @@ const removeFromWatchlist = async stockCode => {
   }
 }
 
-export { searchStock, getStockData, getMarketStatus, getNews, getUserWatchlist, addToWatchlist, removeFromWatchlist }
+export {
+  searchStock,
+  getStockData,
+  getMarketStatus,
+  getNews,
+  getTredingStocks,
+  getUserWatchlist,
+  addToWatchlist,
+  removeFromWatchlist,
+}

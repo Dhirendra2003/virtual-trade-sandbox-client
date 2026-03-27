@@ -32,15 +32,15 @@ export default function News() {
       >
         <CarouselContent className="px-0 ">
           {data?.data?.map((item, index) => (
-            <CarouselItem key={index} className="basis-1/2 pl-1  lg:basis-2/7 ">
+            <CarouselItem key={index} className="basis-1/4 pl-1  lg:basis-2/7 ">
               <Card
                 onClick={() => {
                   setSelectedNews(item)
                   setModalOpen(true)
                 }}
-                className="pt-0 pb-4 border-4 hover:border-primary/50 hover:rounded-2xl  transition-all duration-300 ease-in-out  hover:z-50"
+                className="pt-0 pb-4 border-2 hover:border-primary/50 rounded-3xl  transition-all duration-300 ease-in-out  hover:z-50"
               >
-                <CardContent className="flex flex-col  p-0 overflow-hidden ">
+                <CardContent className="flex flex-col  p-2 overflow-hidden ">
                   <img
                     src={encodeURI(item.image_url)}
                     className="w-full min-h-60 max-h-60 object-cover shrink-0 rounded-xl text-sm text-center font-medium  bg-gray-200 text-gray-500 "
