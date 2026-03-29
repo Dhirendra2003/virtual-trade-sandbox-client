@@ -27,6 +27,8 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { searchStock } from '../../pages/dashboard/actions'
 import { toast } from 'sonner'
+import { LoaderIcon } from 'lucide-react'
+import Skeleton from '../common/Skeleton'
 
 const SearchBar = () => {
   // const stockData = useLocation()
@@ -98,7 +100,6 @@ const SearchBar = () => {
           Virtual <br /> Trade <br /> Sandbox
         </h1>
       </div>
-      .
       <div className="w-96">
         <InputGroup className="bg-white --border-purple-500 max-w-sm shadow-none">
           <InputGroupInput
@@ -113,32 +114,43 @@ const SearchBar = () => {
             onBlur={() => setIsInputFocused(false)}
           />
           <InputGroupAddon className="">
-            <Search />
+            {isPending && query.length > 0 ? <LoaderIcon className="animate-spin" /> : <Search />}
           </InputGroupAddon>
         </InputGroup>
         {isInputFocused &&
           (query.length > 0 ? (
             <div className="absolute top-full w-96 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
-              {data?.data?.map(stock => (
-                <div
-                  onMouseDown={e => e.preventDefault()}
-                  onClick={() => {
-                    navigate(`/app/stock/${stock?.instrument_key}`, { state: { stock: stock } })
-                    setTimeout(() => {
-                      console.log('xxx')
-                      setIsInputFocused(false)
-                      setQuery('')
-                      setDebounceQuery('')
-                    }, 100)
-                  }}
-                  className="p-2 hover:bg-gray-100 cursor-pointer"
-                  key={stock?.instrument_key}
-                >
-                  {stock?.name}
-                  {stock?.trading_symbol}
-                  <Separator />
-                </div>
-              ))}
+              {isPending ? (
+                Array.from({ length: 5 }).map((_, index) => (
+                  <div className="p-2 hover:bg-gray-100 cursor-pointer my-1" key={index}>
+                    <Skeleton type="search" />
+                    {/* <Separator /> */}
+                  </div>
+                ))
+              ) : data?.data?.length > 0 ? (
+                data.data.map(stock => (
+                  <div
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => {
+                      navigate(`/app/stock/${stock?.instrument_key}`, { state: { stock: stock } })
+                      setTimeout(() => {
+                        console.log('xxx')
+                        setIsInputFocused(false)
+                        setQuery('')
+                        setDebounceQuery('')
+                      }, 100)
+                    }}
+                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    key={stock?.instrument_key}
+                  >
+                    {stock?.name}
+                    {stock?.trading_symbol}
+                    <Separator />
+                  </div>
+                ))
+              ) : (
+                <h1 className="p-2 text-slate-500">No results found </h1>
+              )}
             </div>
           ) : (
             <div className="absolute top-full  w-96 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">

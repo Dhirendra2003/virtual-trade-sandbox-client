@@ -79,6 +79,20 @@ const removeFromWatchlist = async stockCode => {
   }
 }
 
+const registerTrade = async ({ instrument_key, trade_type, trade_duration, quantity }) => {
+  try {
+    const response = await axiosInstance.post(`/trade/register-trade`, {
+      instrument_key,
+      trade_type,
+      trade_duration,
+      quantity,
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 export {
   searchStock,
   getStockData,
@@ -88,4 +102,5 @@ export {
   getUserWatchlist,
   addToWatchlist,
   removeFromWatchlist,
+  registerTrade,
 }

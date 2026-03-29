@@ -12,6 +12,7 @@ export default function News() {
   const { data } = useQuery({
     queryKey: ['news'],
     queryFn: getNews,
+    staleTime: 1000 * 60 * 30,
   })
 
   return (

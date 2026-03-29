@@ -21,7 +21,7 @@ const Stock = () => {
       <div className="glass-bg sticky w-full top-0 py-2 z-50 ">
         <SearchBar />
       </div>
-      <div className="grid grid-cols-3 gap-2  w-full items-center">
+      <div className="grid grid-cols-3 gap-2  w-full items-start">
         <Chart stockId={id} className=" rounded-2xl overflow-hidden " />
         <BuySellWindow />
       </div>

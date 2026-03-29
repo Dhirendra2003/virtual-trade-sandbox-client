@@ -290,13 +290,13 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
           {
             type: 'line',
             value: data && data[0]?.close,
-            stroke: '#0000FF',
-            lineDash: [2, 4],
+            stroke: '#49176d',
+            lineDash: [4, 4],
             label: {
               text: `${data && data[0]?.close}`,
               position: 'right',
               fontSize: 14,
-              fill: '#000000',
+              fill: '#49176d',
               fillOpacity: 1,
               color: '#FFFFFF',
               cornerRadius: 4,
