@@ -23,7 +23,7 @@ import { useQuery } from '@tanstack/react-query'
 import moment from 'moment/moment.js'
 import { Spinner } from '@/components/ui/spinner'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLatestPrice, clearStockState, setStock } from '../../store/slices/stockSlice'
+import { setLatestPrice, clearStockState, setStock, setLTPdata } from '../../store/slices/stockSlice'
 
 ModuleRegistry.registerModules([
   CandlestickSeriesModule,
@@ -200,6 +200,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
       //set latest price in redux
       dispatch(setStock({ ...stockChartData.stockDetails, isAddedToWatchlist: stockChartData.isAddedToWatchlist }))
       dispatch(setLatestPrice(stockChartData.data[0].close))
+      dispatch(setLTPdata(stockChartData?.stockLTPobject))
       setDaysArray(new Set(stockChartData.days))
     }
   }, [stockChartData])

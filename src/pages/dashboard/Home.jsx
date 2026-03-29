@@ -17,12 +17,12 @@ const Home = () => {
         <Chart className=" rounded-2xl overflow-hidden " />
         <PortFolioWindow />
       </div>
-      <div className="w-full grid grid-cols-3 gap-4 items-start justify-around overflow-hidden rounded-xl ">
+      <div className="w-full grid grid-cols-3 gap-4 items-start justify-around rounded-xl ">
         <TrendingStocks type="gainers" />
         <TrendingStocks type="losers" />
         <TradeRecomendations />
       </div>
-      <div className="w-full flex flex-col items-center justify-center overflow-hidden rounded-xl">
+      <div className="w-full flex flex-col items-center justify-center ">
         <h3 className="text-md font-bold text-left w-full">Top News</h3>
         <News />
       </div>

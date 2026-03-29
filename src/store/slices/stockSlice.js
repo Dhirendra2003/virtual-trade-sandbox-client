@@ -17,8 +17,11 @@ const stockSlice = createSlice({
     setLatestPrice: (state, action) => {
       state.latestPrice = action.payload
     },
+    setLTPdata: (state, action) => {
+      state.LTPdata = action.payload
+    },
   },
 })
 
-export const { clearStockState, setStock, setLatestPrice } = stockSlice.actions
+export const { clearStockState, setStock, setLatestPrice, setLTPdata } = stockSlice.actions
 export default stockSlice.reducer

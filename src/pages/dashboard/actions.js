@@ -93,6 +93,17 @@ const registerTrade = async ({ instrument_key, trade_type, trade_duration, quant
     throw error
   }
 }
+
+const getTradesAndOrders = async () => {
+  try {
+    const response = await axiosInstance.get(`/trade/get-trades-and-orders`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export {
   searchStock,
   getStockData,
@@ -103,4 +114,5 @@ export {
   addToWatchlist,
   removeFromWatchlist,
   registerTrade,
+  getTradesAndOrders,
 }

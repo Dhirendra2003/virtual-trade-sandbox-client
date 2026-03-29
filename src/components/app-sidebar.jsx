@@ -53,9 +53,9 @@ const data = {
       icon: ListOrdered,
     },
     {
-      title: 'Analytics',
-      key: 'analytics',
-      url: '#',
+      title: 'Portfolio',
+      key: 'portfolio',
+      url: '/app/portfolio',
       icon: BarChart2,
     },
     {

@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/Button'
 import { FaChartPie } from 'react-icons/fa'
 
-import { ArrowRight, ListPlus, ListX, TrendingUp } from 'lucide-react'
+import { ArrowRight, ListPlus, ListX, TrendingDown, TrendingUp } from 'lucide-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { addToWatchlist, removeFromWatchlist } from '@/pages/dashboard/actions'
@@ -19,6 +19,9 @@ const BuySellWindow = () => {
   const [tradeDuration, setTradeDuration] = useState('intraday')
   const [quantity, setQuantity] = useState(0)
   const stock = useSelector(state => state.stock)
+  const stockPriceChange = Number(stock?.LTPdata?.change)?.toFixed(2)
+  const stockPriceChangePerc = Number(stock?.LTPdata?.change_percent)?.toFixed(2)
+
   const dispatch = useDispatch()
   const addToWatchlistMutation = useMutation({
     mutationFn: () => addToWatchlist(stock?.stock?.instrument_key),
@@ -93,9 +96,13 @@ const BuySellWindow = () => {
         <h1 className="text-3xl font-bold tracking-tight text-slate-800">
           ₹ {stock?.latestPrice?.toFixed(2).toLocaleString()}{' '}
         </h1>
-        <span className="flex gap-2 text-xs items-center font-semibold text-green-600">
-          <TrendingUp className="w-3 " />
-          <p>+ ₹ {(12500.59).toLocaleString()} (2.5%) Today</p>
+        <span
+          className={`flex gap-2 text-xs items-center font-semibold ${stockPriceChange > 0 ? 'text-green-600' : 'text-red-600'}`}
+        >
+          {stockPriceChange > 0 ? <TrendingUp className="w-3 " /> : <TrendingDown className="w-3 " />}
+          <p>
+            + ₹ {stockPriceChange.toLocaleString()} ({stockPriceChangePerc}%) Today
+          </p>
         </span>
       </div>
       <div className="flex flex-col gap-1 mt-2">

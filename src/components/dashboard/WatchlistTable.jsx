@@ -9,7 +9,7 @@ const WatchlistTable = ({ columns, data, setSelectedStock, selectedStock, loadin
     getCoreRowModel: getCoreRowModel(),
   })
   return (
-    <div className="overflow-hidden rounded-md border col-span-2 glass-card h-full p-2">
+    <div className="overflow-hidden rounded-2xl border col-span-2 glass-card h-full p-2">
       {loadingState ? (
         <div className="flex items-center justify-center h-full">
           <Spinner className="size-8" color="purple" />
