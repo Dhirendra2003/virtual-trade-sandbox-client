@@ -13,8 +13,8 @@ const Home = () => {
         <SearchBar />
       </div>
 
-      <div className="grid grid-cols-3 gap-4  w-full items-center">
-        <Chart className=" rounded-2xl overflow-hidden " />
+      <div className="grid grid-cols-3 gap-4 min-h-[50vh] w-full items-center">
+        <Chart className=" rounded-2xl overflow-hidden h-full" />
         <PortFolioWindow />
       </div>
       <div className="w-full grid grid-cols-3 gap-4 items-start justify-around rounded-xl ">

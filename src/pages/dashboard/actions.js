@@ -104,6 +104,16 @@ const getTradesAndOrders = async () => {
   }
 }
 
+const getUserFunds = async () => {
+  try {
+    const response = await axiosInstance.get(`/trade/get-user-funds`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export {
   searchStock,
   getStockData,
@@ -115,4 +125,5 @@ export {
   removeFromWatchlist,
   registerTrade,
   getTradesAndOrders,
+  getUserFunds,
 }

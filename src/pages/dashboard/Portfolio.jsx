@@ -192,6 +192,7 @@ const Portfolio = () => {
   } = useQuery({
     queryKey: ['portfolio'],
     queryFn: getTradesAndOrders,
+    refetchInterval: 5000,
   })
 
   return (

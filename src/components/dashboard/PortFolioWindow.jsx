@@ -2,8 +2,17 @@ import { Button } from '@/components/ui/Button'
 import { FaChartPie } from 'react-icons/fa'
 import { IoIosInformationCircle } from 'react-icons/io'
 import { ArrowUpRight, Landmark, TrendingUp } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { getUserFunds } from '../../pages/dashboard/actions'
 
 const PortFolioWindow = () => {
+  const { data: userFunds } = useQuery({
+    queryKey: ['getUserFunds'],
+    queryFn: () => getUserFunds(),
+    enabled: true,
+
+    staleTime: 1000 * 15,
+  })
   return (
     <div className="col-span-1 h-full glass-card p-4 rounded-2xl overflow-hidden">
       <div className="flex  justify-between items-start">
@@ -19,7 +28,7 @@ const PortFolioWindow = () => {
         <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
           <Landmark className="w-4 " color="#4B50F0" />
           <p className="text-sm">Buying Power</p>
-          <h3 className="ml-auto text-lg font-bold">₹ 88,240</h3>
+          <h3 className="ml-auto text-lg font-bold">₹ {userFunds?.data?.funds}</h3>
         </div>
         <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
           <FaChartPie className="w-5 " color="#3B82F6" />

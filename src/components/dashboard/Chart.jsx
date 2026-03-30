@@ -153,44 +153,17 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
     tooltip: { renderer },
   }
 
-  // useEffect(() => {
-  //   fetch(dataURL)
-  //     .then(response => response.json())
-  //     .then(responseData => {
-  //       console.log('API Response:', responseData) // Debug log
-  //       let days = new Set()
-  //       responseData?.data?.candles?.map(candle => days.add(candle[0].slice(0, 10)))
-  //       console.log(days)
-  //       setDaysArray(days)
-  //       const modifiedData = responseData?.data?.candles?.map(candle => ({
-  //         date2: candle[0],
-  //         open: candle[1],
-  //         high: candle[2],
-  //         low: candle[3],
-  //         close: candle[4],
-  //         volume: candle[5],
-  //       }))
-
-  //       console.log('Modified Data:', modifiedData) // Debug log
-
-  //       if (modifiedData && modifiedData.length > 0) {
-  //         setData(modifiedData)
-  //       } else {
-  //         console.warn('No data received from API')
-  //         setData([])
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('Fetch error:', error)
-  //       setData([])
-  //     })
-  // }, [stockCode, timeFrame, dataURL])
-
-  const { data: stockChartData, isFetching } = useQuery({
+  const {
+    data: stockChartData,
+    isFetching,
+    isStale,
+  } = useQuery({
     queryKey: ['stockData', stockCode, timeFrame, from, to],
     queryFn: () => getStockData({ stockCode, timeFrame, from, to }),
     enabled: !!stockCode && !!timeFrame && !!from && !!to,
-    gcTime: 0,
+    // gcTime: 0,
+    staleTime: 1000 * 15,
+    refetchInterval: 5000,
   })
 
   // Sync chart data from React Query response (onSuccess is deprecated in RQ v5)
@@ -441,14 +414,14 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
           </Tooltip>
         </div>
       </div>
-      {!isFetching ? (
+      {!isFetching || !isStale ? (
         data && data.length > 0 ? (
-          <AgCharts options={options} className="w-full h-full transition-all duration-300 ease-in-out" />
+          <AgCharts options={options} className="w-full h-[calc(100%-50px)] transition-all duration-300 ease-in-out" />
         ) : (
           <div className="w-full h-full transition-all duration-300 ease-in-out">Loading data...</div>
         )
       ) : (
-        <div className=" z-50 top-48 left-48 min-h-[300px] w-full flex items-center justify-center transition-all duration-300 ease-in-out">
+        <div className=" z-50 top-48 left-48 min-h-[50vh] w-full flex items-center justify-center transition-all duration-300 ease-in-out">
           <Spinner className="size-8" color="purple" />
         </div>
       )}
