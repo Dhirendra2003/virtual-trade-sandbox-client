@@ -114,6 +114,16 @@ const getUserFunds = async () => {
   }
 }
 
+const getUserTradeHistory = async () => {
+  try {
+    const response = await axiosInstance.get(`/trade/get-user-trade-history`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export {
   searchStock,
   getStockData,
@@ -126,4 +136,5 @@ export {
   registerTrade,
   getTradesAndOrders,
   getUserFunds,
+  getUserTradeHistory,
 }

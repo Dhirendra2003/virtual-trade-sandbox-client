@@ -65,10 +65,10 @@ const data = {
       icon: Folder,
     },
     {
-      title: 'Team',
-      key: 'team',
-      url: '#',
-      icon: Users,
+      title: 'Trade History',
+      key: 'trade-history',
+      url: '/app/trade-history',
+      icon: ClipboardList,
     },
   ],
 }

@@ -9,6 +9,7 @@ import Stock from './dashboard/Stock'
 import ErrorPage from './error/ErrorPage'
 import Watchlist from './dashboard/Watchlist'
 import Portfolio from './dashboard/Portfolio'
+import TradeHistory from './dashboard/TradeHistory'
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -40,6 +41,7 @@ const AppRoutes = () => {
         { path: 'stock/:id', element: <Stock /> },
         { path: 'watchlist', element: <Watchlist /> },
         { path: 'portfolio', element: <Portfolio /> },
+        { path: 'trade-history', element: <TradeHistory /> },
         { path: 'profile', element: <h1>profile</h1> },
       ],
     },
