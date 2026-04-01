@@ -5,12 +5,14 @@ import BuySellWindow from '../../components/dashboard/BuySellWindow'
 import { Button } from '@/components/ui/button'
 import ProfolioTable from '@/components/dashboard/PorfolioTable'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { getTradesAndOrders } from './actions.js'
+import { getTradesAndOrders, cancelAMOorder, settleTrade, getUserPortfolioStats } from './actions.js'
 import { useEffect, useState } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { ListX, SquareArrowOutUpRight, TrendingDown, TrendingUp } from 'lucide-react'
-import { getColors } from '@/lib/utils'
+import { getColors, cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import ProfolioOverview from '../../components/dashboard/PortfolioOverview.jsx'
 
 const Portfolio = () => {
   const navigate = useNavigate()
@@ -92,7 +94,11 @@ const Portfolio = () => {
               }
               variant="outline"
               onClick={() => {
-                // navigate(`/trade/${row?.original?.trading_symbol}`)
+                mutateSettleTrade.mutate({
+                  instrument_key: row?.original?.instrument_key,
+                  trade_type: row?.original?.trade_type,
+                  trade_duration: row?.original?.trade_duration,
+                })
               }}
             >
               Settle
@@ -117,6 +123,23 @@ const Portfolio = () => {
             </div>
             <p className="text-xs">{row?.original?.trading_symbol}</p>
           </div>
+        )
+      },
+    },
+    {
+      accessorKey: 'trade_type',
+      header: 'Trade Type',
+      cell: ({ row }) => {
+        return (
+          <span
+            className={cn(
+              'uppercase bg-white font-semibold px-3 py-1 rounded-xl',
+              row?.original?.trade_type === 'buy' && 'bg-green-300',
+              row?.original?.trade_type === 'sell' && 'bg-red-300'
+            )}
+          >
+            {row?.original?.trade_type}
+          </span>
         )
       },
     },
@@ -156,7 +179,7 @@ const Portfolio = () => {
       cell: ({ row }) => {
         return (
           <span className="font-semibold text-md">
-            ₹ {Math.abs(row?.original?.quantity * row?.original?.ltp?.last_price)}
+            ₹ {Math.abs(row?.original?.quantity * row?.original?.ltp?.last_price).toFixed(2)}
           </span>
         )
       },
@@ -173,7 +196,7 @@ const Portfolio = () => {
               }
               variant="outline"
               onClick={() => {
-                // navigate(`/trade/${row?.original?.trading_symbol}`)
+                mutateCancelOrder.mutate(row?.original?.id)
               }}
             >
               Cancel Order
@@ -194,6 +217,39 @@ const Portfolio = () => {
     queryFn: getTradesAndOrders,
     refetchInterval: 5000,
   })
+  const {
+    data: portfolioStats,
+    isLoading: isLoadingStats,
+    isError: isErrorStats,
+    refetch: refetchPortfolioStats,
+  } = useQuery({
+    queryKey: ['portfolio-stats'],
+    queryFn: getUserPortfolioStats,
+    refetchInterval: 5000,
+  })
+  const mutateCancelOrder = useMutation({
+    mutationFn: cancelAMOorder,
+    onSuccess: data => {
+      toast.success(data.message)
+      refetchPortfolio()
+    },
+    onError: data => {
+      toast.error(data.message)
+      refetchPortfolio()
+    },
+  })
+  const mutateSettleTrade = useMutation({
+    mutationFn: ({ instrument_key, trade_type, trade_duration }) =>
+      settleTrade({ instrument_key, trade_type, trade_duration }),
+    onSuccess: data => {
+      toast.success(data.message)
+      refetchPortfolio()
+    },
+    onError: data => {
+      toast.error(data.message)
+      refetchPortfolio()
+    },
+  })
 
   return (
     <div className="p-2 space-y-4 ">
@@ -201,6 +257,7 @@ const Portfolio = () => {
         <SearchBar />
       </div>
       <div className="grid grid-cols-1 gap-2  w-full items-start">
+        {portfolioStats && <ProfolioOverview data={portfolioStats?.data} loadingState={isLoadingStats} />}
         {portfolioData && (
           <>
             {portfolioData?.data?.intraday?.length > 0 && (

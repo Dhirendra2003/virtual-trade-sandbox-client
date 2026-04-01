@@ -104,6 +104,16 @@ const getTradesAndOrders = async () => {
   }
 }
 
+const getUserPortfolioStats = async () => {
+  try {
+    const response = await axiosInstance.get(`/trade/portfolio-stats`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 const getUserFunds = async () => {
   try {
     const response = await axiosInstance.get(`/trade/get-user-funds`)
@@ -124,6 +134,25 @@ const getUserTradeHistory = async () => {
   }
 }
 
+const cancelAMOorder = async orderId => {
+  try {
+    const response = await axiosInstance.put(`/trade/cancel-amo-order`, { orderId })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+const settleTrade = async ({ instrument_key, trade_type, trade_duration }) => {
+  try {
+    const response = await axiosInstance.put(`/trade/settle-trade`, { instrument_key, trade_type, trade_duration })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export {
   searchStock,
   getStockData,
@@ -135,6 +164,9 @@ export {
   removeFromWatchlist,
   registerTrade,
   getTradesAndOrders,
+  getUserPortfolioStats,
   getUserFunds,
   getUserTradeHistory,
+  cancelAMOorder,
+  settleTrade,
 }
