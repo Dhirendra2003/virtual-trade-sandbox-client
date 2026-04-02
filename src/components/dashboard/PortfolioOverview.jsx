@@ -1,50 +1,78 @@
 import { Spinner } from '@/components/ui/spinner'
 import { IoIosInformationCircle } from 'react-icons/io'
 import { Button } from '@/components/ui/Button'
-import { Landmark, LandmarkIcon, Plus } from 'lucide-react'
+import { Landmark, LandmarkIcon, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { TbPlusMinus } from 'react-icons/tb'
+
+const OverviewCard = ({ children, className, colSpan = 'col-span-2' }) => (
+  <div
+    className={cn(colSpan, ' glass-card p-4 rounded-3xl flex flex-col max-h-40 min-h-38 justify-between', className)}
+  >
+    {children}
+  </div>
+)
+
+const Label = ({ children, className }) => (
+  <h3 className={cn('text-neutral-600 uppercase tracking-widest text-xs', className)}>{children}</h3>
+)
+
+const SubLabel = ({ children, className }) => (
+  <p className={cn('text-neutral-600 uppercase tracking-wider text-xs mb-0', className)}>{children}</p>
+)
+
+const FormattedAmount = ({ amount, decimalClassName }) => {
+  const safeAmount = amount || 0
+  const [whole, decimal] = safeAmount.toLocaleString().split('.')
+
+  return (
+    <>
+      ₹ {whole}
+      <span className={cn('text-lg font-thin text-neutral-400', decimalClassName)}>.{decimal || '00'}</span>
+    </>
+  )
+}
 
 const ProfolioOverview = ({ data, loadingState, title = '' }) => {
-  const totalValuation = (data?.current_funds + data?.total_invested).toLocaleString().split('.')
+  const totalValuation = (data?.current_funds || 0) + (data?.total_invested || 0)
+
   return (
     <div>
       {/* <h2 className="text-md font-bold text-white primary-gradient w-fit px-3 pt-2 pb-6  rounded-t-xl">{title}</h2> */}
 
-      <div className="overflow-hidden rounded-2xl grid grid-cols-3 gap-2 border relative -top-5 col-span-2  h-full p-2">
+      <div className="  grid grid-cols-7 gap-4 mb-4">
         {loadingState ? (
-          <div className="flex items-center justify-center h-full">
+          <div className="flex items-center justify-center h-full col-span-7">
             <Spinner className="size-8" color="purple" />
           </div>
         ) : (
           <>
-            <div className="glass-card p-4 rounded-3xl">
-              <h3 className=" text-neutral-600 uppercase tracking-widest text-xs mb-1 ">Total Valuation</h3>
-              <p className="text-3xl font-black ">
-                ₹ {totalValuation[0]}
-                <span className="text-lg font-thin text-neutral-400 ml-[3px]">.{totalValuation[1]}</span>
+            <OverviewCard>
+              <Label className="mb-1">Net Worth</Label>
+              <p className="text-3xl font-black text-green-600 tracking-tight">
+                <FormattedAmount amount={totalValuation} decimalClassName="ml-[3px]" />
               </p>
 
-              <div className="flex gap-8 items-center mt-4">
+              <div className="flex justify-between items-center mt-auto">
                 <div>
-                  <p className="text-neutral-600 uppercase tracking-wider text-xs mb-0">Avaliable cash</p>
-                  <p className="text-lg font-semibold text-neutral-800">₹ {data?.current_funds.toLocaleString()}</p>
+                  <SubLabel>Avaliable cash</SubLabel>
+                  <p className="text-lg font-semibold text-neutral-800 tracking-tight">
+                    ₹ {data?.current_funds?.toLocaleString()}
+                  </p>
                 </div>
-                <Button size="sm" className="py-3 rounded-lg font-semibold text-sm  primary-gradient cursor-pointer">
+                <Button size="sm" className="h-10 rounded-lg  font-semibold text-sm primary-gradient cursor-pointer">
                   {' '}
                   Add Funds
                 </Button>
               </div>
-              {/* <IoIosInformationCircle className="w-6 h-6" color="grey" /> */}
-            </div>
-            <div className="glass-card p-5 rounded-3xl flex flex-col">
-              <div className="flex justify-between">
+            </OverviewCard>
+
+            <OverviewCard>
+              <div className="flex justify-between ">
                 <div>
-                  <h3 className=" text-neutral-600 uppercase tracking-widest text-xs  ">Invested Value</h3>
-                  <p className="text-2xl font-black ">
-                    ₹ {data?.total_invested.toLocaleString().split('.')[0]}
-                    <span className="text-lg font-thin text-neutral-400 ml-[3px]">
-                      .{data?.total_invested.toLocaleString().split('.')[1]}
-                    </span>
+                  <Label>Current Value</Label>
+                  <p className="text-2xl font-black tracking-tight">
+                    <FormattedAmount amount={data?.total_current_value} decimalClassName="ml-[3px]" />
                   </p>
                 </div>
                 <div className="rounded-full flex items-center justify-center bg-purple-200 w-10 h-10">
@@ -52,22 +80,71 @@ const ProfolioOverview = ({ data, loadingState, title = '' }) => {
                 </div>
               </div>
 
-              <div className="flex gap-8 items-center mt-auto">
+              <div className="gap-8 items-center">
+                <SubLabel>Total Invested</SubLabel>
+                <p className="text-lg font-semibold text-neutral-800 tracking-tight">
+                  ₹ {data?.total_invested?.toLocaleString()}
+                </p>
+              </div>
+            </OverviewCard>
+
+            <OverviewCard colSpan="col-span-3">
+              <div className="flex justify-between">
                 <div>
-                  <p className="text-neutral-600 uppercase tracking-wider text-xs mb-0">Intraday </p>
-                  <p className="text-lg font-semibold text-neutral-800">₹ {data?.current_funds.toLocaleString()}</p>
+                  <Label>Unrealized P&L</Label>
+                  <p
+                    className={cn(
+                      'text-2xl flex items-end gap-2 font-bold tracking-tight',
+                      data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                    )}
+                  >
+                    <FormattedAmount amount={data?.unrealized_pnl} decimalClassName="-ml-[5px]" />
+                    <span
+                      className={cn(
+                        'text-xs flex items-center gap-0.5 -mt-1 tracking-tight',
+                        data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                      )}
+                    >
+                      ({data?.unrealized_pnl > 0 ? <TrendingUp className="w-3" /> : <TrendingDown className="w-3" />}
+                      {((data?.unrealized_pnl / data?.total_invested) * 100).toFixed(2)}%)
+                    </span>
+                  </p>
                 </div>
-                <div>
-                  <p className="text-neutral-600 uppercase tracking-wider text-xs mb-0">Delivery </p>
-                  <p className="text-lg font-semibold text-neutral-800">₹ {data?.current_funds.toLocaleString()}</p>
+                <div className="rounded-full flex items-center justify-center bg-purple-200 w-10 h-10">
+                  <TbPlusMinus size={20} color="#9810fa" />
                 </div>
               </div>
-              {/* <IoIosInformationCircle className="w-6 h-6" color="grey" /> */}
-            </div>
-            <p>Total Invested: {data?.total_invested}</p>
-            <p>Total Current Value: {data?.total_current_value}</p>
-            <p>Unrealized P&L: {data?.unrealized_pnl}</p>
-            <p>Overall P&L: {data?.overall_pnl}</p>
+
+              <div className="flex w-full justify-between items-end mt-2">
+                <div>
+                  <SubLabel>Realized P&L</SubLabel>
+                  <div
+                    className={cn(
+                      'text-lg font-medium flex items-end gap-2 tracking-tight',
+                      data?.overall_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                    )}
+                  >
+                    ₹ {data?.overall_pnl?.toLocaleString()}
+                    <span
+                      className={cn(
+                        'text-xs flex font-thin items-center gap-1 -mt-1 0 tracking-tight',
+                        data?.overall_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                      )}
+                    >
+                      ({data?.overall_pnl > 0 ? <TrendingUp className="w-3" /> : <TrendingDown className="w-3" />}
+                      {(
+                        (data?.overall_pnl / (data?.current_funds + data?.total_invested - data?.overall_pnl)) *
+                        100
+                      ).toFixed(2)}
+                      %)
+                    </span>
+                  </div>
+                </div>
+                <Button className="rounded-xl bg-gray-100 text-blue-600" variant="link">
+                  View Detailed Analysis <ArrowUpRight />
+                </Button>
+              </div>
+            </OverviewCard>
           </>
         )}
       </div>
