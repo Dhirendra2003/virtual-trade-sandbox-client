@@ -86,12 +86,12 @@ const TradeHistory = () => {
       },
     },
     {
-      accessorKey: 'createdAt',
-      header: 'createdAt',
+      accessorKey: 'updatedAt',
+      header: 'Updated At',
       cell: ({ row }) => {
         return (
           <span className={cn('uppercase  px-3 py-1 rounded-xl')}>
-            {moment(row?.original?.createdAt).format('DD-MMM-YYYY (hh:mm)')}
+            {moment(row?.original?.updatedAt).format('DD-MMM-YYYY (hh:mm)')}
           </span>
         )
       },
