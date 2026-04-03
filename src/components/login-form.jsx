@@ -137,7 +137,9 @@ export function LoginForm({ className, path, marketState, ...props }) {
       formData.append('repeatPassword', values.repeatPassword)
       formData.append('phone', values.phone)
       formData.append('dateofbirth', values.dateofbirth)
-      formData.append('pfp', croppedPfp.blob, 'profile.jpg')
+      if (croppedPfp) {
+        formData.append('pfp', croppedPfp.blob, 'profile.jpg')
+      }
       registerMutation(formData)
     },
     validationSchema: UserRegisterSchema,
@@ -449,7 +451,7 @@ export function LoginForm({ className, path, marketState, ...props }) {
                         setPfp(e.target.files[0])
                         setCropperOpen(true)
                       }}
-                      required
+                      // required
                     />
                   </InputGroup>
                 </Field>

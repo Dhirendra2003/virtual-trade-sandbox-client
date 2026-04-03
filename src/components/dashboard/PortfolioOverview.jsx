@@ -92,23 +92,27 @@ const ProfolioOverview = ({ data, loadingState, title = '' }) => {
               <div className="flex justify-between">
                 <div>
                   <Label>Unrealized P&L</Label>
-                  <p
-                    className={cn(
-                      'text-2xl flex items-end gap-2 font-bold tracking-tight',
-                      data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
-                    )}
-                  >
-                    <FormattedAmount amount={data?.unrealized_pnl} decimalClassName="-ml-[5px]" />
-                    <span
+                  {data?.total_invested > 0 ? (
+                    <p
                       className={cn(
-                        'text-xs flex items-center gap-0.5 -mt-1 tracking-tight',
+                        'text-2xl flex items-end gap-2 font-bold tracking-tight',
                         data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
                       )}
                     >
-                      ({data?.unrealized_pnl > 0 ? <TrendingUp className="w-3" /> : <TrendingDown className="w-3" />}
-                      {((data?.unrealized_pnl / data?.total_invested) * 100).toFixed(2)}%)
-                    </span>
-                  </p>
+                      <FormattedAmount amount={data?.unrealized_pnl} decimalClassName="-ml-[5px]" />
+                      <span
+                        className={cn(
+                          'text-xs flex items-center gap-0.5 -mt-1 tracking-tight',
+                          data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                        )}
+                      >
+                        ({data?.unrealized_pnl > 0 ? <TrendingUp className="w-3" /> : <TrendingDown className="w-3" />}
+                        {((data?.unrealized_pnl / data?.total_invested) * 100).toFixed(2)}%)
+                      </span>
+                    </p>
+                  ) : (
+                    <p className="text-2xl  tracking-tight">--</p>
+                  )}
                 </div>
                 <div className="rounded-full flex items-center justify-center bg-purple-200 w-10 h-10">
                   <TbPlusMinus size={20} color="#9810fa" />
