@@ -13,6 +13,9 @@ import { getColors, cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import ProfolioOverview from '../../components/dashboard/PortfolioOverview.jsx'
+import AlertTradeSummary from '@/components/dashboard/AlertTradeSummary'
+import { ArrowRight } from 'lucide-react'
+import CancelOrderAlert from '../../components/dashboard/CacelOrderAlert.jsx'
 
 const Portfolio = () => {
   const navigate = useNavigate()
@@ -86,23 +89,38 @@ const Portfolio = () => {
       accessorKey: '-',
       header: 'Actions',
       cell: ({ row }) => {
+        const ogRow = row?.original
+        const pnl = (ogRow?.ltp?.last_price * ogRow?.qty - Math.abs(ogRow?.investment)).toFixed(2)
         return (
           <div className="ml-auto flex flex-col ">
-            <Button
-              className={
-                'rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700  hover:primary-gradient'
-              }
-              variant="outline"
-              onClick={() => {
-                mutateSettleTrade.mutate({
-                  instrument_key: row?.original?.instrument_key,
-                  trade_type: row?.original?.trade_type,
-                  trade_duration: row?.original?.trade_duration,
-                })
+            <AlertTradeSummary
+              triggerText="Settle"
+              triggerVariant="outline"
+              triggerClassName="rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700 hover:primary-gradient"
+              dialogTitle="Do you want to settle this trade?"
+              data={{
+                // tradeType: ogRow?.trade_type,
+                tradeDuration: ogRow?.trade_duration,
+                quantity: ogRow?.qty,
+                stockSymbol: ogRow?.trading_symbol,
+                stockName: ogRow?.full_name,
+                price: ogRow?.ltp?.last_price,
               }}
-            >
-              Settle
-            </Button>
+              button={
+                <Button
+                  className="h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+                  onClick={() =>
+                    mutateSettleTrade.mutate({
+                      instrument_key: ogRow?.instrument_key,
+                      trade_type: ogRow?.trade_type,
+                      trade_duration: ogRow?.trade_duration,
+                    })
+                  }
+                >
+                  Settle <ArrowRight />
+                </Button>
+              }
+            />
           </div>
         )
       },
@@ -188,8 +206,8 @@ const Portfolio = () => {
       accessorKey: '-',
       header: 'Actions',
       cell: ({ row }) => {
-        return (
-          <div className="ml-auto flex flex-col ">
+        const CancelButtonWithAction = () => {
+          return (
             <Button
               className={
                 'rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700  hover:primary-gradient'
@@ -201,6 +219,11 @@ const Portfolio = () => {
             >
               Cancel Order
             </Button>
+          )
+        }
+        return (
+          <div className="ml-auto flex flex-col ">
+            <CancelOrderAlert triggerButton={<CancelButtonWithAction />} />
           </div>
         )
       },

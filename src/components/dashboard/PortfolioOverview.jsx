@@ -144,7 +144,7 @@ const ProfolioOverview = ({ data, loadingState, title = '' }) => {
                     </span>
                   </div>
                 </div>
-                <Button className="rounded-xl bg-gray-100 text-blue-600" variant="link">
+                <Button className="rounded-xl bg-gray-100 text-blue-600 cursor-pointer" variant="outline">
                   View Detailed Analysis <ArrowUpRight />
                 </Button>
               </div>

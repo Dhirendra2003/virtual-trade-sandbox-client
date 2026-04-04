@@ -13,6 +13,7 @@ import { registerTrade } from '../../pages/dashboard/actions.js'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
+import AlertTradeSummary from '@/components/dashboard/AlertTradeSummary'
 
 const BuySellWindow = () => {
   const [tradeType, setTradeType] = useState('buy')
@@ -44,6 +45,26 @@ const BuySellWindow = () => {
       toast.success('Trade registered successfully!')
     },
   })
+
+  const PlaceOrderButtonWithMutation = () => {
+    return (
+      <Button
+        // disabled={!formikLogin.isValid}
+        className="h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+        type="submit"
+        onClick={() =>
+          registerTradeMutation.mutate({
+            instrument_key: stock?.stock?.instrument_key,
+            trade_type: tradeType,
+            trade_duration: tradeDuration,
+            quantity: quantity,
+          })
+        }
+      >
+        Place Order <ArrowRight />
+      </Button>
+    )
+  }
   return (
     <div className="col-span-1 h-full glass-card p-4 rounded-2xl">
       <div className="flex  justify-between items-start">
@@ -196,21 +217,19 @@ const BuySellWindow = () => {
             </Button>
           </div>
         </div>
-        <Button
-          // disabled={!formikLogin.isValid}
-          className="py-5 rounded-xl text-md mt-2 primary-gradient cursor-pointer"
-          type="submit"
-          onClick={() =>
-            registerTradeMutation.mutate({
-              instrument_key: stock?.stock?.instrument_key,
-              trade_type: tradeType,
-              trade_duration: tradeDuration,
-              quantity: quantity,
-            })
-          }
-        >
-          Place Order <ArrowRight />
-        </Button>
+
+        <AlertTradeSummary
+          data={{
+            tradeType,
+            tradeDuration,
+            quantity,
+            stockSymbol: stock?.stock?.trading_symbol,
+            stockName: stock?.stock?.name,
+            price: stock?.latestPrice,
+          }}
+          button={<PlaceOrderButtonWithMutation />}
+          disabled={quantity === 0}
+        />
       </div>
     </div>
   )
