@@ -55,7 +55,7 @@ const TrendingStocks = ({ type = 'gainers' }) => {
   const extraStocks = stocksList?.slice(3, 10) || []
 
   return (
-    <div className="flex flex-col w-full glass-card p-4 rounded-2xl gap-2">
+    <div className="flex flex-col w-full h-full glass-card p-4 rounded-2xl gap-2">
       <div className="flex justify-between items-center py-2">
         <h3 className="text-md font-bold">{type === 'gainers' ? 'Top Gainers' : 'Top Losers'}</h3>
         <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800" variant="link">

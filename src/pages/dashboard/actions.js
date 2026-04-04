@@ -9,6 +9,7 @@ const getMarketStatus = async () => {
     throw error
   }
 }
+
 const getNews = async () => {
   try {
     const response = await axiosInstance.get('/stocks/get-stock-news')
@@ -39,6 +40,7 @@ const searchStock = async ({ query }) => {
     throw error
   }
 }
+
 const getStockData = async ({ stockCode, timeFrame, from, to }) => {
   console.log(stockCode, timeFrame, from, to)
   try {
@@ -51,6 +53,17 @@ const getStockData = async ({ stockCode, timeFrame, from, to }) => {
     throw error
   }
 }
+
+const getDailyRecommendations = async () => {
+  try {
+    const response = await axiosInstance.get(`/stocks/get-daily-recommendations`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 const getUserWatchlist = async () => {
   try {
     const response = await axiosInstance.get(`/watchlist/get-user-watchlist`)
@@ -60,6 +73,7 @@ const getUserWatchlist = async () => {
     throw error
   }
 }
+
 const addToWatchlist = async stockCode => {
   try {
     const response = await axiosInstance.post(`/watchlist/add-to-watchlist`, { stockCode })
@@ -69,6 +83,7 @@ const addToWatchlist = async stockCode => {
     throw error
   }
 }
+
 const removeFromWatchlist = async stockCode => {
   try {
     const response = await axiosInstance.post(`/watchlist/remove-from-watchlist`, { stockCode })
@@ -159,6 +174,7 @@ export {
   getMarketStatus,
   getNews,
   getTredingStocks,
+  getDailyRecommendations,
   getUserWatchlist,
   addToWatchlist,
   removeFromWatchlist,

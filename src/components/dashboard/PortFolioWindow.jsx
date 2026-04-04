@@ -26,29 +26,31 @@ const PortFolioWindow = () => {
         <IoIosInformationCircle className="w-6 h-6" color="grey" />
       </div>
       <h1 className="text-3xl font-black tracking-tight text-slate-800">
-        ₹ {(portfolioStats?.data?.total_current_value).toLocaleString()}
+        ₹ {portfolioStats && (portfolioStats?.data?.total_current_value).toLocaleString()}
       </h1>
       <span className="flex gap-2  items-center font-medium text-green-600">
         <p
           className={cn(
             'text-sm flex items-center gap-2  ',
-            portfolioStats?.data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
+            portfolioStats && portfolioStats?.data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
           )}
         >
-          <p>₹ {(portfolioStats?.data?.unrealized_pnl).toLocaleString()} </p>
+          <p>₹ {portfolioStats && (portfolioStats?.data?.unrealized_pnl).toLocaleString()} </p>
           <span
             className={cn(
               'flex items-center gap-0.5 tracking-tight',
-              portfolioStats?.data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
+              portfolioStats && portfolioStats?.data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
             )}
           >
             (
-            {portfolioStats?.data?.unrealized_pnl > 0 ? (
+            {portfolioStats && portfolioStats?.data?.unrealized_pnl > 0 ? (
               <TrendingUp className="w-3" />
             ) : (
               <TrendingDown className="w-3" />
             )}
-            {((portfolioStats?.data?.unrealized_pnl / portfolioStats?.data?.total_invested) * 100).toFixed(2)}%)
+            {portfolioStats &&
+              ((portfolioStats?.data?.unrealized_pnl / portfolioStats?.data?.total_invested) * 100).toFixed(2)}
+            %)
           </span>
         </p>
       </span>
@@ -56,7 +58,7 @@ const PortFolioWindow = () => {
         <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
           <Landmark className="w-4 " color="#4B50F0" />
           <p className="text-sm">Buying Power</p>
-          <h3 className="ml-auto text-lg font-bold">₹ {portfolioStats?.data?.current_funds}</h3>
+          <h3 className="ml-auto text-lg font-bold">₹ {portfolioStats && portfolioStats?.data?.current_funds}</h3>
         </div>
         <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
           <FaChartPie className="w-5 " color="#3B82F6" />
