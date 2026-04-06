@@ -67,7 +67,7 @@ const PortFolioWindow = () => {
         </div>
         <div className="flex gap-2 justify-between">
           <Button
-            className="rounded-xl p-6 w-1/2  h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+            className=" p-6 w-1/2  h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
             onClick={() => navigate('/app/portfolio')}
           >
             Portfolio <ArrowUpRight />

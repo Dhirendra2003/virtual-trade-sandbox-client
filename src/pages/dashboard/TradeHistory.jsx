@@ -1,10 +1,10 @@
 import SearchBar from '../../components/dashboard/SearchBar'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
-import { getUserTradeHistory } from './actions.js'
+import { downloadUserTradeHistory, getUserTradeHistory } from './actions.js'
 import ProfolioTable from '@/components/dashboard/PorfolioTable'
 import { getColors } from '@/lib/utils'
-import { TrendingDown, TrendingUp } from 'lucide-react'
+import { ArrowDownToLine, TrendingDown, TrendingUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import moment from 'moment/moment.js'
 
@@ -105,8 +105,20 @@ const TradeHistory = () => {
       <div className="grid grid-cols-1 gap-2  w-full items-start">
         {data && (
           <>
+            <Button
+              className="w-fit ml-auto h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+              onClick={downloadUserTradeHistory}
+            >
+              Download Excel <ArrowDownToLine />
+            </Button>
             {data?.data?.length > 0 && (
-              <ProfolioTable columns={orderColumns} data={data?.data} loadingState={false} title="Trade History" />
+              <ProfolioTable
+                pagination={true}
+                columns={orderColumns}
+                data={data?.data}
+                loadingState={false}
+                title="Trade History"
+              />
             )}
           </>
         )}
