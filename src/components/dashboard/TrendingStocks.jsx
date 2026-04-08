@@ -57,7 +57,10 @@ const TrendingStocks = ({ type = 'gainers' }) => {
   return (
     <div className="flex flex-col w-full h-full glass-card p-4 rounded-2xl gap-2">
       <div className="flex justify-between items-center py-2">
-        <h3 className="text-md font-bold">{type === 'gainers' ? 'Top Gainers' : 'Top Losers'}</h3>
+        <h3 className="text-md font-bold flex items-center gap-2">
+          {type === 'gainers' ? <TrendingUp color="green" /> : <TrendingDown color="red" />}
+          {type === 'gainers' ? 'Top Gainers' : 'Top Losers'}
+        </h3>
         <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800" variant="link">
           {all ? 'View Less' : 'View All'}
         </Button>

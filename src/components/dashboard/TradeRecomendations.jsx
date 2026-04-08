@@ -8,6 +8,7 @@ import { getColors } from '@/lib/utils'
 import { TrendingUp, TrendingDown } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { cn } from '@/lib/utils.js'
+import { PiStarFourFill } from 'react-icons/pi'
 
 const StockCard = ({ stock }) => {
   const initialLettter = stock?.name[0].toUpperCase()
@@ -55,7 +56,10 @@ const TradeRecomendations = () => {
   return (
     <div className="flex flex-col w-full h-full glass-card p-4 rounded-2xl gap-2">
       <div className="flex justify-between items-center py-2">
-        <h3 className="text-md font-bold">Trade Recomendations</h3>
+        <h3 className="text-md font-bold flex items-center gap-2">
+          <PiStarFourFill color="#8b5cf6" />
+          AI Trade Recomendations
+        </h3>
         <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800" variant="link">
           {all ? 'View Less' : 'View All'}
         </Button>
