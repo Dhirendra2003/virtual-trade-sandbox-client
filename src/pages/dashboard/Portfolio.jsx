@@ -275,7 +275,7 @@ const Portfolio = () => {
   })
 
   return (
-    <div className="p-2 space-y-4 ">
+    <div className="p-4 space-y-4 ">
       <div className="glass-bg sticky w-full top-0 py-2 z-50 ">
         <SearchBar />
       </div>

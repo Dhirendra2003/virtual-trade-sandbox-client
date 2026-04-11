@@ -185,6 +185,15 @@ const settleTrade = async ({ instrument_key, trade_type, trade_duration }) => {
     throw error
   }
 }
+const getUserAnalytics = async () => {
+  try {
+    const response = await axiosInstance.get(`/trade/user-analytics`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 
 export {
   searchStock,
@@ -204,4 +213,5 @@ export {
   downloadUserTradeHistory,
   cancelAMOorder,
   settleTrade,
+  getUserAnalytics,
 }

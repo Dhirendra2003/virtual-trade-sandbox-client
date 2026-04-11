@@ -164,6 +164,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
     // gcTime: 0,
     staleTime: 1000 * 15,
     refetchInterval: 5000,
+    placeholderData: previousData => previousData,
   })
 
   // Sync chart data from React Query response (onSuccess is deprecated in RQ v5)

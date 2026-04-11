@@ -16,6 +16,7 @@ import {
   Search,
   Settings,
   Users,
+  ChartPie,
 } from 'lucide-react'
 
 // import { NavDocuments } from '@/components/nav-documents'
@@ -57,6 +58,12 @@ const data = {
       key: 'portfolio',
       url: '/app/portfolio',
       icon: BarChart2,
+    },
+    {
+      title: 'Analytics',
+      key: 'analytics',
+      url: '/app/analytics',
+      icon: ChartPie,
     },
     {
       title: 'Profile',
