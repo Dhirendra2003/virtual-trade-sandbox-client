@@ -194,6 +194,24 @@ const getUserAnalytics = async () => {
     throw error
   }
 }
+const getUserNotifications = async () => {
+  try {
+    const response = await axiosInstance.get(`/notification/get-user-notifications`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+const markAllNotificationsAsRead = async () => {
+  try {
+    const response = await axiosInstance.post(`/notification/mark-all-notifications-as-read`, {})
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 
 export {
   searchStock,
@@ -214,4 +232,6 @@ export {
   cancelAMOorder,
   settleTrade,
   getUserAnalytics,
+  getUserNotifications,
+  markAllNotificationsAsRead,
 }
