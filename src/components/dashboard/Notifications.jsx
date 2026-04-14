@@ -4,6 +4,7 @@ import { Bell, CheckCircle, Info, AlertTriangle } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getUserNotifications, markAllNotificationsAsRead } from '@/pages/dashboard/actions'
+import moment from 'moment'
 
 const typeConfig = {
   success: {
@@ -23,7 +24,7 @@ const typeConfig = {
 const NotificationItem = ({ notification }) => {
   const isUnread = notification.is_read === false
   const config = typeConfig[notification.type] ?? typeConfig.info
-
+  console.log(notification)
   return (
     <>
       <div
@@ -41,6 +42,7 @@ const NotificationItem = ({ notification }) => {
           </h1>
           <p className="text-xs font-light text-gray-500">{notification.message}</p>
         </div>
+        <p className="text-xs mb-auto font-light text-gray-500">{moment(notification.createdAt).fromNow()}</p>
       </div>
       {!isUnread && <Separator />}
     </>

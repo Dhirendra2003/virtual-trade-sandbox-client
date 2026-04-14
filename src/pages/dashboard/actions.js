@@ -29,6 +29,15 @@ const getTredingStocks = async () => {
     throw error
   }
 }
+const getStockInfo = async symbol => {
+  try {
+    const response = await axiosInstance.get(`/stocks/get-stock-info/${symbol}`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 
 const searchStock = async ({ query }) => {
   console.log(query)
@@ -218,6 +227,7 @@ export {
   getStockData,
   getMarketStatus,
   getNews,
+  getStockInfo,
   getTredingStocks,
   getDailyRecommendations,
   getUserWatchlist,

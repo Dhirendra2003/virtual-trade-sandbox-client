@@ -66,7 +66,7 @@ const BuySellWindow = () => {
     )
   }
   return (
-    <div className="col-span-1 h-full glass-card p-4 rounded-2xl">
+    <div className="col-span-1 glass-card lg:p-4 md:p-2 rounded-2xl">
       <div className="flex  justify-between items-start">
         <div>
           <p className="text-xs text-slate-500">Symbol</p>
@@ -114,7 +114,7 @@ const BuySellWindow = () => {
         )}
       </div>
       <div>
-        <h1 className="text-3xl font-bold tracking-tight text-slate-800">
+        <h1 className="text-3xl md:text-2xl font-bold tracking-tight text-slate-800">
           ₹ {stock?.latestPrice?.toFixed(2).toLocaleString()}{' '}
         </h1>
         <span
@@ -129,7 +129,7 @@ const BuySellWindow = () => {
       <div className="flex flex-col gap-1 mt-2">
         {/* trade type */}
         <div>
-          <label htmlFor="trade-type" className="text-xs text-slate-500">
+          <label htmlFor="trade-type" className="text-xs md:hidden lg:block lg:py-1 text-slate-500">
             Trade Type
           </label>
           <div id="trade-type" className="flex w-full justify-between bg-neutral-200 p-2 rounded-2xl">
@@ -157,7 +157,7 @@ const BuySellWindow = () => {
         </div>
         {/* trade duration */}
         <div>
-          <label htmlFor="trade-duration" className="text-xs text-slate-500">
+          <label htmlFor="trade-duration" className="text-xs text-slate-500 md:hidden lg:block lg:py-1">
             Trade Duration
           </label>
           <div id="trade-duration" className="flex w-full justify-between bg-neutral-200 p-2 rounded-2xl">
@@ -183,8 +183,8 @@ const BuySellWindow = () => {
             </Button>
           </div>
         </div>
-        <div>
-          <label htmlFor="quantity" className="text-xs text-slate-500">
+        <div className="">
+          <label htmlFor="quantity" className="text-xs text-slate-500 md:hidden lg:block lg:py-1">
             Quantity
           </label>
           <div id="quantity" className="flex  w-full items-center justify-between bg-neutral-200 p-1 rounded-2xl">

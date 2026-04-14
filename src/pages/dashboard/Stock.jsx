@@ -13,6 +13,7 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { useParams } from 'react-router-dom'
 import BuySellWindow from '../../components/dashboard/BuySellWindow'
+import StockDetails from '../../components/dashboard/StockDetails'
 
 const Stock = () => {
   const { id } = useParams()
@@ -21,9 +22,16 @@ const Stock = () => {
       <div className="glass-bg sticky w-full top-0 py-2 z-50 ">
         <SearchBar />
       </div>
-      <div className="grid grid-cols-3 gap-4 w-full items-start">
-        <Chart stockId={id} className=" rounded-2xl overflow-hidden h-[50vh]" />
-        <BuySellWindow />
+      <div className="grid grid-cols-3 gap-4 w-full ">
+        <div className="col-span-2">
+          <div className="h-[60vh]">
+            <Chart stockId={id} className=" rounded-2xl overflow-hidden h-full" />
+          </div>
+          <StockDetails />
+        </div>
+        <div className="col-span-1 sticky top-20 self-start">
+          <BuySellWindow />
+        </div>
       </div>
     </div>
   )
