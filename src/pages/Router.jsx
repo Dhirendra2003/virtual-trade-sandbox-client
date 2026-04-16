@@ -11,6 +11,7 @@ import Watchlist from './dashboard/Watchlist'
 import Portfolio from './dashboard/Portfolio'
 import TradeHistory from './dashboard/TradeHistory'
 import Analytics from './dashboard/Analytics'
+import Profile from './dashboard/Profile'
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -44,7 +45,7 @@ const AppRoutes = () => {
         { path: 'portfolio', element: <Portfolio /> },
         { path: 'analytics', element: <Analytics /> },
         { path: 'trade-history', element: <TradeHistory /> },
-        { path: 'profile', element: <h1>profile</h1> },
+        { path: 'profile', element: <Profile /> },
       ],
     },
     //ERROR PAGE

@@ -25,6 +25,9 @@ import { Spinner } from '@/components/ui/spinner'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLatestPrice, clearStockState, setStock, setLTPdata } from '../../store/slices/stockSlice'
 
+// Map profile interval strings to numeric minutes used by the chart API
+const INTERVAL_TO_MINUTES = { '1m': 1, '5m': 5, '15m': 15, '30m': 30, '1h': 60 }
+
 ModuleRegistry.registerModules([
   CandlestickSeriesModule,
   AreaSeriesModule,
@@ -60,9 +63,15 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
   const timeFrameOptions = [1, 5, 15, 30, 60]
   // const stockData = useLocation()
   const stock = useSelector(state => state.stock.stock)
-  const [timeFrame, setTimeframe] = useState(1)
+  const { userPreferences } = useSelector(state => state.auth)
+
+  // Derive initial defaults from Redux preferences; fall back to hardcoded values
+  const defaultChartType = userPreferences?.chartType || 'candlestick'
+  const defaultTimeFrame = INTERVAL_TO_MINUTES[userPreferences?.chartInterval] ?? 1
+
+  const [timeFrame, setTimeframe] = useState(defaultTimeFrame)
   const [daysRange, setDaysRange] = useState(daysRangeOptions[0].value)
-  const [chartType, setChartType] = useState('candlestick')
+  const [chartType, setChartType] = useState(defaultChartType)
   const [daysArray, setDaysArray] = useState(new Set())
   const [maximize, setMaximize] = useState(false)
   const stockCode = stockId || 'NSE_INDEX|Nifty 50'
