@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { downloadUserTradeHistory, getUserTradeHistory } from './actions.js'
 import ProfolioTable from '@/components/dashboard/PorfolioTable'
 import { getColors } from '@/lib/utils'
-import { ArrowDownToLine, TrendingDown, TrendingUp } from 'lucide-react'
+import { Download, TrendingDown, TrendingUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import moment from 'moment/moment.js'
 
@@ -109,7 +109,7 @@ const TradeHistory = () => {
               className="w-fit ml-auto h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
               onClick={downloadUserTradeHistory}
             >
-              Download Excel <ArrowDownToLine />
+              Download Excel <Download />
             </Button>
             {data?.data?.length > 0 && (
               <ProfolioTable

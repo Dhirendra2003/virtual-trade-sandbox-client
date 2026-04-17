@@ -59,10 +59,22 @@ const updateDisplayNameAction = async name => {
   }
 }
 
+// ─── Update User Preferences ──────────────────────────────────────────────────
+const updatePreferencesAction = async preferences => {
+  try {
+    const response = await axiosInstance.patch('/user/update-preferences', { preferences })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export {
   loginAction,
   registerAction,
   resetPasswordAction,
   updateProfilePictureAction,
   updateDisplayNameAction,
+  updatePreferencesAction,
 }

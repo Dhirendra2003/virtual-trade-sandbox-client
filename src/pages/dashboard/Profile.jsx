@@ -7,7 +7,12 @@ import { toast } from 'sonner'
 import SearchBar from '../../components/dashboard/SearchBar'
 import PhotoUpload from '@/components/photo-upload'
 import { setUser, setUserPreferences } from '@/store/slices/authSlice'
-import { resetPasswordAction, updateProfilePictureAction, updateDisplayNameAction } from '@/pages/auth/actions'
+import {
+  resetPasswordAction,
+  updateProfilePictureAction,
+  updateDisplayNameAction,
+  updatePreferencesAction,
+} from '@/pages/auth/actions'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -275,12 +280,37 @@ const Profile = () => {
   const [notifications, setNotifications] = useState(prefs.notifications)
   const [emailSummary, setEmailSummary] = useState(prefs.emailSummary)
 
-  // ── Helpers that update local state AND Redux in one call ──────────────────
-  const persistPrefs = (patch) => dispatch(setUserPreferences({ ...prefs, theme, chartType, chartInterval, notifications, emailSummary, ...patch }))
+  // ── Persistence mutation ───────────────────────────────────────────────────
+  const { mutate: updatePrefsMutation } = useMutation({
+    mutationFn: updatePreferencesAction,
+    onSuccess: data => {
+      // Sync with user object if needed (handled by setUserPreferences already)
+      // dispatch(setUser(data.user))
+    },
+    onError: err => {
+      toast.error('Failed to save preferences to cloud')
+    },
+  })
 
-  const setTheme = val => { setThemeLocal(val); persistPrefs({ theme: val }) }
-  const setChartType = val => { setChartTypeLocal(val); persistPrefs({ chartType: val }) }
-  const setChartInterval = val => { setChartIntervalLocal(val); persistPrefs({ chartInterval: val }) }
+  // ── Helpers that update local state AND Redux/API in one call ──────────────
+  const persistPrefs = patch => {
+    const updatedPrefs = { ...prefs, theme, chartType, chartInterval, notifications, emailSummary, ...patch }
+    dispatch(setUserPreferences(updatedPrefs))
+    updatePrefsMutation(updatedPrefs)
+  }
+
+  const setTheme = val => {
+    setThemeLocal(val)
+    persistPrefs({ theme: val })
+  }
+  const setChartType = val => {
+    setChartTypeLocal(val)
+    persistPrefs({ chartType: val })
+  }
+  const setChartInterval = val => {
+    setChartIntervalLocal(val)
+    persistPrefs({ chartInterval: val })
+  }
 
   const toggleNotif = key => {
     const updated = { ...notifications, [key]: !notifications[key] }
@@ -510,8 +540,8 @@ const Profile = () => {
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
               }
-              label="AMO Executed"
-              description="Notification when after-market orders process"
+              label="AMO Executed / Intraday Trade Square Off"
+              description="Notification when after-market orders / intraday trades are  squared off"
               checked={notifications.amoExecuted}
               onToggle={() => toggleNotif('amoExecuted')}
             />

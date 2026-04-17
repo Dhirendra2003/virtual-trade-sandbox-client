@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   user: null,
   isAuthenticated: false,
-  userPreferences: null,
+  userPreferences: { theme: 'light', chartType: 'candlestick', chartInterval: '1m' },
   loading: false,
   error: null,
 }
@@ -20,6 +20,9 @@ const authSlice = createSlice({
     },
     setUser: (state, action) => {
       state.user = action.payload
+      if (action.payload?.preferences) {
+        state.userPreferences = action.payload.preferences
+      }
       state.isAuthenticated = true
       state.loading = false
       state.error = null

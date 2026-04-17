@@ -222,6 +222,25 @@ const markAllNotificationsAsRead = async () => {
   }
 }
 
+const downloadUserAnalyticsReport = async () => {
+  try {
+    const response = await axiosInstance.get(`/trade/download-analytics`, {
+      responseType: 'blob',
+    })
+    const url = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'analytics_report.xlsx')
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    window.URL.revokeObjectURL(url)
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export {
   searchStock,
   getStockData,
@@ -244,4 +263,5 @@ export {
   getUserAnalytics,
   getUserNotifications,
   markAllNotificationsAsRead,
+  downloadUserAnalyticsReport,
 }

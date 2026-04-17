@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import SearchBar from '../../components/dashboard/SearchBar'
-import { getUserAnalytics, getUserPortfolioStats } from './actions'
+import { getUserAnalytics, getUserPortfolioStats, downloadUserAnalyticsReport } from './actions'
 import PnlBarChart from '../../components/dashboard/PnlBarChart'
 import TradeRankingsTable from '../../components/dashboard/TradeRankingsTable'
 import DistributionPieChart from '../../components/dashboard/DistributionPieChart'
 import ConsistencyHeatmap from '../../components/dashboard/ConsistencyHeatmap'
-import { AlertTriangle } from 'lucide-react'
+import { AlertTriangle, Download, Loader2 } from 'lucide-react'
 import ProfolioOverview from '../../components/dashboard/PortfolioOverview'
+import { Button } from '@/components/ui/button'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 const SkeletonCard = ({ className = '' }) => (
   <div className={`glass-card rounded-2xl p-4 animate-pulse flex flex-col gap-3 min-h-[160px] ${className}`}>
@@ -16,10 +19,24 @@ const SkeletonCard = ({ className = '' }) => (
 )
 
 const Analytics = () => {
+  const [isDownloading, setIsDownloading] = useState(false)
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['userAnalytics'],
     queryFn: getUserAnalytics,
   })
+
+  const handleDownloadReport = async () => {
+    try {
+      setIsDownloading(true)
+      await downloadUserAnalyticsReport()
+      toast.success('Report downloaded successfully')
+    } catch (error) {
+      toast.error('Failed to download report')
+    } finally {
+      setIsDownloading(false)
+    }
+  }
 
   const {
     data: portfolioStats,
@@ -71,10 +88,21 @@ const Analytics = () => {
       </div>
 
       {/* Page title */}
-      <div className="px-1">
-        {portfolioStats && <ProfolioOverview data={portfolioStats?.data} loadingState={isLoadingStats} />}
-        <h1 className="text-xl font-bold text-slate-700">Trade Analytics</h1>
-        <p className="text-xs text-slate-400 mt-0.5">Insights across all your closed trades</p>
+      {portfolioStats && <ProfolioOverview data={portfolioStats?.data} loadingState={isLoadingStats} />}
+      <div className="flex items-center justify-between px-1">
+        <div>
+          <h1 className="text-xl font-bold text-slate-700">Trade Analytics</h1>
+          <p className="text-xs text-slate-400 mt-0.5">Insights across all your closed trades</p>
+        </div>
+        <Button
+          onClick={handleDownloadReport}
+          disabled={isDownloading}
+          variant="outline"
+          className="w-fit text-white hover:text-white ml-auto h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+        >
+          {isDownloading ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+          <span className="hidden sm:inline">Download Report</span>
+        </Button>
       </div>
 
       {/* ── ROW 1: Heatmap full width ── */}
