@@ -14,7 +14,7 @@ const StockCard = ({ stock, type }) => {
   const navigate = useNavigate()
   return (
     <Card
-      className="p-3 z-50 border-0  hover:shadow-2xl cursor-pointer transition-all duration-300 ease-in-out  hover:z-50"
+      className="p-3 z-50 border-0   hover:shadow-2xl cursor-pointer transition-all duration-300 ease-in-out  hover:z-50"
       onClick={() => navigate(`/app/stock/${stock.instrument_key}`)}
     >
       <CardContent className="flex items-center gap-2  p-0 overflow-hidden ">

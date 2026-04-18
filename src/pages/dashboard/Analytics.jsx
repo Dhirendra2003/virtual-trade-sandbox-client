@@ -88,7 +88,9 @@ const Analytics = () => {
       </div>
 
       {/* Page title */}
-      {portfolioStats && <ProfolioOverview data={portfolioStats?.data} loadingState={isLoadingStats} />}
+      {portfolioStats && (
+        <ProfolioOverview data={portfolioStats?.data} loadingState={isLoadingStats} showAnalysisButton={false} />
+      )}
       <div className="flex items-center justify-between px-1">
         <div>
           <h1 className="text-xl font-bold text-slate-700">Trade Analytics</h1>

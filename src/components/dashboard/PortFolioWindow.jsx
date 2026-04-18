@@ -72,7 +72,11 @@ const PortFolioWindow = () => {
           >
             Portfolio <ArrowUpRight />
           </Button>
-          <Button className="rounded-xl p-6 w-1/2 bg-gray-100 text-blue-600 cursor-pointer" variant="outline">
+          <Button
+            className="rounded-xl p-6 w-1/2 bg-gray-100 text-blue-600 cursor-pointer"
+            onClick={() => navigate('/app/analytics')}
+            variant="outline"
+          >
             Your Analysis <ArrowUpRight />
           </Button>
         </div>

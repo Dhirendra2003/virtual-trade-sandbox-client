@@ -139,11 +139,22 @@
   background: radial-gradient(circle at top left, #ffebe6 0%, #ede6fa 50%, #fff5e7 100%);
   background-attachment: fixed;
 }
+.dark .glass-bg {
+  background: linear-gradient(to top right, #16102d 0%, #0e0918 50%, #2c2041 100%);
+}
 .glass-card {
   background: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 1);
   box-shadow: 0 8px 32px 0 rgba(73, 23, 109, 0.08);
+}
+.dark .glass-card {
+  background: rgba(33, 32, 35, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
 }
 
 /* ── Riskometer ─────────────────────────────────────── */
@@ -186,7 +197,9 @@
   backdrop-filter: blur(8px);
   white-space: nowrap;
   letter-spacing: 0.02em;
-  transition: color 0.4s, border-color 0.4s;
+  transition:
+    color 0.4s,
+    border-color 0.4s;
 }
 
 .riskometer-dot {

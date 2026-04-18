@@ -69,6 +69,36 @@ const updatePreferencesAction = async preferences => {
     throw error
   }
 }
+const getUserStartingFunds = async () => {
+  try {
+    const response = await axiosInstance.get('/user/get-user-starting-funds')
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+const createPaymentIntentAction = async (amount) => {
+  try {
+    const response = await axiosInstance.post('/payment/create-payment-intent', { amount })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+const confirmPaymentAction = async (paymentIntentId) => {
+
+  try {
+    const response = await axiosInstance.post('/payment/confirm-payment', { paymentIntentId })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 
 export {
   loginAction,
@@ -77,4 +107,7 @@ export {
   updateProfilePictureAction,
   updateDisplayNameAction,
   updatePreferencesAction,
+  getUserStartingFunds,
+  createPaymentIntentAction,
+  confirmPaymentAction,
 }

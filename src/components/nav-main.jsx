@@ -34,7 +34,9 @@ export default function NavMain({ items, currentPath }) {
                 isActive={currentPath !== item.key}
               >
                 <Link to={item.url} className="bg-purple-600 text-white">
-                  {item.icon && <item.icon />}
+                  {item.icon && (
+                    <item.icon className={`${currentPath === item.key ? 'text-white' : 'text-purple-700'}`} />
+                  )}
                   <span className="">{item.title}</span>
                 </Link>
               </SidebarMenuButton>

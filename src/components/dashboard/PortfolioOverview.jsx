@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { Landmark, LandmarkIcon, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { TbPlusMinus } from 'react-icons/tb'
+import { useNavigate } from 'react-router-dom'
 
 const OverviewCard = ({ children, className, colSpan = 'col-span-2' }) => (
   <div
@@ -33,7 +34,8 @@ const FormattedAmount = ({ amount, decimalClassName }) => {
   )
 }
 
-const ProfolioOverview = ({ data, loadingState, title = '' }) => {
+const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton = true }) => {
+  const navigate = useNavigate()
   const totalValuation = (data?.current_funds || 0) + (data?.total_invested || 0)
 
   return (
@@ -61,7 +63,6 @@ const ProfolioOverview = ({ data, loadingState, title = '' }) => {
                   </p>
                 </div>
                 <Button size="sm" className="h-10 rounded-lg  font-semibold text-sm primary-gradient cursor-pointer">
-                  {' '}
                   Add Funds
                 </Button>
               </div>
@@ -144,9 +145,15 @@ const ProfolioOverview = ({ data, loadingState, title = '' }) => {
                     </span>
                   </div>
                 </div>
-                <Button className="rounded-xl bg-gray-100 text-blue-600 cursor-pointer" variant="outline">
-                  View Detailed Analysis <ArrowUpRight />
-                </Button>
+                {showAnalysisButton && (
+                  <Button
+                    className="rounded-xl bg-gray-100 text-blue-600 cursor-pointer"
+                    variant="outline"
+                    onClick={() => navigate('/app/analytics')}
+                  >
+                    View Detailed Analysis <ArrowUpRight />
+                  </Button>
+                )}
               </div>
             </OverviewCard>
           </>

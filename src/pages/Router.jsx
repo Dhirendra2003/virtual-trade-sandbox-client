@@ -12,6 +12,11 @@ import Portfolio from './dashboard/Portfolio'
 import TradeHistory from './dashboard/TradeHistory'
 import Analytics from './dashboard/Analytics'
 import Profile from './dashboard/Profile'
+import AddFunds from './dashboard/AddFunds'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+
+const stripePromise = loadStripe(import.meta.env.VITE_STR_PUBLISHABLE_KEY)
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -46,6 +51,14 @@ const AppRoutes = () => {
         { path: 'analytics', element: <Analytics /> },
         { path: 'trade-history', element: <TradeHistory /> },
         { path: 'profile', element: <Profile /> },
+        {
+          path: 'add-funds',
+          element: (
+            <Elements stripe={stripePromise}>
+              <AddFunds />
+            </Elements>
+          ),
+        },
       ],
     },
     //ERROR PAGE

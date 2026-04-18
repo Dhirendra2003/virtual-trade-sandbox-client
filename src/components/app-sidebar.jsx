@@ -1,28 +1,6 @@
-import * as React from 'react'
 import Logo from '/logo_v1.png'
-import {
-  Camera,
-  BarChart2,
-  LayoutDashboard,
-  Database,
-  BrainCircuit,
-  FileText,
-  FileType,
-  Folder,
-  HelpCircle,
-  CircleDot,
-  ListOrdered,
-  ClipboardList,
-  Search,
-  Settings,
-  Users,
-  ChartPie,
-} from 'lucide-react'
-
-// import { NavDocuments } from '@/components/nav-documents'
+import { BarChart2, LayoutDashboard, ListOrdered, ChartPie, IndianRupee, User, History } from 'lucide-react'
 import NavMain from './nav-main.jsx'
-// import { NavSecondary } from '@/components/nav-secondary'
-// import { NavUser } from '@/components/nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -48,16 +26,16 @@ const data = {
       icon: LayoutDashboard,
     },
     {
-      title: 'Watchlist',
-      key: 'watchlist',
-      url: '/app/watchlist',
-      icon: ListOrdered,
-    },
-    {
       title: 'Portfolio',
       key: 'portfolio',
       url: '/app/portfolio',
       icon: BarChart2,
+    },
+    {
+      title: 'Watchlist',
+      key: 'watchlist',
+      url: '/app/watchlist',
+      icon: ListOrdered,
     },
     {
       title: 'Analytics',
@@ -69,13 +47,19 @@ const data = {
       title: 'Profile',
       key: 'profile',
       url: '/app/profile',
-      icon: Folder,
+      icon: User,
     },
     {
       title: 'Trade History',
       key: 'trade-history',
       url: '/app/trade-history',
-      icon: ClipboardList,
+      icon: History,
+    },
+    {
+      title: 'Add Funds',
+      key: 'add-funds',
+      url: '/app/add-funds',
+      icon: IndianRupee,
     },
   ],
 }
