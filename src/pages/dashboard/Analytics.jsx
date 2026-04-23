@@ -54,7 +54,7 @@ const Analytics = () => {
   if (isLoading) {
     return (
       <div className="p-4 space-y-4">
-        <div className="glass-bg sticky w-full top-0 py-2 z-50">
+        <div className="search-bar">
           <SearchBar />
         </div>
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
@@ -70,7 +70,7 @@ const Analytics = () => {
   if (isError) {
     return (
       <div className="p-4 space-y-4">
-        <div className="glass-bg sticky w-full top-0 py-2 z-50">
+        <div className="search-bar">
           <SearchBar />
         </div>
         <div className="glass-card rounded-2xl flex flex-col items-center justify-center min-h-[40vh] gap-3 text-center p-8">
@@ -83,7 +83,7 @@ const Analytics = () => {
   }
   return (
     <div className="p-4 space-y-4">
-      <div className="glass-bg sticky w-full top-0 py-2 z-50">
+      <div className="search-bar">
         <SearchBar />
       </div>
 
@@ -93,7 +93,7 @@ const Analytics = () => {
       )}
       <div className="flex items-center justify-between px-1">
         <div>
-          <h1 className="text-xl font-bold text-slate-700">Trade Analytics</h1>
+          <h1 className="text-xl font-bold text-sub-title-text-color">Trade Analytics</h1>
           <p className="text-xs text-slate-400 mt-0.5">Insights across all your closed trades</p>
         </div>
         <Button

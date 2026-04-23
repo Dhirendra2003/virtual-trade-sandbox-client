@@ -54,7 +54,7 @@ const Portfolio = () => {
           <div className="ml-auto flex flex-col items-start">
             <p className="text-sm font-bold text-right">₹ {ogRow?.ltp?.last_price}</p>
             <div
-              className={`text-xs ${ogRow?.ltp?.change_percent > 0 ? 'text-green-500' : 'text-red-500'} flex items-center gap-1 `}
+              className={`text-xs ${ogRow?.ltp?.change_percent > 0 ? 'text-main-green' : 'text-main-red'} flex items-center gap-1 `}
             >
               {ogRow?.ltp?.change_percent > 0 ? (
                 <TrendingUp className={`w-3 h-3 mr-2`} />
@@ -82,7 +82,9 @@ const Portfolio = () => {
         const pnl = (row?.original?.ltp?.last_price * row?.original?.qty - Math.abs(row?.original?.investment)).toFixed(
           2
         )
-        return <span className={`font-semibold text-md ${pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>₹ {pnl}</span>
+        return (
+          <span className={`font-semibold text-md ${pnl >= 0 ? 'text-main-green' : 'text-main-red'}`}>₹ {pnl}</span>
+        )
       },
     },
     {
@@ -96,7 +98,7 @@ const Portfolio = () => {
             <AlertTradeSummary
               triggerText="Settle"
               triggerVariant="outline"
-              triggerClassName="rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700 hover:primary-gradient"
+              triggerClassName="rounded-xl p-4 transition-all duration-500 ease-in-out dark:text-purple-400 dark:border-purple-500 cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700 hover:primary-gradient hover:dark:bg-purple-500 hover:dark:text-white"
               dialogTitle="Do you want to settle this trade?"
               data={{
                 // tradeType: ogRow?.trade_type,
@@ -108,7 +110,7 @@ const Portfolio = () => {
               }}
               button={
                 <Button
-                  className="h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+                  className="h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer text-white"
                   onClick={() =>
                     mutateSettleTrade.mutate({
                       instrument_key: ogRow?.instrument_key,
@@ -152,8 +154,8 @@ const Portfolio = () => {
           <span
             className={cn(
               'uppercase bg-white font-semibold px-3 py-1 rounded-xl',
-              row?.original?.trade_type === 'buy' && 'bg-green-300',
-              row?.original?.trade_type === 'sell' && 'bg-red-300'
+              row?.original?.trade_type === 'buy' && 'bg-green-300 dark:bg-green-700',
+              row?.original?.trade_type === 'sell' && 'bg-red-300 dark:bg-red-700'
             )}
           >
             {row?.original?.trade_type}
@@ -178,7 +180,7 @@ const Portfolio = () => {
           <div className="ml-auto flex flex-col items-start">
             <p className="text-sm font-bold text-right">₹ {ogRow?.ltp?.last_price}</p>
             <div
-              className={`text-xs ${ogRow?.ltp?.change_percent > 0 ? 'text-green-500' : 'text-red-500'} flex items-center gap-1 `}
+              className={`text-xs ${ogRow?.ltp?.change_percent > 0 ? 'text-main-green' : 'text-main-red'} flex items-center gap-1 `}
             >
               {ogRow?.ltp?.change_percent > 0 ? (
                 <TrendingUp className={`w-3 h-3 mr-2`} />
@@ -210,7 +212,7 @@ const Portfolio = () => {
           return (
             <Button
               className={
-                'rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700  hover:primary-gradient'
+                'rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700  hover:primary-gradient hover:dark:bg-purple-800 hover:dark:text-white dark:border-purple-400 dark:text-purple-400'
               }
               variant="outline"
               onClick={() => {
@@ -276,7 +278,7 @@ const Portfolio = () => {
 
   return (
     <div className="p-4 space-y-4 ">
-      <div className="glass-bg sticky w-full top-0 py-2 z-50 ">
+      <div className="search-bar">
         <SearchBar />
       </div>
       <div className="grid grid-cols-1 gap-2  w-full items-start">

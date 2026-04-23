@@ -1,7 +1,6 @@
 import { Spinner } from '@/components/ui/spinner'
-import { IoIosInformationCircle } from 'react-icons/io'
 import { Button } from '@/components/ui/Button'
-import { Landmark, LandmarkIcon, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react'
+import { LandmarkIcon, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { TbPlusMinus } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
@@ -15,11 +14,11 @@ const OverviewCard = ({ children, className, colSpan = 'col-span-2' }) => (
 )
 
 const Label = ({ children, className }) => (
-  <h3 className={cn('text-neutral-600 uppercase tracking-widest text-xs', className)}>{children}</h3>
+  <h3 className={cn('text-faded-bold-text uppercase tracking-widest text-xs', className)}>{children}</h3>
 )
 
 const SubLabel = ({ children, className }) => (
-  <p className={cn('text-neutral-600 uppercase tracking-wider text-xs mb-0', className)}>{children}</p>
+  <p className={cn('text-faded-bold-text uppercase tracking-wider text-xs mb-0', className)}>{children}</p>
 )
 
 const FormattedAmount = ({ amount, decimalClassName }) => {
@@ -51,18 +50,21 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
           <>
             <OverviewCard>
               <Label className="mb-1">Net Worth</Label>
-              <p className="text-3xl font-black text-green-600 tracking-tight">
+              <p className="text-3xl font-black text-main-green tracking-tight">
                 <FormattedAmount amount={totalValuation} decimalClassName="ml-[3px]" />
               </p>
 
               <div className="flex justify-between items-center mt-auto">
                 <div>
                   <SubLabel>Avaliable cash</SubLabel>
-                  <p className="text-lg font-semibold text-neutral-800 tracking-tight">
+                  <p className="text-lg font-semibold text-title-text-color tracking-tight">
                     ₹ {data?.current_funds?.toLocaleString()}
                   </p>
                 </div>
-                <Button size="sm" className="h-10 rounded-lg  font-semibold text-sm primary-gradient cursor-pointer">
+                <Button
+                  size="sm"
+                  className="h-10 rounded-lg  font-semibold text-sm primary-gradient cursor-pointer text-white"
+                >
                   Add Funds
                 </Button>
               </div>
@@ -76,14 +78,14 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
                     <FormattedAmount amount={data?.total_current_value} decimalClassName="ml-[3px]" />
                   </p>
                 </div>
-                <div className="rounded-full flex items-center justify-center bg-purple-200 w-10 h-10">
-                  <LandmarkIcon size={20} color="#9810fa" />
+                <div className="rounded-full flex items-center justify-center bg-selected-bg-purple/50 w-10 h-10">
+                  <LandmarkIcon size={20} className="text-purple-600 dark:text-purple-400" />
                 </div>
               </div>
 
               <div className="gap-8 items-center">
                 <SubLabel>Total Invested</SubLabel>
-                <p className="text-lg font-semibold text-neutral-800 tracking-tight">
+                <p className="text-lg font-semibold text-title-text-color tracking-tight">
                   ₹ {data?.total_invested?.toLocaleString()}
                 </p>
               </div>
@@ -97,14 +99,14 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
                     <p
                       className={cn(
                         'text-2xl flex items-end gap-2 font-bold tracking-tight',
-                        data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                        data?.unrealized_pnl > 0 ? 'text-main-green' : 'text-main-red'
                       )}
                     >
                       <FormattedAmount amount={data?.unrealized_pnl} decimalClassName="-ml-[5px]" />
                       <span
                         className={cn(
                           'text-xs flex items-center gap-0.5 -mt-1 tracking-tight',
-                          data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                          data?.unrealized_pnl > 0 ? 'text-main-green' : 'text-main-red'
                         )}
                       >
                         ({data?.unrealized_pnl > 0 ? <TrendingUp className="w-3" /> : <TrendingDown className="w-3" />}
@@ -115,8 +117,8 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
                     <p className="text-2xl  tracking-tight">--</p>
                   )}
                 </div>
-                <div className="rounded-full flex items-center justify-center bg-purple-200 w-10 h-10">
-                  <TbPlusMinus size={20} color="#9810fa" />
+                <div className="rounded-full flex items-center justify-center bg-selected-bg-purple/50 w-10 h-10">
+                  <TbPlusMinus size={20} className="text-purple-600 dark:text-purple-400" />
                 </div>
               </div>
 
@@ -126,14 +128,14 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
                   <div
                     className={cn(
                       'text-lg font-medium flex items-end gap-2 tracking-tight',
-                      data?.overall_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                      data?.overall_pnl > 0 ? 'text-main-green' : 'text-main-red'
                     )}
                   >
                     ₹ {data?.overall_pnl?.toLocaleString()}
                     <span
                       className={cn(
                         'text-xs flex font-thin items-center gap-1 -mt-1 0 tracking-tight',
-                        data?.overall_pnl > 0 ? 'text-green-600' : 'text-red-500'
+                        data?.overall_pnl > 0 ? 'text-main-green' : 'text-main-red'
                       )}
                     >
                       ({data?.overall_pnl > 0 ? <TrendingUp className="w-3" /> : <TrendingDown className="w-3" />}

@@ -1,10 +1,11 @@
 import { useState, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import moment from 'moment'
+import { cn } from '@/lib/utils'
 
 // ─── Color scale (GitHub palette with red extension) ───────────────────────
 const getProfitColor = value => {
-  if (value === null || value === undefined) return '#E8E8E8'
+  if (value === null || value === undefined) return '#AAAAAA50'
   if (value === 0) return '#d1fae5'
   if (value > 0) {
     if (value < 500) return '#86efac'
@@ -167,17 +168,17 @@ const ConsistencyHeatmap = ({ data }) => {
   const monthLabels = weeks.map((w, i) => (i === 0 || weeks[i - 1].monthLabel !== w.monthLabel ? w.monthLabel : ''))
 
   const stats = [
-    { label: 'Trading Days', value: tradeDays.length, color: '#8b5cf6' },
+    { label: 'Trading Days', value: tradeDays.length, color: 'text-title-text-color' },
     {
       label: 'Total P&L',
       value:
         totalPnl >= 0 ? `+₹${totalPnl.toLocaleString('en-IN')}` : `-₹${Math.abs(totalPnl).toLocaleString('en-IN')}`,
-      color: totalPnl >= 0 ? '#10b981' : '#f43f5e',
+      color: totalPnl >= 0 ? 'text-main-green' : 'text-main-red',
     },
     ...(profits.length
       ? [
-          { label: 'Best Day', value: `+₹${maxP.toLocaleString('en-IN')}`, color: '#15803d' },
-          { label: 'Worst Day', value: `₹${minP.toLocaleString('en-IN')}`, color: '#b91c1c' },
+          { label: 'Best Day', value: `+₹${maxP.toLocaleString('en-IN')}`, color: 'text-main-green' },
+          { label: 'Worst Day', value: `₹${minP.toLocaleString('en-IN')}`, color: 'text-main-red' },
         ]
       : []),
   ]
@@ -187,24 +188,24 @@ const ConsistencyHeatmap = ({ data }) => {
       {/* ── Header ── */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <div>
-          <h2 className="text-sm font-bold text-slate-700">Trading Consistency</h2>
-          <p className="text-[11px] text-slate-400 mt-0.5">Daily P&amp;L heatmap · Mon–Fri · last 16 weeks</p>
+          <h2 className="text-sm font-bold text-title-text-color">Trading Consistency</h2>
+          <p className="text-[11px] text-sub-title-text-color mt-0.5">
+            Daily P&amp;L heatmap · Mon–Fri · last 16 weeks
+          </p>
         </div>
 
         {/* ── Stats row ── */}
-        <div className="flex flex-wrap gap-5 mb-4 bg-purple-100 p-3 rounded-lg">
+        <div className="flex flex-wrap gap-5 mb-4 bg-hover-bg-purple p-3 rounded-lg">
           {stats.map(s => (
             <div key={s.label} className="flex flex-col">
-              <span className="text-[10px] text-slate-400 uppercase tracking-wide">{s.label}</span>
-              <span className="text-sm font-bold" style={{ color: s.color }}>
-                {s.value}
-              </span>
+              <span className="text-[10px] text-sub-title-text-color uppercase tracking-wide">{s.label}</span>
+              <span className={cn('text-sm font-bold', s.color)}>{s.value}</span>
             </div>
           ))}
         </div>
 
         {/* Color legend */}
-        <div className="flex items-center gap-1.5 text-[10px] text-slate-500">
+        <div className="flex items-center gap-1.5 text-[10px] text-sub-title-text-color">
           <span>Loss</span>
           {['#b91c1c', '#ef4444', '#f87171', '#fca5a5', '#ebedf0', '#86efac', '#4ade80', '#22c55e', '#15803d'].map(
             (c, i) => (

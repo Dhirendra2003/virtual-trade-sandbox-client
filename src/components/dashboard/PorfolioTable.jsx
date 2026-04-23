@@ -42,7 +42,7 @@ const ProfolioTable = ({ columns, data, loadingState, title = '', pagination = f
               <TableBody>
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map(row => (
-                    <TableRow key={row.id} className={`text-left hover:bg-purple-200/70`}>
+                    <TableRow key={row.id} className={`text-left hover:bg-selected-bg-purple/50`}>
                       {row.getVisibleCells().map(cell => (
                         <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                       ))}

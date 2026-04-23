@@ -21,10 +21,7 @@ export default function NavMain({ items, currentPath }) {
   return (
     <SidebarGroup className="h-full ">
       <SidebarGroupContent className="flex flex-col gap-2 justify-between h-full">
-        <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-2"></SidebarMenuItem>
-        </SidebarMenu>
-        <SidebarMenu>
+        <SidebarMenu className="flex flex-col gap-2">
           {items.map(item => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton

@@ -87,6 +87,54 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
 
   const elemRef = useRef(null)
 
+  const {
+    data: stockChartData,
+    isFetching,
+    isStale,
+  } = useQuery({
+    queryKey: ['stockData', stockCode, timeFrame, from, to],
+    queryFn: () => getStockData({ stockCode, timeFrame, from, to }),
+    enabled: !!stockCode && !!timeFrame && !!from && !!to,
+    // gcTime: 0,
+    staleTime: 1000 * 15,
+    // refetchInterval: 5000,
+    refetchInterval: 50000,
+    placeholderData: previousData => previousData,
+  })
+
+  // Sync chart data from React Query response (onSuccess is deprecated in RQ v5)
+  useEffect(() => {
+    if (stockChartData?.data) {
+      setData(stockChartData.data)
+      //set latest price in redux
+      dispatch(setStock({ ...stockChartData.stockDetails, isAddedToWatchlist: stockChartData.isAddedToWatchlist }))
+      dispatch(setLatestPrice(stockChartData.data[0].close))
+      dispatch(setLTPdata(stockChartData?.stockLTPobject))
+      setDaysArray(new Set(stockChartData.days))
+    }
+  }, [stockChartData])
+
+  // ── Compute dynamic Y-axis bounds for line/area charts ──────────────────
+  // Candlestick series auto-fits, but line/area starts from 0 by default.
+  // We calculate a tight min/max with a small padding so the curves are clearly visible.
+  const yBounds = React.useMemo(() => {
+    if (!data || data.length === 0 || chartType === 'candlestick') return { min: undefined, max: undefined }
+    let lo = Infinity
+    let hi = -Infinity
+    for (const d of data) {
+      if (d.low !== undefined && d.low < lo) lo = d.low
+      if (d.high !== undefined && d.high > hi) hi = d.high
+      if (d.close !== undefined) {
+        if (d.close < lo) lo = d.close
+        if (d.close > hi) hi = d.close
+      }
+    }
+    if (!isFinite(lo) || !isFinite(hi)) return { min: undefined, max: undefined }
+    const range = hi - lo || 1
+    const padding = range * 0.1 // 5% breathing room top & bottom
+    return { min: lo - padding, max: hi + padding }
+  }, [data, chartType])
+
   useEffect(() => {
     document.addEventListener('fullscreenchange', exitHandler, false)
     return () => {
@@ -142,51 +190,37 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
     openKey: 'open',
     closeKey: 'close',
     tooltip: { renderer },
+    highlight: { enabled: false },
+    item: {
+      up: {
+        fill: userPreferences?.theme === 'dark' ? '#00c951' : '#00a63e',
+        stroke: userPreferences?.theme === 'dark' ? '#00c951' : '#00a63e',
+      },
+      down: {
+        fill: userPreferences?.theme === 'dark' ? '#fb2c36' : '#e7000b',
+        stroke: userPreferences?.theme === 'dark' ? '#fb2c36' : '#e7000b',
+      },
+    },
   }
   const lineSeries = {
     type: 'area',
     xKey: 'date2',
     yKey: 'close',
     yName: 'close',
-    stroke: '#6600ff',
+    stroke: '#6e11b0',
     strokeWidth: 1,
     strokeOpacity: 1,
     fill: {
       type: 'gradient',
       colorStops: [
-        { color: '#ffffff', stop: 0.0 },
-        { color: '#ffffff', stop: 0.95 },
-        { color: '#6600ff', stop: 1.0 }, //will continue to the end
+        { color: '#ffffff00', stop: 0.7 },
+        { color: '#6e11b060', stop: (yBounds?.max - (yBounds?.max - yBounds?.min)) / yBounds?.max || 0.99 },
+        { color: '#6e11b0', stop: 1.0 }, //will continue to the end
       ],
     },
     tooltip: { renderer },
+    highlight: { enabled: false },
   }
-
-  const {
-    data: stockChartData,
-    isFetching,
-    isStale,
-  } = useQuery({
-    queryKey: ['stockData', stockCode, timeFrame, from, to],
-    queryFn: () => getStockData({ stockCode, timeFrame, from, to }),
-    enabled: !!stockCode && !!timeFrame && !!from && !!to,
-    // gcTime: 0,
-    staleTime: 1000 * 15,
-    refetchInterval: 5000,
-    placeholderData: previousData => previousData,
-  })
-
-  // Sync chart data from React Query response (onSuccess is deprecated in RQ v5)
-  useEffect(() => {
-    if (stockChartData?.data) {
-      setData(stockChartData.data)
-      //set latest price in redux
-      dispatch(setStock({ ...stockChartData.stockDetails, isAddedToWatchlist: stockChartData.isAddedToWatchlist }))
-      dispatch(setLatestPrice(stockChartData.data[0].close))
-      dispatch(setLTPdata(stockChartData?.stockLTPobject))
-      setDaysArray(new Set(stockChartData.days))
-    }
-  }, [stockChartData])
 
   // Derive options directly from data
   const options = {
@@ -210,7 +244,6 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
     initialState: {
       zoom: {
         ratioX: { start: zoomEnabled ? 0.7 : 0, end: 1.0 },
-        ratioY: chartType === 'candlestick' ? { start: 0.0, end: 1.0 } : { start: 0.95, end: 1.0 },
       },
     },
     axes: {
@@ -225,45 +258,42 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
         },
         gridLine: {
           enabled: true,
+          style: [
+            {
+              stroke: userPreferences?.theme === 'dark' ? '#2e2e2e' : '#d9d9d9',
+            },
+          ],
         },
 
         label: {
           autoRotate: false,
           formatter: ({ value }) => value.slice(11, 16),
+          color: userPreferences?.theme === 'dark' ? 'white' : 'black',
         },
-        // crossLines: [
-        //   {
-        //     type: 'range',
-        //     range: [
-        //       // '2026-02-12T09:15:00+05:30',
-        //       // '2026-02-13T09:15:00+05:30',
-        //       '2026-02-16T09:15:00+05:30',
-        //       '2026-02-17T09:15:00+05:30',
-        //     ],
-        //     fill: '#e0e0e0', // Gray
-        //     fillOpacity: 0.2,
-        //     strokeWidth: 0.2,
-        //   },
-        //   {
-        //     type: 'line',
-        //     value: '2026-02-13T09:15:00+05:30',
-        //     stroke: 'red',
-        //     strokeWidth: 0.5,
-        //   },
-        // ],
+
         crossLines: [...daysArray].map(day => ({
           type: 'line',
           value: `${day}T09:15:00+05:30`,
-          stroke: 'grey',
-          strokeWidth: 0.5,
+          stroke: '#757575',
+          strokeWidth: 1,
         })),
       },
       y: {
         type: 'number',
         position: 'right',
         nice: false,
+        min: yBounds.min,
+        max: yBounds.max,
+        label: {
+          color: userPreferences?.theme === 'dark' ? 'white' : 'black',
+        },
         gridLine: {
           enabled: true,
+          style: [
+            {
+              stroke: userPreferences?.theme === 'dark' ? '#2e2e2e' : '#d9d9d9',
+            },
+          ],
         },
         interval: { minSpacing: 2, maxSpacing: 100 },
         line: {
@@ -274,7 +304,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
           {
             type: 'line',
             value: data && data[0]?.close,
-            stroke: '#49176d',
+            stroke: userPreferences?.theme === 'dark' ? '#9102f7' : '#49176d',
             lineDash: [4, 4],
             label: {
               text: `${data && data[0]?.close}`,
@@ -295,7 +325,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
   return (
     <div
       ref={elemRef}
-      className={`${maximize ? 'bg-white flex flex-col w-full items-center justify-center' : 'glass-card col-span-2'}  ${className}`}
+      className={`${maximize ? 'bg-div-bg-color flex flex-col w-full items-center justify-center' : 'glass-card col-span-2'}  ${className}`}
     >
       <Button
         className="absolute bottom-3 z-50 right-3 rounded-xl primary-gradient cursor-pointer"
@@ -304,12 +334,12 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
           toggleFullScreen()
         }}
       >
-        {maximize ? <Minimize /> : <Maximize />}
+        {maximize ? <Minimize className="text-white" /> : <Maximize className="text-white" />}
       </Button>
       <div className={`flex flex-wrap  space-y-2 ${maximize ? 'w-full p-3 m-auto' : 'mx-2 mt-2'} `} id="parent">
         {/* Stock Info */}
         <div className="mr-auto">
-          <h2 className="text-md pl-2 font-bold text-slate-800 ">{stock?.name || 'NIFTY 50'}</h2>
+          <h2 className="text-md pl-2 font-bold text-title-text-color ">{stock?.name || 'NIFTY 50'}</h2>
           <h2 className="text-xs pl-2  w-full flex">
             <span>{stock?.trading_symbol || 'NIFTY 50'}</span>
             <span className="text-slate-500 ml-2">
@@ -331,14 +361,14 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
               setTimeFrameOpen(o => !o)
               setDaysRangeOpen(false)
             }}
-            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-12 justify-between"
+            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-div-bg-color  min-w-12 justify-between"
           >
             <span>{timeFrame} min</span>
             <span className="text-purple-700">{timeFrameOpen ? '▲' : '▼'}</span>
           </button>
           {timeFrameOpen && (
-            <div className="absolute top-full mt-1 left-0 bg-white border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
-              <p className="text-xs text-slate-400 px-3 pt-2 pb-1 font-semibold">Time Frame</p>
+            <div className="absolute top-full mt-1 left-0 bg-div-bg-color border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
+              <p className="text-xs text-slate-500 px-3 pt-2 pb-1 font-semibold">Time Frame</p>
               {timeFrameOptions.map(option => (
                 <button
                   key={option}
@@ -347,9 +377,9 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
                     setTimeframe(option)
                     setTimeFrameOpen(false)
                   }}
-                  className={`w-full text-left px-3 py-2 text-sm hover:bg-purple-50 font-medium ${
-                    timeFrame === option ? 'text-purple-700 bg-purple-50' : 'text-slate-700'
-                  }`}
+                  className={`w-full text-left px-3 py-2 text-sm 
+                    hover:bg-hover-bg-purple
+                     font-medium text-title-text-color ${timeFrame === option && ` bg-selected-bg-purple`}`}
                 >
                   {option} min
                 </button>
@@ -370,14 +400,14 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
               setDaysRangeOpen(o => !o)
               setTimeFrameOpen(false)
             }}
-            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-white min-w-12 justify-between"
+            className="flex items-center gap-2 px-3 h-9 rounded-lg border-2 border-purple-700 font-bold text-sm bg-div-bg-color  min-w-12 justify-between"
           >
             <span>{daysRangeOptions.find(o => o.value === daysRange)?.label ?? 'Range'}</span>
             <span className="text-purple-700">{daysRangeOpen ? '▲' : '▼'}</span>
           </button>
           {daysRangeOpen && (
-            <div className="absolute top-full mt-1 left-0 bg-white border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
-              <p className="text-xs text-slate-400 px-3 pt-2 pb-1 font-semibold">Days Range</p>
+            <div className="absolute top-full mt-1 left-0 bg-div-bg-color border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
+              <p className="text-xs text-slate-500 px-3 pt-2 pb-1 font-semibold">Days Range</p>
               {daysRangeOptions.map(option => (
                 <button
                   key={option.value}
@@ -386,8 +416,8 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
                     setDaysRange(option.value)
                     setDaysRangeOpen(false)
                   }}
-                  className={`w-full text-left px-3 py-2 text-sm hover:bg-purple-50 font-medium ${
-                    daysRange === option.value ? 'text-purple-700 bg-purple-50' : 'text-slate-700'
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-hover-bg-purple font-medium text-title-text-color ${
+                    daysRange === option.value && ` bg-selected-bg-purple`
                   }`}
                 >
                   {option.label}
@@ -404,7 +434,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
               onClick={() => setChartType('candlestick')}
               className={`cursor-pointer h-9 w-9 flex items-center justify-center ${chartType === 'candlestick' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
             >
-              <ChartCandlestick color={chartType === 'candlestick' ? '#FFF' : '#000'} />
+              <ChartCandlestick className={chartType === 'candlestick' ? 'text-white' : 'text-title-text-color'} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Candlestick Chart</p>
@@ -416,7 +446,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
               onClick={() => setChartType('line')}
               className={`cursor-pointer h-9 w-9 flex items-center justify-center ${chartType === 'line' ? 'primary-gradient' : 'outline'} p-1.5 rounded-lg`}
             >
-              <LineChart color={chartType === 'line' ? '#FFF' : '#000'} />
+              <LineChart className={chartType === 'line' ? 'text-white' : 'text-title-text-color'} />
             </TooltipTrigger>
             <TooltipContent>
               <p>Line Chart</p>

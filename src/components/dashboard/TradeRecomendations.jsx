@@ -15,7 +15,7 @@ const StockCard = ({ stock }) => {
   const navigate = useNavigate()
   return (
     <Card
-      className="p-3 z-50  border border-purple-400 hover:shadow-2xl cursor-pointer transition-all duration-300 ease-in-out  hover:z-50"
+      className="p-3 z-50  border border-purple-400/50 hover:shadow-2xl cursor-pointer transition-all duration-300 ease-in-out  hover:z-50"
       onClick={() => navigate(`/app/stock/${stock?.instrument_key}`)}
     >
       <CardContent className="flex flex-col items-center gap-2  p-0 overflow-hidden ">
@@ -30,12 +30,18 @@ const StockCard = ({ stock }) => {
             <p className="text-xs text-gray-500">{stock?.instrument_key}</p>
           </div>
           <div className="ml-auto flex flex-col items-end">
-            <p className="text-xs font-bold text-right text-green-600"> BUY @ ₹ {stock?.buyPrice}</p>
-            <p className="text-xs font-bold text-right text-green-600"> TARGET @ ₹ {stock?.targetPrice}</p>
-            <p className="text-xs font-bold text-right text-red-600"> STOPLOSS @ ₹ {stock?.stopLoss}</p>
+            <p className="text-xs font-bold text-right text-title-text-color"> BUY @ ₹ {stock?.buyPrice}</p>
+            <p className="text-xs font-bold text-right text-green-600 dark:text-green-500">
+              {' '}
+              TARGET @ ₹ {stock?.targetPrice}
+            </p>
+            <p className="text-xs font-bold text-right text-red-600 dark:text-red-500">
+              {' '}
+              STOPLOSS @ ₹ {stock?.stopLoss}
+            </p>
           </div>
         </div>
-        <div className={`text-xs flex font-thin text-neutral-700 items-center gap-1 ml-auto`}>
+        <div className={`text-xs flex font-thin text-neutral-700 dark:text-neutral-400 items-center gap-1 ml-auto`}>
           {stock?.technicalAnalysis}
         </div>
       </CardContent>
@@ -60,7 +66,7 @@ const TradeRecomendations = () => {
           <PiStarFourFill color="#8b5cf6" />
           AI Trade Recomendations
         </h3>
-        <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800" variant="link">
+        <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800 dark:text-purple-500" variant="link">
           {all ? 'View Less' : 'View All'}
         </Button>
       </div>

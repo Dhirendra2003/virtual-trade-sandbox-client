@@ -54,10 +54,10 @@ const Watchlist = () => {
                   e.preventDefault()
                   navigate(`/app/stock/${instrument_key}`)
                 }}
-                className={`cursor-pointer hover:bg-green-200 hover:scale-105 transition-all duration-200 h-9 w-9 flex items-center justify-center  bg-white shadow-md shadow-black/10 p-1.5 rounded-lg`}
+                className={`cursor-pointer hover:bg-green-200 hover:dark:bg-green-700  hover:scale-105 transition-all duration-200 h-9 w-9 flex items-center justify-center  bg-div-bg-color shadow-md shadow-black/10 p-1.5 rounded-lg`}
                 disabled={removeFromWatchlistMutation.isPending}
               >
-                <SquareArrowOutUpRight className="w-4 h-4" color="green" />
+                <SquareArrowOutUpRight className="w-4 h-4 text-green-500 dark:text-green-400" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Go to Trade</p>
@@ -70,10 +70,11 @@ const Watchlist = () => {
                   e.preventDefault()
                   removeFromWatchlistMutation.mutate(instrument_key)
                 }}
-                className={`cursor-pointer hover:scale-105 transition-all duration-200 h-9 w-9 flex items-center justify-center hover:bg-red-200 bg-white shadow-md shadow-black/10 p-1.5 rounded-lg`}
+                className={`cursor-pointer hover:scale-105 transition-all duration-200 h-9 w-9 flex items-center justify-center
+                   hover:bg-red-200 hover:dark:bg-red-700 bg-div-bg-color shadow-md shadow-black/10 p-1.5 rounded-lg`}
                 disabled={removeFromWatchlistMutation.isPending}
               >
-                <ListX className="w-4 h-4" color="red" />
+                <ListX className="w-4 h-4 text-red-500 dark:text-red-400" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Remove from Watchlist</p>
@@ -109,7 +110,7 @@ const Watchlist = () => {
 
   return (
     <div className="p-4 space-y-4 ">
-      <div className="glass-bg sticky w-full top-0 py-2 z-50 ">
+      <div className="search-bar">
         <SearchBar />
       </div>
       <div className="grid grid-cols-4 gap-4  w-full items-start">

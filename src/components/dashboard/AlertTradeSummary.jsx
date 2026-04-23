@@ -37,7 +37,7 @@ export default function AlertTradeSummary({
             <ChartLine className={cn('w-10 h-10', data?.tradeType === 'buy' ? 'text-green-600' : 'text-red-600')} />
           </AlertDialogMedia>
           <AlertDialogTitle>{dialogTitle}</AlertDialogTitle>
-          <AlertDialogDescription className="flex w-full flex-col text-neutral-700 items-start gap-2 mt-2">
+          <AlertDialogDescription className="flex w-full flex-col text-title-text-color items-start gap-2 mt-2">
             {data?.tradeType && (
               <p className="w-full flex justify-between">
                 Trade Type:{' '}

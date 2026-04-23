@@ -67,10 +67,13 @@ const PaymentBox = () => {
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
           <CheckCircle2 className="w-12 h-12 text-green-600" />
         </div>
-        <h2 className="text-2xl font-black text-slate-800">Funds Added!</h2>
+        <h2 className="text-2xl font-black text-title-text-color">Funds Added!</h2>
         <p className="text-slate-500 text-sm">₹{Number(amount).toLocaleString()} has been added to your wallet.</p>
         <Button
-          onClick={() => { setPaymentSuccess(false); setAmount(0) }}
+          onClick={() => {
+            setPaymentSuccess(false)
+            setAmount(0)
+          }}
           className="mt-4 rounded-xl bg-[#3d1466] hover:bg-[#2d0f4d] text-white font-bold px-8"
         >
           Add More Funds
@@ -83,7 +86,7 @@ const PaymentBox = () => {
     <div className="glass-card p-6 space-y-6 rounded-2xl max-w-2xl mx-auto shadow-xl">
       <div className="flex justify-between items-center bg-slate-50/50 p-4 rounded-xl">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Add Funds to Wallet</h2>
+          <h2 className="text-xl font-bold text-title-text-color">Add Funds to Wallet</h2>
           <p className="text-xs text-slate-400 mt-0.5 font-medium">Instant transfer to your trading account</p>
         </div>
         <div className="text-right">
@@ -96,12 +99,7 @@ const PaymentBox = () => {
 
       {/* ── If clientSecret received → show Stripe card form ── */}
       {clientSecret ? (
-        <PaymentMain
-          clientSecret={clientSecret}
-          amount={amount}
-          onSuccess={handleSuccess}
-          onCancel={handleCancel}
-        />
+        <PaymentMain clientSecret={clientSecret} amount={amount} onSuccess={handleSuccess} onCancel={handleCancel} />
       ) : (
         <>
           <div className="space-y-4">
@@ -145,7 +143,9 @@ const PaymentBox = () => {
           </div>
 
           <div className="space-y-4">
-            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[2px]">Select Payment Method</label>
+            <label className="text-[10px] font-black text-slate-500 uppercase tracking-[2px]">
+              Select Payment Method
+            </label>
 
             <div className="grid grid-cols-2 gap-4">
               {/* UPI Method – coming soon */}
@@ -157,7 +157,7 @@ const PaymentBox = () => {
                   <Smartphone className="w-6 h-6 text-indigo-600" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-sm font-bold text-slate-800 leading-tight">UPI / GPay / PhonePe</h4>
+                  <h4 className="text-sm font-bold text-title-text-color leading-tight">UPI / GPay / PhonePe</h4>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Coming Soon</p>
                 </div>
                 <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center border-slate-300" />
@@ -177,7 +177,7 @@ const PaymentBox = () => {
                   <CreditCard className="w-6 h-6 text-purple-600" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-sm font-bold text-slate-800 leading-tight">Credit / Debit Card</h4>
+                  <h4 className="text-sm font-bold text-title-text-color leading-tight">Credit / Debit Card</h4>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">VISA, Mastercard</p>
                 </div>
                 <div
@@ -208,18 +208,20 @@ const PaymentBox = () => {
           </div>
 
           <div className="pt-4 space-y-4">
-            {paymentError && (
-              <p className="text-sm text-red-500 font-medium text-center">{paymentError}</p>
-            )}
+            {paymentError && <p className="text-sm text-red-500 font-medium text-center">{paymentError}</p>}
             <Button
               onClick={handleAddFunds}
               disabled={paymentLoading || !amount || Number(amount) <= 0}
               className="w-full h-16 rounded-2xl shadow-xl shadow-indigo-200 bg-[#3d1466] hover:bg-[#2d0f4d] text-white font-bold text-xl gap-2 transition-all active:scale-[0.98] disabled:opacity-60"
             >
               {paymentLoading ? (
-                <><Loader2 className="w-6 h-6 animate-spin" /> Preparing…</>
+                <>
+                  <Loader2 className="w-6 h-6 animate-spin" /> Preparing…
+                </>
               ) : (
-                <><Plus className="w-6 h-6" /> Add Funds</>
+                <>
+                  <Plus className="w-6 h-6" /> Add Funds
+                </>
               )}
             </Button>
 

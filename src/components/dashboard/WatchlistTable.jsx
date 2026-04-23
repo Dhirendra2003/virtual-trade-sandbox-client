@@ -47,7 +47,7 @@ const WatchlistTable = ({ columns, data, setSelectedStock, selectedStock, loadin
                       className={`text-center ${
                         row.original.Stock.instrument_key === selectedStock
                           ? 'bg-purple-800 hover:bg-purple-700 rounded-2xl text-white'
-                          : 'hover:bg-purple-200/70'
+                          : 'hover:bg-selected-bg-purple/50'
                       }`}
                     >
                       {row.getVisibleCells().map(cell => (

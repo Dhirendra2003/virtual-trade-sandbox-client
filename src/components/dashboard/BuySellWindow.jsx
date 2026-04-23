@@ -114,7 +114,7 @@ const BuySellWindow = () => {
         )}
       </div>
       <div>
-        <h1 className="text-3xl md:text-2xl font-bold tracking-tight text-slate-800">
+        <h1 className="text-3xl md:text-2xl font-bold tracking-tight text-title-text-color">
           ₹ {stock?.latestPrice?.toFixed(2).toLocaleString()}{' '}
         </h1>
         <span

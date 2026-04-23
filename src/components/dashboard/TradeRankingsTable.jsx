@@ -18,7 +18,9 @@ const mostTradedCols = [
     header: 'Stock',
     cell: ({ row }) => (
       <div className="min-w-0">
-        <p className="text-xs font-semibold text-slate-700 leading-tight truncate max-w-[120px]">{row.original.name}</p>
+        <p className="text-xs font-semibold text-sub-title-text-color leading-tight truncate max-w-[120px]">
+          {row.original.name}
+        </p>
       </div>
     ),
   },
@@ -37,7 +39,7 @@ const profitCols = [
     accessorKey: 'name',
     header: 'Stock',
     cell: ({ row }) => (
-      <p className="text-xs font-semibold text-slate-700 truncate max-w-[110px]">{row.original.name}</p>
+      <p className="text-xs font-semibold text-sub-title-text-color truncate max-w-[110px]">{row.original.name}</p>
     ),
   },
   {
@@ -60,7 +62,7 @@ const percCols = [
     accessorKey: 'name',
     header: 'Stock',
     cell: ({ row }) => (
-      <p className="text-xs font-semibold text-slate-700 truncate max-w-[110px]">{row.original.name}</p>
+      <p className="text-xs font-semibold text-sub-title-text-color truncate max-w-[110px]">{row.original.name}</p>
     ),
   },
   {
@@ -106,11 +108,11 @@ const MiniTable = React.memo(({ title, icon: Icon, columns, data, accentColor })
     <div className="flex flex-col">
       <div className="flex items-center gap-1.5 mb-2">
         <Icon size={13} style={{ color: accentColor }} />
-        <p className="text-[11px] font-bold text-slate-600 uppercase tracking-wide">{title}</p>
+        <p className="text-[11px] font-bold text-sub-title-text-color uppercase tracking-wide">{title}</p>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-white/80 bg-white/40">
-        <Table>
+      <div className="overflow-hidden rounded-xl border border-white/80 ">
+        <Table className="dark:bg-black/80">
           <TableHeader>
             {table.getHeaderGroups().map(hg => (
               <TableRow
@@ -133,7 +135,7 @@ const MiniTable = React.memo(({ title, icon: Icon, columns, data, accentColor })
               rows.map((row, i) => (
                 <TableRow
                   key={row.id}
-                  className="transition-colors border-b border-white/40 hover:brightness-95"
+                  className="transition-colors border-b border-white/40 hover:brightness-95 "
                   style={rowGradientStyle(accentColor, i, rows.length)}
                 >
                   {row.getVisibleCells().map(cell => (
@@ -161,9 +163,9 @@ const MiniTable = React.memo(({ title, icon: Icon, columns, data, accentColor })
 
 const TradeRankingsTable = React.memo(({ data }) => (
   <div className="glass-card rounded-2xl p-4">
-    <h2 className="text-sm font-bold text-slate-700 mb-4">Trade Rankings</h2>
+    <h2 className="text-sm font-bold text-title-text-color mb-4">Trade Rankings</h2>
 
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 divide-x-0 sm:divide-x divide-white/60">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 ">
       <MiniTable
         title="Most Traded"
         icon={BarChart2}

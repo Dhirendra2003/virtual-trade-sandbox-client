@@ -99,7 +99,7 @@ const TradeHistory = () => {
   ]
   return (
     <div className="p-4 space-y-4 ">
-      <div className="glass-bg sticky w-full top-0 py-2 z-50 ">
+      <div className="search-bar">
         <SearchBar />
       </div>
       <div className="grid grid-cols-1 gap-2  w-full items-start">

@@ -17,7 +17,7 @@ import PaymentBox from '../../components/dashboard/PaymentBox'
 const AddFunds = () => {
   return (
     <div className="p-4 space-y-4 ">
-      <div className="glass-bg sticky w-full top-0 py-2 z-50 ">
+      <div className="search-bar ">
         <SearchBar />
       </div>
       <div className=" w-full ">

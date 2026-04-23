@@ -92,7 +92,7 @@ const ShareholdingChart = ({ shareholding = [] }) => {
 
   return (
     <div className="glass-card p-4 rounded-2xl my-4">
-      <h3 className="text-md pl-2 font-bold text-slate-800 mb-2">Shareholding Pattern</h3>
+      <h3 className="text-md pl-2 font-bold text-title-text-color mb-2">Shareholding Pattern</h3>
       <AgCharts options={options} className="w-full h-64" />
     </div>
   )

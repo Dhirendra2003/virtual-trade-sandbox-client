@@ -1,6 +1,7 @@
 import { AgCharts } from 'ag-charts-react'
 // import { ModuleRegistry, PieSeriesModule, LegendModule } from 'ag-charts-enterprise'
 import { LegendModule, DonutSeriesModule, ModuleRegistry } from 'ag-charts-community'
+import { useSelector } from 'react-redux'
 
 // ModuleRegistry.registerModules([PieSeriesModule, LegendModule])
 ModuleRegistry.registerModules([DonutSeriesModule, LegendModule])
@@ -8,10 +9,10 @@ const BRIGHT_PALETTE = ['#8b5cf6', '#10b981', '#f59e0b', '#f43f5e', '#0ea5e9', '
 
 const fmt = v => `₹${Number(v).toLocaleString('en-IN')}`
 
-const MiniDonut = ({ title, chartData, emptyText = 'No data' }) => {
+const MiniDonut = ({ title, chartData, emptyText = 'No data', isDark }) => {
   const hasData = chartData && chartData.length > 0
   const total = hasData ? chartData.reduce((s, d) => s + d.value, 0) : 0
-
+  const strokeColor = isDark ? '#00000000' : '#ffffff'
   const options = {
     data: chartData || [],
     background: { fill: '#00000000' },
@@ -23,7 +24,7 @@ const MiniDonut = ({ title, chartData, emptyText = 'No data' }) => {
         angleKey: 'value',
         legendItemKey: 'label',
         fills: BRIGHT_PALETTE,
-        strokes: ['#fff'],
+        strokes: [strokeColor],
         strokeWidth: 2,
         // innerRadiusRatio: 0.68,
         innerRadiusRatio: 0.5,
@@ -42,7 +43,7 @@ const MiniDonut = ({ title, chartData, emptyText = 'No data' }) => {
 
   return (
     <div className="flex flex-col">
-      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">{title}</p>
+      <p className="text-[11px] font-bold text-sub-title-text-color uppercase tracking-wide mb-1">{title}</p>
       {hasData ? (
         <>
           <div className="relative w-48 h-48">
@@ -50,7 +51,7 @@ const MiniDonut = ({ title, chartData, emptyText = 'No data' }) => {
             {/* center label */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="text-center">
-                <p className="text-[10px] font-bold text-slate-600 leading-tight">₹{(total / 1000).toFixed(0)}K</p>
+                <p className="text-[10px] font-bold text-sub-title-text-color leading-tight">₹{(total / 1000).toFixed(0)}K</p>
               </div>
             </div>
           </div>
@@ -63,9 +64,11 @@ const MiniDonut = ({ title, chartData, emptyText = 'No data' }) => {
                     className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ background: BRIGHT_PALETTE[i % BRIGHT_PALETTE.length] }}
                   />
-                  <span className="text-[10px] text-slate-600 truncate capitalize">{item.label}</span>
+                  <span className="text-[10px] text-sub-title-text-color truncate capitalize">{item.label}</span>
                 </div>
-                <span className="text-[10px] font-bold text-slate-700 ml-1 flex-shrink-0">{fmt(item.value)}</span>
+                <span className="text-[10px] font-bold text-sub-title-text-color ml-1 flex-shrink-0">
+                  {fmt(item.value)}
+                </span>
               </div>
             ))}
           </div>
@@ -80,19 +83,31 @@ const MiniDonut = ({ title, chartData, emptyText = 'No data' }) => {
 }
 
 const DistributionPieChart = ({ data }) => {
+  const { userPreferences } = useSelector(state => state.auth)
+  const isDark = userPreferences?.theme === 'dark'
   const durationData = data?.duration_split?.map(d => ({ label: d.trade_duration, value: d.total }))
   const deliveryData = data?.delivery_allocation?.map(d => ({ label: d.name, value: d.total }))
   const intradayData = data?.intraday_allocation?.map(d => ({ label: d.name, value: d.total }))
 
   return (
     <div className="glass-card rounded-2xl p-4 flex flex-col gap-4 min-h-[320px]">
-      <h2 className="text-sm font-bold text-slate-700">Capital Distribution</h2>
+      <h2 className="text-sm font-bold text-sub-title-text-color">Capital Distribution</h2>
       <div className="flex justify-around gap-4 overflow-hidden">
-        <MiniDonut title="By Duration" chartData={durationData} emptyText="No duration data" />
+        <MiniDonut title="By Duration" chartData={durationData} emptyText="No duration data" isDark={isDark} />
 
-        <MiniDonut title="Delivery Allocation" chartData={deliveryData} emptyText="No delivery trades" />
+        <MiniDonut
+          title="Delivery Allocation"
+          chartData={deliveryData}
+          emptyText="No delivery trades"
+          isDark={isDark}
+        />
 
-        <MiniDonut title="Intraday Allocation" chartData={intradayData} emptyText="No intraday trades" />
+        <MiniDonut
+          title="Intraday Allocation"
+          chartData={intradayData}
+          emptyText="No intraday trades"
+          isDark={isDark}
+        />
       </div>
     </div>
   )

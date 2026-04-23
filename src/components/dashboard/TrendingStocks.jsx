@@ -61,7 +61,7 @@ const TrendingStocks = ({ type = 'gainers' }) => {
           {type === 'gainers' ? <TrendingUp color="green" /> : <TrendingDown color="red" />}
           {type === 'gainers' ? 'Top Gainers' : 'Top Losers'}
         </h3>
-        <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800" variant="link">
+        <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800 dark:text-purple-500" variant="link">
           {all ? 'View Less' : 'View All'}
         </Button>
       </div>

@@ -9,15 +9,15 @@ import moment from 'moment'
 const typeConfig = {
   success: {
     icon: <CheckCircle size={14} />,
-    textColor: 'text-green-700',
+    textColor: 'text-green-700 dark:text-green-500',
   },
   info: {
     icon: <Info size={14} />,
-    textColor: 'text-blue-700',
+    textColor: 'text-blue-700 dark:text-blue-500',
   },
   warning: {
     icon: <AlertTriangle size={14} />,
-    textColor: 'text-amber-600',
+    textColor: 'text-amber-600 ',
   },
 }
 
@@ -28,8 +28,8 @@ const NotificationItem = ({ notification }) => {
   return (
     <>
       <div
-        className={`relative  flex items-center gap-2 hover:bg-gray-100 cursor-pointer p-2 rounded-lg transition-colors ${
-          isUnread ? 'bg-purple-100' : ''
+        className={`relative  flex items-center gap-2 hover:bg-purple-500/20 cursor-pointer p-2 rounded-lg transition-colors ${
+          isUnread ? 'bg-purple-500/10' : ''
         }`}
       >
         {/* Unread blue dot */}
@@ -87,7 +87,7 @@ const Notifications = () => {
       </PopoverTrigger>
       <PopoverContent align="end" className="md:w-[400px] sm:w-[300px] lg:w-[500px] shadow-2xl">
         <div className="grid gap-3">
-          <h4 className="leading-none text-purple-700 text-xs text-right underline underline-offset-8 decoration-purple-700">
+          <h4 className="leading-none text-purple-700 dark:text-purple-400 text-xs text-right underline underline-offset-8 decoration-purple-700">
             Your Notifications
           </h4>
           {notifications?.data.length > 0 ? (
@@ -99,7 +99,7 @@ const Notifications = () => {
               </div>
               <Button
                 disabled={!hasUnread || isPending}
-                className="h-10 w-full rounded-xl text-md mt-2 primary-gradient cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="h-10 w-full rounded-xl text-md mt-2 primary-gradient cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-white"
                 type="button"
                 onClick={() => markAllRead()}
               >

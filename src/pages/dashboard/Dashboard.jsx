@@ -10,6 +10,7 @@ import AppSidebar from '@/components/app-sidebar'
 const Dashboard = () => {
   return (
     <SidebarProvider
+      className="glass-bg"
       variant={'floating'}
       style={{
         '--sidebar-width': '10rem',
@@ -17,7 +18,7 @@ const Dashboard = () => {
       }}
     >
       <AppSidebar />
-      <div className="glass-bg min-h-screen w-[100%] min-w-0 m-0 p-0">
+      <div className=" min-h-screen w-[100%] min-w-0 m-0 p-0">
         <Outlet />
       </div>
     </SidebarProvider>

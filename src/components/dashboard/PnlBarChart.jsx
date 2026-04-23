@@ -8,6 +8,7 @@ import {
   LegendModule,
 } from 'ag-charts-enterprise'
 import moment from 'moment'
+import { useSelector } from 'react-redux'
 
 ModuleRegistry.registerModules([BarSeriesModule, CategoryAxisModule, NumberAxisModule, LegendModule])
 
@@ -36,13 +37,15 @@ const NoData = () => (
 
 const PnlBarChart = ({ data }) => {
   const [activeTab, setActiveTab] = useState('all_trades')
+  const { userPreferences } = useSelector(state => state.auth)
+  const isDark = userPreferences?.theme === 'dark'
 
   const trades = data?.[activeTab]
   const hasData = trades && trades.length > 0
 
   const chartData = hasData
     ? trades.map(t => ({
-        label: `#${t.row_num}`,
+        label: t.row_num,
         profit: t.profit,
         date: moment(t.createdAt).format('DD MMM'),
         profitPerc: t.profit_perc,
@@ -54,27 +57,31 @@ const PnlBarChart = ({ data }) => {
     data: chartData,
     background: { fill: '#00000000' },
     padding: { top: 10, right: 16, bottom: 10, left: 0 },
-    axes: [
-      {
-        type: 'category',
+    axes: {
+      x: {
+        type: 'number',
         position: 'bottom',
         label: {
           fontSize: 11,
-          color: '#94a3b8',
+          color: isDark ? 'white' : 'black',
           formatter: ({ value }) => value,
         },
         gridLine: { enabled: false },
-        line: { enabled: false },
+        line: { enabled: true },
+        interval: {
+          unit: 'number',
+          step: 2,
+        },
       },
-      {
+      y: {
         type: 'number',
         position: 'left',
         label: {
           fontSize: 11,
-          color: '#94a3b8',
-          formatter: ({ value }) => `₹${value}`,
+          color: isDark ? 'white' : 'black',
+          formatter: ({ value }) => `₹ ${value}`,
         },
-        gridLine: { enabled: true, style: [{ stroke: '#e2e8f022', lineDash: [4, 4] }] },
+        gridLine: { enabled: true, style: [{ stroke: isDark ? '#2e2e2e' : '#e2e8f022', lineDash: [4, 4] }] },
         crossLines: [
           {
             type: 'line',
@@ -84,7 +91,7 @@ const PnlBarChart = ({ data }) => {
           },
         ],
       },
-    ],
+    },
     series: [
       {
         type: 'bar',
@@ -110,14 +117,16 @@ const PnlBarChart = ({ data }) => {
     <div className="glass-card rounded-2xl p-4 flex flex-col h-full min-h-[300px]">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-sm font-bold text-slate-700">P&amp;L Overview</h2>
-        <div className="flex gap-1 bg-white/60 rounded-lg p-0.5 border border-white">
+        <h2 className="text-sm font-bold text-title-text-color">P&amp;L Overview</h2>
+        <div className="flex gap-1 bg-neutral-500/20 rounded-lg p-0.5 border border-white">
           {tabs.map(tab => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
               className={`px-3 py-1 rounded-md text-xs font-semibold transition-all duration-200 ${
-                activeTab === tab.key ? 'primary-gradient text-white shadow' : 'text-slate-500 hover:text-slate-700'
+                activeTab === tab.key
+                  ? 'primary-gradient text-white shadow'
+                  : 'text-sub-title-text-color hover:text-sub-title-text-color'
               }`}
             >
               {tab.label}

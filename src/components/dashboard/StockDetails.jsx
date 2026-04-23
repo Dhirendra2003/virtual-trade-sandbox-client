@@ -27,7 +27,7 @@ const StockDetails = () => {
           <div
             className={`glass-card p-2 rounded-2xl  col-span-3 ${data?.data?.riskMeter ? 'col-span-3' : 'col-span-4'}`}
           >
-            <h3 className="flex items-center justify-between text-md pl-2 font-bold text-slate-800">
+            <h3 className="flex items-center justify-between text-md pl-2 font-bold text-title-text-color">
               {data?.data?.companyName}
               <p className="text-sm  font-normal p-2">Industry:{data?.data?.industry}</p>
             </h3>
@@ -52,7 +52,7 @@ const StockDetails = () => {
       )}
       {data?.data?.peerCompanyList?.length > 0 && (
         <div className="glass-card p-2 rounded-2xl my-4 space-y-2">
-          <h3 className="text-md pl-2 font-bold text-slate-800">Peer companies</h3>
+          <h3 className="text-md pl-2 font-bold text-title-text-color">Peer companies</h3>
           <div className="grid grid-cols-5 ">
             {/* map peerCompanyList */}
             {data?.data?.peerCompanyList?.map((peer, index) => (

@@ -86,7 +86,7 @@ const NotificationRow = ({ icon, label, description, checked, onToggle, type = '
     <div className="flex items-center gap-3">
       <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shrink-0">{icon}</div>
       <div>
-        <p className="text-sm font-semibold text-slate-800">{label}</p>
+        <p className="text-sm font-semibold text-title-text-color">{label}</p>
         {description && <p className="text-xs text-slate-500">{description}</p>}
       </div>
     </div>
@@ -233,7 +233,7 @@ const EditableName = ({ initialName }) => {
 
   return (
     <div className="flex items-center gap-2 mt-1">
-      <h2 className="text-lg font-bold text-slate-800 capitalize">{initialName || 'User Name'}</h2>
+      <h2 className="text-lg font-bold text-title-text-color capitalize">{initialName || 'User Name'}</h2>
       <button
         onClick={() => setEditing(true)}
         className="w-6 h-6 rounded-full hover:bg-gray-100 text-gray-400 hover:text-violet-600 flex items-center justify-center transition-colors"
@@ -357,13 +357,13 @@ const Profile = () => {
   return (
     <div className="p-4 space-y-4">
       {/* Sticky Search Bar */}
-      <div className="glass-bg sticky w-full top-0 py-2 z-50">
+      <div className="search-bar">
         <SearchBar />
       </div>
 
       {/* Page heading */}
       <div className="px-1 pt-2">
-        <h1 className="text-xl font-bold text-slate-700">Account Settings</h1>
+        <h1 className="text-xl font-bold text-sub-title-text-color">Account Settings</h1>
         <p className="text-xs text-slate-400 mt-0.5">Manage your trading preferences and security profile.</p>
       </div>
 
@@ -459,7 +459,7 @@ const Profile = () => {
             <CardContent className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
                 <div>
-                  <p className="text-sm font-semibold text-slate-700">Theme Mode</p>
+                  <p className="text-sm font-semibold text-sub-title-text-color">Theme Mode</p>
                   <p className="text-xs text-slate-500">Switch between light and dark</p>
                 </div>
                 <ThemeToggle value={theme} onChange={setTheme} />
@@ -468,14 +468,14 @@ const Profile = () => {
               <Separator />
 
               <div className="flex flex-col gap-2">
-                <p className="text-sm font-semibold text-slate-700">Default Chart Type</p>
+                <p className="text-sm font-semibold text-sub-title-text-color">Default Chart Type</p>
                 <ChartTypeToggle value={chartType} onChange={setChartType} />
               </div>
 
               <Separator />
 
               <div className="flex flex-col gap-2">
-                <p className="text-sm font-semibold text-slate-700">Default Chart Interval</p>
+                <p className="text-sm font-semibold text-sub-title-text-color">Default Chart Interval</p>
                 <Select value={chartInterval} onValueChange={setChartInterval}>
                   <SelectTrigger className="rounded-xl bg-white border-gray-200">
                     <SelectValue />

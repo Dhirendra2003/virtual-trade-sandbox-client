@@ -152,29 +152,44 @@ export function LoginForm({ className, path, marketState, ...props }) {
           {marketState && (
             <Badge
               variant="secondary"
-              className={`mx-auto font-bold px-3 mb-1 ${marketState?.isMarketOpen ? 'bg-green-100/50 border border-green-200/50 text-green-700' : 'bg-red-100/50 border border-red-200/50 text-red-700'}`}
+              className={`mx-auto font-bold px-3 mb-1 
+                ${
+                  marketState?.isMarketOpen
+                    ? 'bg-green-100/50 dark:bg-green-800/50 border border-green-200/50 text-green-700 dark:text-green-200'
+                    : 'bg-red-100/50 dark:bg-red-800/50 border border-red-200/50 text-red-700 dark:text-red-200'
+                }`}
             >
-              <Activity color={marketState?.isMarketOpen ? '#22c55e' : '#ef4444'} />
+              <Activity
+                className={cn(
+                  marketState?.isMarketOpen ? 'text-green-700 dark:text-green-200' : 'text-red-700 dark:text-red-200'
+                )}
+              />
               {marketState?.isMarketOpen ? 'MARKET OPEN' : 'MARKET CLOSED'}
             </Badge>
           )}
-          <CardTitle className="text-3xl font-bold text-slate-800">Welcome back</CardTitle>
+          <CardTitle className="text-3xl font-bold text-title-text-color">Welcome back</CardTitle>
           <CardDescription className="text-xs">
-            Join 1K+ People practicing trade with <span className="text-black">Virtual Trade Sandbox</span>
+            Join 1K+ People practicing trade with <span className="text-title-text-color">Virtual Trade Sandbox</span>
           </CardDescription>
         </CardHeader>
 
-        <div className="grid  grid-cols-2 w-[90%] p-1 gap-1 items-center mx-auto bg-gray-100 rounded-xl">
+        <div className="grid  grid-cols-2 w-[90%] p-1 gap-1 items-center mx-auto bg-div-bg-color rounded-xl">
           <Button
-            variant={page === 'login' ? 'outline' : 'secondary'}
-            className="col-span-1 hover:bg-white text-slate-800 "
+            variant={page === 'login' ? null : 'secondary'}
+            className={cn(
+              'col-span-1 hover:bg-selected-bg-purple text-title-text-color',
+              page === 'login' && 'border-2 border-purple-500 bg-selected-bg-purple'
+            )}
             onClick={() => nav('/authenticate/login')}
           >
             Login
           </Button>
           <Button
-            variant={page === 'register' ? 'outline' : 'secondary'}
-            className="col-span-1 hover:bg-white text-slate-800"
+            variant={page === 'register' ? null : 'secondary'}
+            className={cn(
+              'col-span-1 hover:bg-selected-bg-purple text-title-text-color',
+              page === 'register' && 'border-2 border-purple-500  bg-selected-bg-purple'
+            )}
             onClick={() => nav('/authenticate/register')}
           >
             Register
@@ -252,7 +267,7 @@ export function LoginForm({ className, path, marketState, ...props }) {
                 </Field>
                 <Button
                   disabled={!formikLogin.isValid}
-                  className="py-5 rounded-lg text-md primary-gradient cursor-pointer"
+                  className="py-5 rounded-lg text-md primary-gradient cursor-pointer dark:text-white"
                   type="submit"
                 >
                   Sign In
@@ -423,15 +438,11 @@ export function LoginForm({ className, path, marketState, ...props }) {
                     <InputGroupInput
                       type="date"
                       name="dateofbirth"
-                      placeholder="9876543210"
                       value={formikRegister.values.dateofbirth}
                       onChange={formikRegister.handleChange}
                       onBlur={formikRegister.handleBlur}
                       required
                     />
-                    {/* <InputGroupAddon>
-                      <Phone />
-                    </InputGroupAddon> */}
                   </InputGroup>
                   {formikRegister.touched.dateofbirth && formikRegister.errors.dateofbirth && (
                     <p className="text-red-500 text-sm">{formikRegister.errors.dateofbirth}</p>
@@ -489,7 +500,7 @@ export function LoginForm({ className, path, marketState, ...props }) {
                   )}
 
                 <Button
-                  className="py-5 rounded-lg text-md primary-gradient cursor-pointer"
+                  className="py-5 rounded-lg text-md primary-gradient cursor-pointer dark:text-white"
                   disabled={!formikRegister.isValid}
                   type="submit"
                 >

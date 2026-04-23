@@ -25,7 +25,7 @@ const PortFolioWindow = () => {
         <h3 className="text-md font-bold mb-2 ">Portfolio Value</h3>
         <IoIosInformationCircle className="w-6 h-6" color="grey" />
       </div>
-      <h1 className="text-3xl font-black tracking-tight text-slate-800">
+      <h1 className="text-3xl font-black tracking-tight text-title-text-color">
         ₹ {portfolioStats && (portfolioStats?.data?.total_current_value).toLocaleString()}
       </h1>
       <span className="flex gap-2  items-center font-medium text-green-600">
@@ -55,19 +55,19 @@ const PortFolioWindow = () => {
         </p>
       </span>
       <div className="flex flex-col gap-4 mt-4">
-        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
+        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-div-bg-color shadow-md shadow-black/10">
           <Landmark className="w-4 " color="#4B50F0" />
           <p className="text-sm">Buying Power</p>
           <h3 className="ml-auto text-lg font-bold">₹ {portfolioStats && portfolioStats?.data?.current_funds}</h3>
         </div>
-        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-white shadow-md shadow-black/10">
+        <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-div-bg-color shadow-md shadow-black/10">
           <FaChartPie className="w-5 " color="#3B82F6" />
           <p className="text-sm">Active Trades</p>
           <h3 className="ml-auto text-lg font-bold">18</h3>
         </div>
         <div className="flex gap-2 justify-between">
           <Button
-            className=" p-6 w-1/2  h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+            className=" p-6 w-1/2  h-10 rounded-xl text-md  text-white primary-gradient cursor-pointer border"
             onClick={() => navigate('/app/portfolio')}
           >
             Portfolio <ArrowUpRight />
