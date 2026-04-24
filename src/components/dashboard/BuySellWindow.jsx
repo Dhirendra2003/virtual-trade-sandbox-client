@@ -69,8 +69,8 @@ const BuySellWindow = () => {
     <div className="col-span-1 glass-card lg:p-4 md:p-2 rounded-2xl">
       <div className="flex  justify-between items-start">
         <div>
-          <p className="text-xs text-slate-500">Symbol</p>
-          <h3 className="text-md font-bold mb-2 text-slate-600 ">{stock?.stock?.trading_symbol}</h3>
+          <p className="text-xs text-faded-bold-text">Symbol</p>
+          <h3 className="text-md font-bold mb-2 text-title-text-color ">{stock?.stock?.trading_symbol}</h3>
         </div>
 
         {!stock?.stock?.isAddedToWatchlist ? (
@@ -118,7 +118,7 @@ const BuySellWindow = () => {
           ₹ {stock?.latestPrice?.toFixed(2).toLocaleString()}{' '}
         </h1>
         <span
-          className={`flex gap-2 text-xs items-center font-semibold ${stockPriceChange > 0 ? 'text-green-600' : 'text-red-600'}`}
+          className={`flex gap-2 text-xs items-center font-semibold ${stockPriceChange > 0 ? 'text-main-green' : '  text-main-red'}`}
         >
           {stockPriceChange > 0 ? <TrendingUp className="w-3 " /> : <TrendingDown className="w-3 " />}
           <p>
@@ -129,10 +129,10 @@ const BuySellWindow = () => {
       <div className="flex flex-col gap-1 mt-2">
         {/* trade type */}
         <div>
-          <label htmlFor="trade-type" className="text-xs md:hidden lg:block lg:py-1 text-slate-500">
+          <label htmlFor="trade-type" className="text-xs md:hidden lg:block lg:py-1 text-faded-bold-text">
             Trade Type
           </label>
-          <div id="trade-type" className="flex w-full justify-between bg-neutral-200 p-2 rounded-2xl">
+          <div id="trade-type" className="flex w-full justify-between bg-sidebar-border p-2 rounded-2xl">
             <Button
               className={cn(
                 'rounded-xl p-4  border-blue-300 hover:bg-purple-800 hover:text-white text-blue-600 w-[48%]',
@@ -157,10 +157,10 @@ const BuySellWindow = () => {
         </div>
         {/* trade duration */}
         <div>
-          <label htmlFor="trade-duration" className="text-xs text-slate-500 md:hidden lg:block lg:py-1">
+          <label htmlFor="trade-duration" className="text-xs text-faded-bold-text md:hidden lg:block lg:py-1">
             Trade Duration
           </label>
-          <div id="trade-duration" className="flex w-full justify-between bg-neutral-200 p-2 rounded-2xl">
+          <div id="trade-duration" className="flex w-full justify-between bg-sidebar-border p-2 rounded-2xl">
             <Button
               className={cn(
                 'rounded-xl p-4  border-blue-300 hover:bg-purple-800 hover:text-white text-blue-600 w-[48%]',
@@ -184,12 +184,14 @@ const BuySellWindow = () => {
           </div>
         </div>
         <div className="">
-          <label htmlFor="quantity" className="text-xs text-slate-500 md:hidden lg:block lg:py-1">
+          <label htmlFor="quantity" className="text-xs text-faded-bold-text md:hidden lg:block lg:py-1">
             Quantity
           </label>
-          <div id="quantity" className="flex  w-full items-center justify-between bg-neutral-200 p-1 rounded-2xl">
+          <div id="quantity" className="flex  w-full items-center justify-between bg-div-bg-color p-1 rounded-2xl">
             <Button
-              className={cn('rounded-xl p-4  border-blue-300 hover:bg-purple-800 hover:text-white text-blue-600 ')}
+              className={cn(
+                'rounded-xl p-4 text-2xl border-blue-300 hover:bg-purple-800 hover:text-white text-blue-600 dark:text-blue-300 '
+              )}
               variant="outline"
               onClick={() => setQuantity(quantity > 0 ? quantity - 1 : 0)}
               disabled={quantity === 0}
@@ -209,7 +211,9 @@ const BuySellWindow = () => {
               className="text-lg w-full mx-4 text-center border-none outline-none focus:border-none focus:outline-none"
             />
             <Button
-              className={cn('rounded-xl p-4  border-blue-300 hover:bg-purple-800 hover:text-white text-blue-600 ')}
+              className={cn(
+                'rounded-xl p-4  text-2xl border-blue-300 hover:bg-purple-800 hover:text-white text-blue-600 dark:text-blue-300'
+              )}
               variant="outline"
               onClick={() => setQuantity(quantity + 1)}
             >

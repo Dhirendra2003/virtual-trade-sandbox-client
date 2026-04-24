@@ -40,8 +40,8 @@ const TradeHistory = () => {
           <span
             className={cn(
               'uppercase bg-white font-semibold px-3 py-1 rounded-xl',
-              row?.original?.trade_type === 'buy' && 'bg-green-300',
-              row?.original?.trade_type === 'sell' && 'bg-red-300'
+              row?.original?.trade_type === 'buy' && 'bg-green-300 dark:bg-green-700',
+              row?.original?.trade_type === 'sell' && 'bg-red-300 dark:bg-red-700'
             )}
           >
             {row?.original?.trade_type}
@@ -73,7 +73,7 @@ const TradeHistory = () => {
         return (
           <span
             className={cn(
-              'uppercase bg-white  px-3 py-1 rounded-xl',
+              'uppercase bg-white dark:bg-neutral-800  px-3 py-1 rounded-xl',
               row?.original?.status === 'executed' && 'text-green-500',
               row?.original?.status === 'failed' && 'text-red-500',
               row?.original?.status === 'pending' && 'text-grey-500',

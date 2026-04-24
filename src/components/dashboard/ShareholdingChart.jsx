@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import { AgCharts } from 'ag-charts-react'
 import {
   BarSeriesModule,
@@ -34,6 +35,8 @@ function transformShareholding(shareholding = []) {
 }
 
 const ShareholdingChart = ({ shareholding = [] }) => {
+  const { userPreferences } = useSelector(state => state.auth)
+  const isDark = userPreferences?.theme === 'dark'
   const { rows, allDates } = transformShareholding(shareholding)
 
   // Build one bar series per holdingDate
@@ -61,27 +64,37 @@ const ShareholdingChart = ({ shareholding = [] }) => {
     data: rows,
     background: { fill: 'transparent' },
     series,
-    axes: [
-      {
+    axes: {
+      x: {
         type: 'category',
         position: 'bottom',
+        label: {
+          color: isDark ? 'white' : 'black',
+        },
       },
-      {
+      y: {
         type: 'number',
         position: 'left',
         label: {
+          color: isDark ? 'white' : 'black',
           formatter: ({ value }) => `${value}%`,
         },
         min: 0,
         max: 100,
-        gridLine: { enabled: true },
+        gridLine: {
+          enabled: true,
+          style: [{ stroke: isDark ? '#2e2e2e' : '#e2e8f022', lineDash: [4, 4] }],
+        },
       },
-    ],
+    },
     legend: {
       enabled: true,
       position: 'bottom',
       item: {
-        label: { fontSize: 12 },
+        label: {
+          fontSize: 12,
+          color: isDark ? 'white' : 'black',
+        },
         marker: { size: 10, shape: 'circle' },
       },
     },

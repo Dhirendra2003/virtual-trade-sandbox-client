@@ -20,7 +20,7 @@ export default function AlertTradeSummary({
   button,
   disabled,
   triggerText = 'Place Trade',
-  triggerClassName = 'py-5 rounded-xl text-md mt-2 primary-gradient cursor-pointer',
+  triggerClassName = 'py-5 rounded-xl text-md mt-2 primary-gradient cursor-pointer text-white',
   triggerVariant,
   dialogTitle = 'Do you want to place this trade?',
 }) {

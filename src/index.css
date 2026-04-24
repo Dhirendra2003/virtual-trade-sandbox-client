@@ -204,6 +204,14 @@
   color: #49176d;
   margin: 0;
 }
+.dark .riskometer-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ab36ff;
+  margin: 0;
+}
 
 .riskometer-svg {
   width: 100%;
@@ -221,6 +229,23 @@
   border-radius: 999px;
   border: 1.5px solid;
   background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  transition:
+    color 0.4s,
+    border-color 0.4s;
+}
+.dark .riskometer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1.5px solid;
+  background: rgba(55, 55, 55, 0.6);
   backdrop-filter: blur(8px);
   white-space: nowrap;
   letter-spacing: 0.02em;

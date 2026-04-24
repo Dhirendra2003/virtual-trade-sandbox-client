@@ -32,7 +32,9 @@ const StockDetails = () => {
               <p className="text-sm  font-normal p-2">Industry:{data?.data?.industry}</p>
             </h3>
 
-            <p className={`text-sm text-slate-500  m-2 ${showMore ? '' : 'line-clamp-2 leading-snug'}`}>
+            <p
+              className={`text-sm text-slate-600 dark:text-slate-400  m-2 ${showMore ? '' : 'line-clamp-2 leading-snug'}`}
+            >
               {data?.data?.companyDescription || 'No Data Available'}
             </p>
             <button
@@ -57,7 +59,7 @@ const StockDetails = () => {
             {/* map peerCompanyList */}
             {data?.data?.peerCompanyList?.map((peer, index) => (
               <div key={index} className="flex  flex-col items-center justify-start gap-2 ">
-                <img src={peer?.imageUrl} className="h-16 w-16 object-contain rounded-full shadow-md" alt="" />
+                <img src={peer?.imageUrl} className="h-17 w-17 object-contain rounded-full shadow-md border-2" alt="" />
                 <p className="text-xs capitalize text-center">{peer?.companyName}</p>
               </div>
             ))}

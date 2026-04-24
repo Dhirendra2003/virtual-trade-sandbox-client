@@ -68,7 +68,9 @@ const PaymentBox = () => {
           <CheckCircle2 className="w-12 h-12 text-green-600" />
         </div>
         <h2 className="text-2xl font-black text-title-text-color">Funds Added!</h2>
-        <p className="text-slate-500 text-sm">₹{Number(amount).toLocaleString()} has been added to your wallet.</p>
+        <p className="text-faded-bold-text text-sm">
+          ₹{Number(amount).toLocaleString()} has been added to your wallet.
+        </p>
         <Button
           onClick={() => {
             setPaymentSuccess(false)
@@ -84,14 +86,14 @@ const PaymentBox = () => {
 
   return (
     <div className="glass-card p-6 space-y-6 rounded-2xl max-w-2xl mx-auto shadow-xl">
-      <div className="flex justify-between items-center bg-slate-50/50 p-4 rounded-xl">
+      <div className="flex justify-between items-center bg-div-bg-color/50 p-4 rounded-xl">
         <div>
           <h2 className="text-xl font-bold text-title-text-color">Add Funds to Wallet</h2>
           <p className="text-xs text-slate-400 mt-0.5 font-medium">Instant transfer to your trading account</p>
         </div>
         <div className="text-right">
-          <p className="text-neutral-500 uppercase tracking-widest text-[10px] font-bold">Current Funds</p>
-          <p className="text-2xl font-black text-green-700 tracking-tight">
+          <p className="text-faded-bold-text uppercase tracking-widest text-[10px] font-bold">Current Funds</p>
+          <p className="text-2xl font-black text-main-green tracking-tight">
             <FormattedAmount amount={data?.user?.actualFunds} decimalClassName="ml-[2px]" />
           </p>
         </div>
@@ -109,7 +111,7 @@ const PaymentBox = () => {
                 <button
                   key={amt}
                   onClick={() => setAmount(prev => Number(prev) + amt)}
-                  className="flex-1 py-3 px-4 border-2 border-green-200 rounded-full text-green-600 font-bold bg-green-100/50 cursor-pointer transition-all text-center whitespace-nowrap hover:scale-105 hover:bg-green-200/50 active:scale-95 active:bg-green-300/50"
+                  className="flex-1 py-3 px-4 border-2 border-green-200 dark:border-green-700 rounded-full text-main-green font-bold bg-green-100/50 dark:bg-green-900/50 cursor-pointer transition-all text-center whitespace-nowrap hover:scale-105 hover:bg-green-200/50 active:scale-95 active:bg-green-300/50"
                 >
                   + ₹ {amt.toLocaleString()}
                 </button>
@@ -121,8 +123,8 @@ const PaymentBox = () => {
               <label htmlFor="quantity" className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1">
                 Amount to be added
               </label>
-              <div className="flex items-center bg-slate-100 p-2 rounded-2xl border-2 border-transparent focus-within:border-indigo-400 transition-all shadow-inner">
-                <div className="p-2 bg-white rounded-xl shadow-sm">
+              <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-2 rounded-2xl border-2 border-transparent focus-within:border-indigo-400 transition-all shadow-inner">
+                <div className="p-2  rounded-xl ">
                   <IndianRupee className="w-5 h-5 text-indigo-600" />
                 </div>
                 <Input
@@ -135,7 +137,7 @@ const PaymentBox = () => {
                       setAmount(value)
                     }
                   }}
-                  className="text-3xl font-bold bg-transparent border-none shadow-none outline-none focus-visible:ring-0 h-auto py-2 px-4"
+                  className="text-3xl font-bold  border-none shadow-none outline-none focus-visible:ring-0 h-auto py-2 px-4"
                   placeholder="0"
                 />
               </div>
@@ -150,7 +152,7 @@ const PaymentBox = () => {
             <div className="grid grid-cols-2 gap-4">
               {/* UPI Method – coming soon */}
               <div
-                className="relative flex items-center p-4 rounded-2xl border-2 cursor-not-allowed transition-all gap-3 border-slate-100 bg-slate-50/50 grayscale opacity-50"
+                className="relative flex items-center p-4 rounded-2xl border-2 cursor-not-allowed transition-all gap-3 border-slate-100/50 bg-slate-50/20 grayscale opacity-50"
                 title="Coming soon"
               >
                 <div className="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center shadow-inner">
@@ -169,8 +171,8 @@ const PaymentBox = () => {
                 className={cn(
                   'relative flex items-center p-4 rounded-2xl border-2 cursor-pointer transition-all gap-3',
                   paymentMethod === 'card'
-                    ? 'border-indigo-500 bg-white'
-                    : 'border-slate-100 bg-slate-50/50 grayscale opacity-70'
+                    ? 'border-indigo-500 bg-div-bg-color'
+                    : 'border-slate-100 bg-slate-50/50 grayscale opacity-50'
                 )}
               >
                 <div className="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center shadow-inner">
@@ -186,21 +188,21 @@ const PaymentBox = () => {
                     paymentMethod === 'card' ? 'border-indigo-500' : 'border-slate-300'
                   )}
                 >
-                  {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-indigo-500 rounded-full" />}
+                  {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-indigo-500  rounded-full" />}
                 </div>
               </div>
             </div>
 
             {/* Gateways info bar */}
-            <div className="flex items-center justify-between px-6 py-4 bg-white border border-slate-100 rounded-xl shadow-sm">
+            <div className="flex items-center justify-between px-6 py-4 bg-div-bg-color/50 border border-sidebar-ring rounded-xl shadow-sm">
               <div className="flex items-center gap-4">
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[2px]">Gateways</span>
+                <span className="text-[10px] font-black text-faded-bold-text uppercase tracking-[2px]">Gateways</span>
                 <div className="flex gap-3 items-center opacity-60">
-                  <span className="text-sm font-black italic text-indigo-800">Razorpay</span>
-                  <span className="text-sm font-bold text-slate-600">stripe</span>
+                  <span className="text-sm font-black italic text-indigo-800 dark:text-indigo-400">Razorpay</span>
+                  <span className="text-sm font-bold text-title-text-color ">stripe</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-slate-500 hover:text-indigo-600 cursor-pointer transition-colors">
+              <div className="flex items-center gap-2 text-title-text-color hover:text-indigo-600 cursor-pointer transition-colors">
                 <Landmark className="w-4 h-4" />
                 <span className="text-xs font-bold">Net Banking</span>
               </div>
@@ -212,7 +214,7 @@ const PaymentBox = () => {
             <Button
               onClick={handleAddFunds}
               disabled={paymentLoading || !amount || Number(amount) <= 0}
-              className="w-full h-16 rounded-2xl shadow-xl shadow-indigo-200 bg-[#3d1466] hover:bg-[#2d0f4d] text-white font-bold text-xl gap-2 transition-all active:scale-[0.98] disabled:opacity-60"
+              className="w-full h-16 rounded-2xl shadow-xl shadow-indigo-200 dark:shadow-none primary-gradient  text-white font-bold text-xl gap-2 transition-all active:scale-[0.98] disabled:opacity-60"
             >
               {paymentLoading ? (
                 <>
@@ -226,7 +228,7 @@ const PaymentBox = () => {
             </Button>
 
             <div className="flex items-center justify-center gap-6 text-[10px] font-bold uppercase tracking-widest text-slate-400">
-              <div className="flex items-center gap-1.5 bg-green-50 text-green-600 px-3 py-1.5 rounded-full">
+              <div className="flex items-center gap-1.5 bg-green-50 dark:bg-green-950 text-green-600 px-3 py-1.5 rounded-full">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 Safe and Secure
               </div>
