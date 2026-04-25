@@ -360,7 +360,7 @@ const Profile = () => {
   const avatarSrc = croppedPfp?.url || user?.profilePicURL || 'https://github.com/shadcn.png'
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="p-2 space-y-4">
       {/* Sticky Search Bar */}
       <div className="search-bar">
         <SearchBar />

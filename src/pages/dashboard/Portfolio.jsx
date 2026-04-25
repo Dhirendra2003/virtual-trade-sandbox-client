@@ -94,11 +94,25 @@ const Portfolio = () => {
         const ogRow = row?.original
         const pnl = (ogRow?.ltp?.last_price * ogRow?.qty - Math.abs(ogRow?.investment)).toFixed(2)
         return (
-          <div className="ml-auto flex flex-col ">
+          <div className="ml-auto flex gap-4 items-center">
+            <Tooltip>
+              <TooltipTrigger
+                onClick={e => {
+                  e.preventDefault()
+                  navigate(`/app/stock/${ogRow.instrument_key}`)
+                }}
+                className={`cursor-pointer hover:bg-green-200 hover:dark:bg-green-700  hover:scale-105 transition-all duration-200 h-9 w-9 flex items-center justify-center  bg-div-bg-color shadow-md shadow-black/10 p-1.5 rounded-lg`}
+              >
+                <SquareArrowOutUpRight className="w-4 h-4 text-green-500 dark:text-green-400" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Go to Trade</p>
+              </TooltipContent>
+            </Tooltip>
             <AlertTradeSummary
               triggerText="Settle"
               triggerVariant="outline"
-              triggerClassName="rounded-xl p-4 transition-all duration-500 ease-in-out dark:text-purple-400 dark:border-purple-500 cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700 hover:primary-gradient hover:dark:bg-purple-500 hover:dark:text-white"
+              triggerClassName="rounded-xl px-4 py-2 h-9 flex items-center transition-all duration-500 ease-in-out dark:text-purple-400 dark:border-purple-500 cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700 hover:primary-gradient hover:dark:bg-purple-500 hover:dark:text-white"
               dialogTitle="Do you want to settle this trade?"
               data={{
                 // tradeType: ogRow?.trade_type,
@@ -277,7 +291,7 @@ const Portfolio = () => {
   })
 
   return (
-    <div className="p-4 space-y-4 ">
+    <div className="p-2 space-y-4 ">
       <div className="search-bar">
         <SearchBar />
       </div>
@@ -309,6 +323,13 @@ const Portfolio = () => {
                 title="Open Orders"
               />
             )}
+            {(!portfolioData?.data?.intraday || portfolioData?.data?.intraday?.length === 0) &&
+              (!portfolioData?.data?.delivery || portfolioData?.data?.delivery?.length === 0) &&
+              (!portfolioData?.data?.open_orders || portfolioData?.data?.open_orders?.length === 0) && (
+                <div className="flex justify-center items-center p-8 glass-card rounded-2xl text-muted-foreground mt-4">
+                  <p>no trades or holdings or open orders to show</p>
+                </div>
+              )}
           </>
         )}
       </div>

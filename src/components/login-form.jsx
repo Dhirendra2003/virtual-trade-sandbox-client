@@ -20,7 +20,7 @@ import { FcGoogle } from 'react-icons/fc'
 import { FaFacebookSquare } from 'react-icons/fa'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { loginAction, registerAction } from '@/pages/auth/actions'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -225,9 +225,9 @@ export function LoginForm({ className, path, marketState, ...props }) {
                 <Field>
                   <div className="flex items-center">
                     <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <a href="#" className="ml-auto  text-sm underline-offset-4 hover:underline">
+                    <Link to="/forgot-password" className="ml-auto text-sm underline-offset-4 hover:underline">
                       Forgot your password?
-                    </a>
+                    </Link>
                   </div>
 
                   <InputGroup className="bg-white">

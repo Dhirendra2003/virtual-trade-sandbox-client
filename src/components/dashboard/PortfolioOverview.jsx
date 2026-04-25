@@ -64,6 +64,7 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
                 <Button
                   size="sm"
                   className="h-10 rounded-lg  font-semibold text-sm primary-gradient cursor-pointer text-white"
+                  onClick={() => navigate('/app/add-funds')}
                 >
                   Add Funds
                 </Button>

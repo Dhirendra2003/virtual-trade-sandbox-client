@@ -10,9 +10,12 @@ import ErrorPage from './error/ErrorPage'
 import Watchlist from './dashboard/Watchlist'
 import Portfolio from './dashboard/Portfolio'
 import TradeHistory from './dashboard/TradeHistory'
+import AllNotifications from './dashboard/AllNotifications'
 import Analytics from './dashboard/Analytics'
 import Profile from './dashboard/Profile'
 import AddFunds from './dashboard/AddFunds'
+import ForgotPasswordPage from './auth/ForgotPasswordPage'
+import ResetPasswordPage from './auth/ResetPasswordPage'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -37,6 +40,14 @@ const AppRoutes = () => {
       element: <RequestUserData />,
     },
     {
+      path: '/forgot-password',
+      element: <ForgotPasswordPage />,
+    },
+    {
+      path: '/reset-password',
+      element: <ResetPasswordPage />,
+    },
+    {
       path: '/app',
       element: (
         <RouteProtector>
@@ -50,6 +61,7 @@ const AppRoutes = () => {
         { path: 'portfolio', element: <Portfolio /> },
         { path: 'analytics', element: <Analytics /> },
         { path: 'trade-history', element: <TradeHistory /> },
+        { path: 'notifications', element: <AllNotifications /> },
         { path: 'profile', element: <Profile /> },
         {
           path: 'add-funds',

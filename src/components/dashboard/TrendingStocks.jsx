@@ -46,7 +46,8 @@ const TrendingStocks = ({ type = 'gainers' }) => {
   const { data } = useQuery({
     queryKey: ['treding-stocks'],
     queryFn: getTredingStocks,
-    staleTime: 1000 * 60 * 30,
+    staleTime: 1000 * 60 * 60,
+    placeholderData: data => data,
   })
 
   // Group our stocks list depending on the prop

@@ -60,6 +60,7 @@
   --color-faded-bold-text: var(--faded-bold-text);
   --color-main-green: var(--main-green);
   --color-main-red: var(--main-red);
+  --color-skeletons-bg: var(--skeletons-bg);
 }
 
 :root {
@@ -103,6 +104,7 @@
   --faded-bold-text: oklch(43.9% 0 0);
   --main-green: oklch(62.7% 0.194 149.214);
   --main-red: oklch(57.7% 0.245 27.325);
+  --skeletons-bg: oklch(97% 0 0);
 }
 
 .dark {
@@ -145,6 +147,7 @@
   --faded-bold-text: oklch(95.514% 0.00011 271.152);
   --main-green: oklch(77.613% 0.23385 146.515);
   --main-red: oklch(63.7% 0.237 25.331);
+  --skeletons-bg: oklch(43.9% 0 0);
 }
 
 @layer base {
@@ -155,7 +158,7 @@
     @apply bg-background text-foreground;
   }
   .search-bar {
-    @apply sticky w-full top-0 py-2 z-50;
+    @apply sticky w-full top-2  z-50;
   }
 }
 

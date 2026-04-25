@@ -5,6 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getUserNotifications, markAllNotificationsAsRead } from '@/pages/dashboard/actions'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom'
 
 const typeConfig = {
   success: {
@@ -50,6 +51,7 @@ const NotificationItem = ({ notification }) => {
 }
 const Notifications = () => {
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const {
     data: notifications,
@@ -92,19 +94,29 @@ const Notifications = () => {
           </h4>
           {notifications?.data.length > 0 ? (
             <>
-              <div className="flex flex-col gap-2  max-h-[300px] overflow-y-auto">
+              <div className="flex flex-col gap-2  sm:max-h-[150px] md:max-h-[200px] lg:max-h-[60vh] overflow-y-auto">
                 {notifications?.data?.map(notification => (
                   <NotificationItem key={notification.id} notification={notification} />
                 ))}
               </div>
-              <Button
-                disabled={!hasUnread || isPending}
-                className="h-10 w-full rounded-xl text-md mt-2 primary-gradient cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-white"
-                type="button"
-                onClick={() => markAllRead()}
-              >
-                {isPending ? 'Marking...' : 'Mark All as Read'}
-              </Button>
+              <div className="flex gap-2 mt-2 w-full">
+                <Button
+                  disabled={!hasUnread || isPending}
+                  className="h-10 w-1/2 rounded-xl text-xs sm:text-sm primary-gradient cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-white"
+                  type="button"
+                  onClick={() => markAllRead()}
+                >
+                  {isPending ? 'Marking...' : 'Mark All as Read'}
+                </Button>
+                <Button
+                  variant="outline"
+                  className="h-10 w-1/2 rounded-xl text-xs sm:text-sm cursor-pointer"
+                  type="button"
+                  onClick={() => navigate('/app/notifications')}
+                >
+                  See all notifications
+                </Button>
+              </div>
             </>
           ) : (
             <div className="text-center text-lg text-gray-500 italic">No notifications</div>

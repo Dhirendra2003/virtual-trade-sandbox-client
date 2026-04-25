@@ -212,6 +212,15 @@ const getUserNotifications = async () => {
     throw error
   }
 }
+const getAllUserNotifications = async () => {
+  try {
+    const response = await axiosInstance.get(`/notification/get-all-user-notifications`)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
 const markAllNotificationsAsRead = async () => {
   try {
     const response = await axiosInstance.post(`/notification/mark-all-notifications-as-read`, {})
@@ -262,6 +271,7 @@ export {
   settleTrade,
   getUserAnalytics,
   getUserNotifications,
+  getAllUserNotifications,
   markAllNotificationsAsRead,
   downloadUserAnalyticsReport,
 }

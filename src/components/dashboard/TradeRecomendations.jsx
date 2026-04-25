@@ -55,7 +55,8 @@ const TradeRecomendations = () => {
     queryKey: ['daily-recommendations'],
     queryFn: getDailyRecommendations,
     enabled: true,
-    staleTime: 1000 * 60 * 30,
+    staleTime: 1000 * 60 * 60,
+    placeholderData: data => data,
   })
   const top3 = data?.data?.slice(0, 2) || []
   const extraStocks = data?.data?.slice(2, 10) || []

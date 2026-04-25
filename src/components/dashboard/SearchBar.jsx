@@ -19,14 +19,17 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { searchStock } from '../../pages/dashboard/actions'
+import { getUserStartingFunds } from '../../pages/auth/actions'
 import { toast } from 'sonner'
 import { LoaderIcon } from 'lucide-react'
 import Skeleton from '../common/Skeleton'
 import Notifications from './Notifications'
+import { axiosInstance } from '../../API/axios'
+import { useDispatch } from 'react-redux'
+import { clearState } from '@/store/slices/authSlice'
 
 const SearchBar = () => {
-  // const stockData = useLocation()
-  // console.log('stockData', stockData)
+  const dispatch = useDispatch()
   const [query, setQuery] = useState('')
   const [debounceQuery, setDebounceQuery] = useState('')
   const [isInputFocused, setIsInputFocused] = useState(false)
@@ -39,6 +42,11 @@ const SearchBar = () => {
 
     // placeholderData: previousData => previousData,
     // staleTime: 1000 * 60 * 5, // Data
+  })
+
+  const { data: userFunds, isPending: fundsPending } = useQuery({
+    queryKey: ['UserFunds'],
+    queryFn: () => getUserStartingFunds(),
   })
 
   useEffect(() => {
@@ -67,16 +75,23 @@ const SearchBar = () => {
   console.log(user)
 
   return (
-    <div className=" rounded-2xl  glass-card flex items-center justify-between py-2 px-6">
-      <SidebarTrigger className="-ml-1" />
-      <div className="flex items-center gap-2 ">
-        <img src={Logo} alt="Virtual Trade Sandbox " className="h-10 w-10  " />
-        <h1 className="text-xs/3 font-bold text-title-text-color">
-          Virtual <br /> Trade <br /> Sandbox
-        </h1>
+    <div className=" rounded-2xl  glass-card flex items-center justify-between py-3 px-6">
+      <div className="flex items-center gap-4 cursor-pointer">
+        <SidebarTrigger className="-ml-1" />
+        <div
+          onClick={() => {
+            navigate('/app/home')
+          }}
+          className="flex items-center gap-2 "
+        >
+          <img src={Logo} alt="Virtual Trade Sandbox " className="h-10 w-10  " />
+          <h1 className="text-xs/3 font-bold text-title-text-color">
+            Virtual <br /> Trade <br /> Sandbox
+          </h1>
+        </div>
       </div>
       <div className="w-96">
-        <InputGroup className="bg-white --border-purple-500 max-w-sm shadow-none">
+        <InputGroup className="bg-white  max-w-sm shadow-none">
           <InputGroupInput
             placeholder="Stocks , mutual funds , options"
             required
@@ -94,10 +109,10 @@ const SearchBar = () => {
         </InputGroup>
         {isInputFocused &&
           (query.length > 0 ? (
-            <div className="absolute top-full w-96 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+            <div className="absolute top-full w-96 mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
               {isPending ? (
                 Array.from({ length: 5 }).map((_, index) => (
-                  <div className="p-2 hover:bg-gray-100 cursor-pointer my-1" key={index}>
+                  <div className="p-2 hover:bg-selected-bg-purple cursor-pointer my-1" key={index}>
                     <Skeleton type="search" />
                     {/* <Separator /> */}
                   </div>
@@ -115,7 +130,7 @@ const SearchBar = () => {
                         setDebounceQuery('')
                       }, 100)
                     }}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-selected-bg-purple cursor-pointer"
                     key={stock?.instrument_key}
                   >
                     {stock?.name}
@@ -128,7 +143,7 @@ const SearchBar = () => {
               )}
             </div>
           ) : (
-            <div className="absolute top-full  w-96 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+            <div className="absolute top-full  w-96 mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
               <h1 className="p-2 text-slate-500">type something .... </h1>
             </div>
           ))}
@@ -144,14 +159,30 @@ const SearchBar = () => {
               <h2 className="font-bold capitalize pt-1">{user?.name || 'User name'}</h2>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-32">
+          <DropdownMenuContent className="w-48">
             <DropdownMenuGroup>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem>
+                <div className="w-full text-center">
+                  <p className="">Available Funds :</p>
+                  <p className="text-main-green text-lg font-bold">₹ {userFunds?.user?.funds}</p>
+                </div>
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
+            <DropdownMenuGroup
+              onClick={() => {
+                axiosInstance
+                  .get('/user/logout')
+                  .then(res => {
+                    console.log(res)
+                    dispatch(clearState())
+                    navigate('/authenticate/login')
+                  })
+                  .catch(err => {
+                    console.log(err)
+                  })
+              }}
+            >
               <DropdownMenuItem variant="destructive">Log out</DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

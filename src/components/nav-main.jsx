@@ -32,7 +32,9 @@ export default function NavMain({ items, currentPath }) {
               >
                 <Link to={item.url} className="bg-purple-600 text-white">
                   {item.icon && (
-                    <item.icon className={`${currentPath === item.key ? 'text-white' : 'text-purple-700'}`} />
+                    <item.icon
+                      className={`${currentPath === item.key ? 'text-white' : 'text-purple-700 dark:text-purple-400'}`}
+                    />
                   )}
                   <span className="">{item.title}</span>
                 </Link>

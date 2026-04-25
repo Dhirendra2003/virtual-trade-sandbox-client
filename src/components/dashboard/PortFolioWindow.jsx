@@ -49,7 +49,9 @@ const PortFolioWindow = () => {
               <TrendingDown className="w-3" />
             )}
             {portfolioStats &&
-              ((portfolioStats?.data?.unrealized_pnl / portfolioStats?.data?.total_invested) * 100).toFixed(2)}
+              (portfolioStats?.data?.total_invested > 0
+                ? ((portfolioStats?.data?.unrealized_pnl / portfolioStats?.data?.total_invested) * 100).toFixed(2)
+                : '0.00')}
             %)
           </span>
         </p>
@@ -63,7 +65,7 @@ const PortFolioWindow = () => {
         <div className="flex  items-center justify-start gap-3 p-3 rounded-xl bg-div-bg-color shadow-md shadow-black/10">
           <FaChartPie className="w-5 " color="#3B82F6" />
           <p className="text-sm">Active Trades</p>
-          <h3 className="ml-auto text-lg font-bold">18</h3>
+          <h3 className="ml-auto text-lg font-bold">{portfolioStats && portfolioStats?.data?.positions_count}</h3>
         </div>
         <div className="flex gap-2 justify-between">
           <Button

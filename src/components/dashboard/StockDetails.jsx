@@ -14,7 +14,8 @@ const StockDetails = () => {
     queryKey: ['stock-info', stockSymbol],
     queryFn: () => getStockInfo(stockSymbol),
     enabled: !!stockSymbol,
-    staleTime: 60 * 60 * 1000,
+    staleTime: 1000 * 60 * 60,
+    placeholderData: data => data,
   })
   const [showMore, setShowMore] = useState(false)
 

@@ -20,6 +20,29 @@ const registerAction = async formData => {
   }
 }
 
+const forgotPasswordAction = async email => {
+  try {
+    const response = await axiosInstance.post('/auth/forgot-password', { email })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+const resetPasswordWithTokenAction = async ({ token, newPassword }) => {
+  try {
+    const response = await axiosInstance.post('/auth/reset-password', {
+      token,
+      newPassword,
+    })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 // ─── Reset Password ─────────────────────────────────────────────────────────
 const resetPasswordAction = async ({ oldPassword, newPassword }) => {
   try {
@@ -103,6 +126,8 @@ const confirmPaymentAction = async (paymentIntentId) => {
 export {
   loginAction,
   registerAction,
+  forgotPasswordAction,
+  resetPasswordWithTokenAction,
   resetPasswordAction,
   updateProfilePictureAction,
   updateDisplayNameAction,
