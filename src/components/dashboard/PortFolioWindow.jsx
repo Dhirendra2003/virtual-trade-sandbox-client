@@ -6,18 +6,15 @@ import { useQuery } from '@tanstack/react-query'
 import { getUserPortfolioStats } from '../../pages/dashboard/actions'
 import { cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
+import { useMarketStatus } from '@/hooks/use-market-status'
 
 const PortFolioWindow = () => {
   const navigate = useNavigate()
-  const {
-    data: portfolioStats,
-    isLoading: isLoadingStats,
-    isError: isErrorStats,
-    refetch: refetchPortfolioStats,
-  } = useQuery({
+  const { isMarketLive } = useMarketStatus()
+  const { data: portfolioStats } = useQuery({
     queryKey: ['portfolio-stats'],
     queryFn: getUserPortfolioStats,
-    refetchInterval: 5000,
+    refetchInterval: isMarketLive ? 10000 : 60000,
   })
   return (
     <div className="col-span-1 h-full glass-card p-4 rounded-2xl overflow-hidden">
@@ -26,7 +23,7 @@ const PortFolioWindow = () => {
         <IoIosInformationCircle className="w-6 h-6" color="grey" />
       </div>
       <h1 className="text-3xl font-black tracking-tight text-title-text-color">
-        ₹ {portfolioStats && (portfolioStats?.data?.total_current_value).toLocaleString()}
+        ₹ {portfolioStats?.data?.total_current_value?.toLocaleString?.() ?? 0}
       </h1>
       <span className="flex gap-2  items-center font-medium text-green-600">
         <p
@@ -35,7 +32,7 @@ const PortFolioWindow = () => {
             portfolioStats && portfolioStats?.data?.unrealized_pnl > 0 ? 'text-green-600' : 'text-red-500'
           )}
         >
-          <p>₹ {portfolioStats && (portfolioStats?.data?.unrealized_pnl).toLocaleString()} </p>
+          <p>₹ {portfolioStats?.data?.unrealized_pnl?.toLocaleString?.() ?? 0} </p>
           <span
             className={cn(
               'flex items-center gap-0.5 tracking-tight',

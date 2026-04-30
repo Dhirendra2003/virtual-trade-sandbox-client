@@ -24,6 +24,7 @@ import moment from 'moment/moment.js'
 import { Spinner } from '@/components/ui/spinner'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLatestPrice, clearStockState, setStock, setLTPdata } from '../../store/slices/stockSlice'
+import { useMarketStatus } from '@/hooks/use-market-status'
 
 // Map profile interval strings to numeric minutes used by the chart API
 const INTERVAL_TO_MINUTES = { '1m': 1, '5m': 5, '15m': 15, '30m': 30, '1h': 60 }
@@ -45,6 +46,7 @@ ModuleRegistry.registerModules([
 
 const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
   const dispatch = useDispatch()
+  const { isMarketLive } = useMarketStatus()
 
   useEffect(() => {
     // console.log('stockId', stockId)
@@ -52,7 +54,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
     if (!stockId) {
       dispatch(clearStockState())
     }
-  }, [stockId])
+  }, [dispatch, stockId])
   const daysRangeOptions = [
     { label: '5 Days', value: 5 },
     { label: '10 Days', value: 10 },
@@ -72,15 +74,13 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
   const [timeFrame, setTimeframe] = useState(defaultTimeFrame)
   const [daysRange, setDaysRange] = useState(daysRangeOptions[0].value)
   const [chartType, setChartType] = useState(defaultChartType)
-  const [daysArray, setDaysArray] = useState(new Set())
   const [maximize, setMaximize] = useState(false)
   const stockCode = stockId || 'NSE_INDEX|Nifty 50'
   // Date range for chart data — adjust as needed
-  const [to, setTo] = useState(moment().format('YYYY-MM-DD'))
+  const to = moment().format('YYYY-MM-DD')
   const from = moment()
     .subtract(daysRange - 1, 'days')
     .format('YYYY-MM-DD')
-  const [data, setData] = useState(null)
   // Custom dropdown open state (no portals — works in fullscreen)
   const [timeFrameOpen, setTimeFrameOpen] = useState(false)
   const [daysRangeOpen, setDaysRangeOpen] = useState(false)
@@ -97,22 +97,23 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
     enabled: !!stockCode && !!timeFrame && !!from && !!to,
     // gcTime: 0,
     staleTime: 1000 * 15,
-    // refetchInterval: 5000,
-    refetchInterval: 50000,
+    refetchInterval: isMarketLive ? 10000 : 60000,
+    // refetchInterval: 50000,
     placeholderData: previousData => previousData,
   })
+
+  const data = React.useMemo(() => stockChartData?.data ?? [], [stockChartData?.data])
+  const daysArray = React.useMemo(() => new Set(stockChartData?.days ?? []), [stockChartData?.days])
 
   // Sync chart data from React Query response (onSuccess is deprecated in RQ v5)
   useEffect(() => {
     if (stockChartData?.data) {
-      setData(stockChartData.data)
       //set latest price in redux
       dispatch(setStock({ ...stockChartData.stockDetails, isAddedToWatchlist: stockChartData.isAddedToWatchlist }))
       dispatch(setLatestPrice(stockChartData.data[0].close))
       dispatch(setLTPdata(stockChartData?.stockLTPobject))
-      setDaysArray(new Set(stockChartData.days))
     }
-  }, [stockChartData])
+  }, [dispatch, stockChartData])
 
   // ── Compute dynamic Y-axis bounds for line/area charts ──────────────────
   // Candlestick series auto-fits, but line/area starts from 0 by default.
@@ -135,13 +136,6 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
     return { min: lo - padding, max: hi + padding }
   }, [data, chartType])
 
-  useEffect(() => {
-    document.addEventListener('fullscreenchange', exitHandler, false)
-    return () => {
-      document.removeEventListener('fullscreenchange', exitHandler, false)
-    }
-  }, [])
-
   function exitHandler() {
     if (!document.fullscreenElement) {
       console.log('exited')
@@ -154,6 +148,13 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
       setMaximize(true)
     }
   }
+
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', exitHandler, false)
+    return () => {
+      document.removeEventListener('fullscreenchange', exitHandler, false)
+    }
+  }, [])
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -367,7 +368,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
             <span className="text-purple-700">{timeFrameOpen ? '▲' : '▼'}</span>
           </button>
           {timeFrameOpen && (
-            <div className="absolute top-full mt-1 left-0 bg-div-bg-color border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
+            <div className="absolute top-full mt-1 left-0 bg-div-bg-color border border-purple-200 rounded-lg shadow-xl z-9999 min-w-28 overflow-hidden">
               <p className="text-xs text-slate-500 px-3 pt-2 pb-1 font-semibold">Time Frame</p>
               {timeFrameOptions.map(option => (
                 <button
@@ -406,7 +407,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
             <span className="text-purple-700">{daysRangeOpen ? '▲' : '▼'}</span>
           </button>
           {daysRangeOpen && (
-            <div className="absolute top-full mt-1 left-0 bg-div-bg-color border border-purple-200 rounded-lg shadow-xl z-[9999] min-w-28 overflow-hidden">
+            <div className="absolute top-full mt-1 left-0 bg-div-bg-color border border-purple-200 rounded-lg shadow-xl z-9999 min-w-28 overflow-hidden">
               <p className="text-xs text-slate-500 px-3 pt-2 pb-1 font-semibold">Days Range</p>
               {daysRangeOptions.map(option => (
                 <button

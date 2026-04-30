@@ -2,7 +2,7 @@ import React from 'react'
 import { getDailyRecommendations } from '../../pages/dashboard/actions'
 import { useQuery } from '@tanstack/react-query'
 import { Card, CardContent } from '@/components/ui/card'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { getColors } from '@/lib/utils'
 import { TrendingUp, TrendingDown } from 'lucide-react'
@@ -51,15 +51,16 @@ const StockCard = ({ stock }) => {
 
 const TradeRecomendations = () => {
   const [all, setAll] = useState(false)
-  const { data, isLoading, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['daily-recommendations'],
     queryFn: getDailyRecommendations,
     enabled: true,
     staleTime: 1000 * 60 * 60,
     placeholderData: data => data,
   })
-  const top3 = data?.data?.slice(0, 2) || []
-  const extraStocks = data?.data?.slice(2, 10) || []
+  const recommendations = useMemo(() => data?.data ?? [], [data?.data])
+  const top3 = useMemo(() => recommendations.slice(0, 2), [recommendations])
+  const extraStocks = useMemo(() => recommendations.slice(2, 10), [recommendations])
   return (
     <div className="flex flex-col w-full h-full glass-card p-4 rounded-2xl gap-2">
       <div className="flex justify-between items-center py-2">

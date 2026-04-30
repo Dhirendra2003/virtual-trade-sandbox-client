@@ -1,14 +1,11 @@
 import SearchBar from '../../components/dashboard/SearchBar'
 
-import { Separator } from '@/components/ui/separator'
-import BuySellWindow from '../../components/dashboard/BuySellWindow'
 import { Button } from '@/components/ui/button'
 import ProfolioTable from '@/components/dashboard/PorfolioTable'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { getTradesAndOrders, cancelAMOorder, settleTrade, getUserPortfolioStats } from './actions.js'
-import { useEffect, useState } from 'react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { ListX, SquareArrowOutUpRight, TrendingDown, TrendingUp } from 'lucide-react'
+import { SquareArrowOutUpRight, TrendingDown, TrendingUp } from 'lucide-react'
 import { getColors, cn } from '@/lib/utils'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -16,9 +13,11 @@ import ProfolioOverview from '../../components/dashboard/PortfolioOverview.jsx'
 import AlertTradeSummary from '@/components/dashboard/AlertTradeSummary'
 import { ArrowRight } from 'lucide-react'
 import CancelOrderAlert from '../../components/dashboard/CacelOrderAlert.jsx'
+import { useMarketStatus } from '@/hooks/use-market-status'
 
 const Portfolio = () => {
   const navigate = useNavigate()
+  const { isMarketLive } = useMarketStatus()
   const tradeColumns = [
     {
       accessorKey: 'trading_symbol',
@@ -78,12 +77,14 @@ const Portfolio = () => {
       accessorKey: 'pnl',
       header: 'Unrealized P&L',
       cell: ({ row }) => {
-        console.log(row?.original)
-        const pnl = (row?.original?.ltp?.last_price * row?.original?.qty - Math.abs(row?.original?.investment)).toFixed(
-          2
-        )
+        const pnlValue = (
+          row?.original?.ltp?.last_price * row?.original?.qty -
+          Math.abs(row?.original?.investment)
+        ).toFixed(2)
         return (
-          <span className={`font-semibold text-md ${pnl >= 0 ? 'text-main-green' : 'text-main-red'}`}>₹ {pnl}</span>
+          <span className={`font-semibold text-md ${pnlValue >= 0 ? 'text-main-green' : 'text-main-red'}`}>
+            ₹ {pnlValue}
+          </span>
         )
       },
     },
@@ -92,7 +93,6 @@ const Portfolio = () => {
       header: 'Actions',
       cell: ({ row }) => {
         const ogRow = row?.original
-        const pnl = (ogRow?.ltp?.last_price * ogRow?.qty - Math.abs(ogRow?.investment)).toFixed(2)
         return (
           <div className="ml-auto flex gap-4 items-center">
             <Tooltip>
@@ -246,25 +246,15 @@ const Portfolio = () => {
     },
   ]
 
-  const {
-    data: portfolioData,
-    isLoading,
-    isError,
-    refetch: refetchPortfolio,
-  } = useQuery({
+  const { data: portfolioData, refetch: refetchPortfolio } = useQuery({
     queryKey: ['portfolio'],
     queryFn: getTradesAndOrders,
-    refetchInterval: 5000,
+    refetchInterval: isMarketLive ? 10000 : 60000,
   })
-  const {
-    data: portfolioStats,
-    isLoading: isLoadingStats,
-    isError: isErrorStats,
-    refetch: refetchPortfolioStats,
-  } = useQuery({
+  const { data: portfolioStats, isLoading: isLoadingStats } = useQuery({
     queryKey: ['portfolio-stats'],
     queryFn: getUserPortfolioStats,
-    refetchInterval: 5000,
+    refetchInterval: isMarketLive ? 10000 : 60000,
   })
   const mutateCancelOrder = useMutation({
     mutationFn: cancelAMOorder,

@@ -16,6 +16,7 @@ import Profile from './dashboard/Profile'
 import AddFunds from './dashboard/AddFunds'
 import ForgotPasswordPage from './auth/ForgotPasswordPage'
 import ResetPasswordPage from './auth/ResetPasswordPage'
+import VerifyEmailPage from './auth/VerifyEmailPage'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -46,6 +47,10 @@ const AppRoutes = () => {
     {
       path: '/reset-password',
       element: <ResetPasswordPage />,
+    },
+    {
+      path: '/verify-email',
+      element: <VerifyEmailPage />,
     },
     {
       path: '/app',

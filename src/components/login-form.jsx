@@ -79,12 +79,11 @@ export function LoginForm({ className, path, marketState, ...props }) {
     mutationFn: registerAction,
     queryKey: ['Register'],
     onSuccess: data => {
-      console.log(data)
-      dispatch(setUser(data.user))
       toast.success('Registration successful!', {
-        description: `Welcome ${data.user.name}!`,
+        description: data.message || 'Please check your email to verify your account.',
+        duration: 100000,
       })
-      nav('/app/home')
+      nav('/authenticate/login')
     },
   })
 

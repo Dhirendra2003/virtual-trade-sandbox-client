@@ -123,6 +123,27 @@ const confirmPaymentAction = async (paymentIntentId) => {
   }
 }
 
+// ─── Email Verification ──────────────────────────────────────────────────────
+const verifyEmailAction = async (token) => {
+  try {
+    const response = await axiosInstance.post('/auth/verify-email', { token })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
+const resendVerificationAction = async ({ token, email }) => {
+  try {
+    const response = await axiosInstance.post('/auth/resend-verification', { token, email })
+    return response.data
+  } catch (error) {
+    console.log(error)
+    throw error
+  }
+}
+
 export {
   loginAction,
   registerAction,
@@ -135,4 +156,6 @@ export {
   getUserStartingFunds,
   createPaymentIntentAction,
   confirmPaymentAction,
+  verifyEmailAction,
+  resendVerificationAction,
 }

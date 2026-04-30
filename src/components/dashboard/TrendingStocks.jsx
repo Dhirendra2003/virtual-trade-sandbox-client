@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { getTredingStocks } from '@/pages/dashboard/actions'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { getColors } from '@/lib/utils'
 import { TrendingUp, TrendingDown } from 'lucide-react'
@@ -50,10 +50,12 @@ const TrendingStocks = ({ type = 'gainers' }) => {
     placeholderData: data => data,
   })
 
-  // Group our stocks list depending on the prop
-  const stocksList = type === 'gainers' ? data?.data?.top_gainers : data?.data?.top_losers
-  const top3 = stocksList?.slice(0, 3) || []
-  const extraStocks = stocksList?.slice(3, 10) || []
+  const stocksList = useMemo(() => {
+    return type === 'gainers' ? data?.data?.top_gainers ?? [] : data?.data?.top_losers ?? []
+  }, [data?.data?.top_gainers, data?.data?.top_losers, type])
+
+  const top3 = useMemo(() => stocksList.slice(0, 3), [stocksList])
+  const extraStocks = useMemo(() => stocksList.slice(3, 10), [stocksList])
 
   return (
     <div className="flex flex-col w-full h-full glass-card p-4 rounded-2xl gap-2">
