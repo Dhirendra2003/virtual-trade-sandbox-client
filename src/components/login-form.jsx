@@ -29,6 +29,7 @@ import { setUser } from '@/store/slices/authSlice'
 import PhotoUpload from './photo-upload'
 
 export function LoginForm({ className, path, marketState, ...props }) {
+  const baseURL = import.meta.env.VITE_API_BASE
   const [page, setPage] = useState(path)
   const [showPassword, setShowPassword] = useState(false)
   const [pfp, setPfp] = useState(null)
@@ -279,7 +280,7 @@ export function LoginForm({ className, path, marketState, ...props }) {
                 <div className="grid grid-cols-2 w-[90%]   gap-3 items-center mx-auto  rounded-xl">
                   <Field>
                     <Button
-                      onClick={() => window.open('http://localhost:4000/api/v1/oauth/google', '_self')}
+                      onClick={() => window.open(`${baseURL}/oauth/google`, '_self')}
                       className="col-span-1"
                       variant="outline"
                       type="button"
@@ -290,7 +291,7 @@ export function LoginForm({ className, path, marketState, ...props }) {
                   </Field>
                   <Field>
                     <Button
-                      onClick={() => window.open('http://localhost:4000/api/v1/oauth/facebook', '_self')}
+                      onClick={() => window.open(`${baseURL}/oauth/facebook`, '_self')}
                       className="col-span-1"
                       variant="outline"
                       type="button"

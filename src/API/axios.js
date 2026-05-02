@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { toast } from 'sonner'
 
+const baseURL = import.meta.env.VITE_API_BASE
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:4000/api/v1/',
+  baseURL,
   withCredentials: true,
 })
 
@@ -36,7 +37,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true
       try {
         console.log(' DEBUG : before refresh call')
-        await axios.get('http://localhost:4000/api/v1/user/refresh-token', {
+        await axios.get(`${baseURL}/user/refresh-token`, {
           withCredentials: true,
         })
         console.log(' DEBUG : token refreshed')
