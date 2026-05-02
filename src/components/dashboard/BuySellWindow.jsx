@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { FaChartPie } from 'react-icons/fa'
 
 import { ArrowRight, ListPlus, ListX, TrendingDown, TrendingUp } from 'lucide-react'

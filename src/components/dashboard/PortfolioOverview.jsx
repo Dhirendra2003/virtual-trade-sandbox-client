@@ -1,5 +1,5 @@
 import { Spinner } from '@/components/ui/spinner'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { LandmarkIcon, ArrowUpRight, TrendingUp, TrendingDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { TbPlusMinus } from 'react-icons/tb'

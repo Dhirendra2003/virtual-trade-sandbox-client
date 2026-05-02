@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo from '/logo_v1.png'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { CircleArrowLeft } from 'lucide-react'
 

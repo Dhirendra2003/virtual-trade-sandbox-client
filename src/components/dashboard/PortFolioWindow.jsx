@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { FaChartPie } from 'react-icons/fa'
 import { IoIosInformationCircle } from 'react-icons/io'
 import { ArrowUpRight, Landmark, TrendingDown, TrendingUp } from 'lucide-react'

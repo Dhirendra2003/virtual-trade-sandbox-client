@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { axiosInstance } from '../../API/axios'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { clearState } from '@/store/slices/authSlice'
