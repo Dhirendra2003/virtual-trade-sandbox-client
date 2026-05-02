@@ -1,11 +1,20 @@
 import SearchBar from '../../components/dashboard/SearchBar'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Button } from '@/components/ui/button'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 import { getAllUserNotifications, markAllNotificationsAsRead } from './actions.js'
 import ProfolioTable from '@/components/dashboard/PorfolioTable'
 import { CheckCircle, Info, AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 const typeConfig = {
   success: {
@@ -103,6 +112,21 @@ const AllNotifications = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
+
+      <Breadcrumb className="px-4 ">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/app/home">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="cursor-pointer">All Notifications</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="grid grid-cols-1 gap-2 w-full items-start">
         {data && (
           <>

@@ -10,6 +10,15 @@ import ProfolioOverview from '../../components/dashboard/PortfolioOverview'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { Link } from 'react-router-dom'
 
 const SkeletonCard = ({ className = '' }) => (
   <div className={`glass-card rounded-2xl p-4 animate-pulse flex flex-col gap-3 min-h-[160px] ${className}`}>
@@ -57,6 +66,21 @@ const Analytics = () => {
         <div className="search-bar">
           <SearchBar />
         </div>
+
+        <Breadcrumb className="px-4 ">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink>
+                <Link to="/app/home">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="cursor-pointer">Analytics</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           <SkeletonCard className="xl:col-span-3" />
           <SkeletonCard className="xl:col-span-2" />
@@ -73,6 +97,21 @@ const Analytics = () => {
         <div className="search-bar">
           <SearchBar />
         </div>
+
+        <Breadcrumb className="px-4 ">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink>
+                <Link to="/app/home">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage className="cursor-pointer">Analytics</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+
         <div className="glass-card rounded-2xl flex flex-col items-center justify-center min-h-[40vh] gap-3 text-center p-8">
           <AlertTriangle className="text-red-400" size={36} />
           <p className="text-slate-600 font-semibold text-lg">Failed to load analytics</p>
@@ -86,6 +125,20 @@ const Analytics = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
+
+      <Breadcrumb className="px-4 ">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/app/home">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="cursor-pointer">Analytics</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       {/* Page title */}
       {portfolioStats && (

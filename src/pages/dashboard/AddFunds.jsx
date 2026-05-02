@@ -1,5 +1,4 @@
 import SearchBar from '../../components/dashboard/SearchBar'
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,11 +7,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import { useParams } from 'react-router-dom'
-import BuySellWindow from '../../components/dashboard/BuySellWindow'
-import StockDetails from '../../components/dashboard/StockDetails'
 import PaymentBox from '../../components/dashboard/PaymentBox'
+import { Link } from 'react-router-dom'
 
 const AddFunds = () => {
   return (
@@ -20,6 +16,21 @@ const AddFunds = () => {
       <div className="search-bar ">
         <SearchBar />
       </div>
+
+      <Breadcrumb className="px-4 ">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/app/home">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="cursor-pointer">Add Funds</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className=" w-full ">
         <PaymentBox className=" rounded-2xl overflow-hidden h-full" />
       </div>

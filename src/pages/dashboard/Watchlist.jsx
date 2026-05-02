@@ -1,5 +1,12 @@
 import Chart from '../../components/dashboard/Chart'
 import SearchBar from '../../components/dashboard/SearchBar'
+import WatchlistTable from '../../components/dashboard/WatchlistTable'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { getUserWatchlist, removeFromWatchlist } from './actions.js'
+import { useEffect, useState } from 'react'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+import { ListX, SquareArrowOutUpRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,15 +15,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { Separator } from '@/components/ui/separator'
-import BuySellWindow from '../../components/dashboard/BuySellWindow'
-import WatchlistTable from '../../components/dashboard/WatchlistTable'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { getUserWatchlist, removeFromWatchlist } from './actions.js'
-import { useEffect, useState } from 'react'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { ListX, SquareArrowOutUpRight } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Watchlist = () => {
   const navigate = useNavigate()
@@ -113,6 +112,21 @@ const Watchlist = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
+
+      <Breadcrumb className="px-4 ">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/app/home">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="cursor-pointer">Watchlist</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="grid grid-cols-4 gap-4  w-full items-start">
         <Chart
           zoomEnabled={false}

@@ -112,31 +112,34 @@ const SearchBar = () => {
             <div className="absolute top-full w-96 mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
               {isPending ? (
                 Array.from({ length: 5 }).map((_, index) => (
-                  <div className="p-2 hover:bg-selected-bg-purple cursor-pointer my-1" key={index}>
+                  <div className="p-2 hover:bg-selected-bg-purple/50 cursor-pointer my-1" key={index}>
                     <Skeleton type="search" />
                     {/* <Separator /> */}
                   </div>
                 ))
               ) : data?.data?.length > 0 ? (
                 data.data.map(stock => (
-                  <div
-                    onMouseDown={e => e.preventDefault()}
-                    onClick={() => {
-                      navigate(`/app/stock/${stock?.instrument_key}`, { state: { stock: stock } })
-                      setTimeout(() => {
-                        console.log('xxx')
-                        setIsInputFocused(false)
-                        setQuery('')
-                        setDebounceQuery('')
-                      }, 100)
-                    }}
-                    className="p-2 hover:bg-selected-bg-purple cursor-pointer"
-                    key={stock?.instrument_key}
-                  >
-                    {stock?.name}
-                    {stock?.trading_symbol}
+                  <>
+                    <div
+                      onMouseDown={e => e.preventDefault()}
+                      onClick={() => {
+                        navigate(`/app/stock/${stock?.instrument_key}`, { state: { stock: stock } })
+                        setTimeout(() => {
+                          console.log('xxx')
+                          setIsInputFocused(false)
+                          setQuery('')
+                          setDebounceQuery('')
+                        }, 100)
+                      }}
+                      className="p-2 hover:bg-selected-bg-purple/50 cursor-pointer w-full flex items-center justify-around "
+                      key={stock?.instrument_key}
+                    >
+                      <p className="min-w-[60%]">{stock?.name}</p>
+                      <p className="text-xs text-sidebar-ring ml-2 ">{stock?.trading_symbol}</p>
+                      <p className="text-md text-sidebar-ring text-right w-full ">{stock?.exchange}</p>
+                    </div>
                     <Separator />
-                  </div>
+                  </>
                 ))
               ) : (
                 <h1 className="p-2 text-slate-500">No results found </h1>

@@ -18,7 +18,7 @@ const mostTradedCols = [
     header: 'Stock',
     cell: ({ row }) => (
       <div className="min-w-0">
-        <p className="text-xs font-semibold text-sub-title-text-color leading-tight truncate max-w-[120px]">
+        <p className="text-xs font-semibold text-sub-title-text-color leading-tight truncate lg:max-w-[140px] md:max-w-[100px]">
           {row.original.name}
         </p>
       </div>
@@ -39,7 +39,9 @@ const profitCols = [
     accessorKey: 'name',
     header: 'Stock',
     cell: ({ row }) => (
-      <p className="text-xs font-semibold text-sub-title-text-color truncate max-w-[110px]">{row.original.name}</p>
+      <p className="text-xs font-semibold text-sub-title-text-color truncate lg:max-w-[140px] md:max-w-[100px]">
+        {row.original.name}
+      </p>
     ),
   },
   {
@@ -62,7 +64,9 @@ const percCols = [
     accessorKey: 'name',
     header: 'Stock',
     cell: ({ row }) => (
-      <p className="text-xs font-semibold text-sub-title-text-color truncate max-w-[110px]">{row.original.name}</p>
+      <p className="text-xs font-semibold text-sub-title-text-color truncate lg:max-w-[140px] md:max-w-[100px]">
+        {row.original.name}
+      </p>
     ),
   },
   {

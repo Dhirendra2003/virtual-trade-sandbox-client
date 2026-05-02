@@ -51,16 +51,19 @@ const StockCard = ({ stock }) => {
 
 const TradeRecomendations = () => {
   const [all, setAll] = useState(false)
-  const { data } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ['daily-recommendations'],
     queryFn: getDailyRecommendations,
-    enabled: true,
-    staleTime: 1000 * 60 * 60,
-    placeholderData: data => data,
+    staleTime: Infinity,   // never re-fetch once data is loaded
+    gcTime: Infinity,      // keep in cache for the session
+    retry: false,          // don't retry on error
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   })
   const recommendations = useMemo(() => data?.data ?? [], [data?.data])
   const top3 = useMemo(() => recommendations.slice(0, 2), [recommendations])
   const extraStocks = useMemo(() => recommendations.slice(2, 10), [recommendations])
+
   return (
     <div className="flex flex-col w-full h-full glass-card p-4 rounded-2xl gap-2">
       <div className="flex justify-between items-center py-2">
@@ -68,30 +71,47 @@ const TradeRecomendations = () => {
           <PiStarFourFill color="#8b5cf6" />
           AI Trade Recomendations
         </h3>
-        <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800 dark:text-purple-500" variant="link">
-          {all ? 'View Less' : 'View All'}
-        </Button>
+        {!isError && !isLoading && (
+          <Button onClick={() => setAll(!all)} className="rounded-xl text-purple-800 dark:text-purple-500" variant="link">
+            {all ? 'View Less' : 'View All'}
+          </Button>
+        )}
       </div>
 
-      {/* Always visible top 3 items */}
-      {top3.map(stock => (
-        <StockCard key={stock?.instrument_key} stock={stock} />
-      ))}
-
-      {/* Hidden remaining items animated open smoothly using CSS grid rows */}
-      <div
-        className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out ${
-          all ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
-        }`}
-      >
-        <div className={cn(' flex flex-col gap-1', { 'overflow-hidden': !all })}>
-          {extraStocks.map(stock => (
+      {isError ? (
+        <div className="flex flex-col items-center justify-center flex-1 gap-2 py-6 text-center">
+          <PiStarFourFill size={28} color="#6b7280" />
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            Unable to generate recommendations
+          </p>
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            AI suggestions are temporarily unavailable. Try again later.
+          </p>
+        </div>
+      ) : (
+        <>
+          {/* Always visible top items */}
+          {top3.map(stock => (
             <StockCard key={stock?.instrument_key} stock={stock} />
           ))}
-        </div>
-      </div>
+
+          {/* Hidden remaining items animated open smoothly using CSS grid rows */}
+          <div
+            className={`grid transition-[grid-template-rows,opacity] duration-500 ease-in-out ${
+              all ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
+            }`}
+          >
+            <div className={cn(' flex flex-col gap-1', { 'overflow-hidden': !all })}>
+              {extraStocks.map(stock => (
+                <StockCard key={stock?.instrument_key} stock={stock} />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
 
 export default TradeRecomendations
+

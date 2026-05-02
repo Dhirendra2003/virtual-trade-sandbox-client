@@ -44,6 +44,15 @@ import {
   Activity,
   Clock,
 } from 'lucide-react'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { Link } from 'react-router-dom'
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -365,6 +374,20 @@ const Profile = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
+
+      <Breadcrumb className="px-4 ">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/app/home">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="cursor-pointer">Profile</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       {/* Page heading */}
       <div className="px-1 pt-2">

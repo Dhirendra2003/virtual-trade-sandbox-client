@@ -14,6 +14,15 @@ import AlertTradeSummary from '@/components/dashboard/AlertTradeSummary'
 import { ArrowRight } from 'lucide-react'
 import CancelOrderAlert from '../../components/dashboard/CacelOrderAlert.jsx'
 import { useMarketStatus } from '@/hooks/use-market-status'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { Link } from 'react-router-dom'
 
 const Portfolio = () => {
   const navigate = useNavigate()
@@ -39,6 +48,13 @@ const Portfolio = () => {
     {
       accessorKey: 'full_name',
       header: 'Stock Name',
+      cell: ({ row }) => {
+        return (
+          <p>
+            {row?.original?.full_name} <span className="text-gray-500 text-xs ml-4">({row?.original?.exchange})</span>
+          </p>
+        )
+      },
     },
     {
       accessorKey: 'qty',
@@ -180,6 +196,13 @@ const Portfolio = () => {
     {
       accessorKey: 'full_name',
       header: 'Stock Name',
+      cell: ({ row }) => {
+        return (
+          <p>
+            {row?.original?.full_name} <span className="text-gray-500 text-xs ml-4">({row?.original?.exchange})</span>
+          </p>
+        )
+      },
     },
     {
       accessorKey: 'quantity',
@@ -285,6 +308,21 @@ const Portfolio = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
+
+      <Breadcrumb className="px-4 ">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/app/home">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="cursor-pointer">Portfolio</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
       <div className="grid grid-cols-1 gap-2  w-full items-start">
         {portfolioStats && <ProfolioOverview data={portfolioStats?.data} loadingState={isLoadingStats} />}
         {portfolioData && (

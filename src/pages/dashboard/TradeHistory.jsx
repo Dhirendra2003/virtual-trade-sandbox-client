@@ -7,6 +7,15 @@ import { getColors } from '@/lib/utils'
 import { Download, TrendingDown, TrendingUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import moment from 'moment/moment.js'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { Link } from 'react-router-dom'
 
 const TradeHistory = () => {
   const { data, isLoading, error } = useQuery({
@@ -52,6 +61,14 @@ const TradeHistory = () => {
     {
       accessorKey: 'Stock.name',
       header: 'Stock Name',
+      cell: ({ row }) => {
+        return (
+          <p>
+            {row?.original?.Stock?.name}{' '}
+            <span className="text-gray-500 text-xs ml-4">({row?.original?.Stock?.exchange})</span>
+          </p>
+        )
+      },
     },
 
     {
@@ -102,11 +119,24 @@ const TradeHistory = () => {
       <div className="search-bar">
         <SearchBar />
       </div>
-      <div className="grid grid-cols-1 gap-2  w-full items-start">
+      <Breadcrumb className="px-4 ">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink>
+              <Link to="/app/home">Home</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="cursor-pointer">Trade History</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="grid grid-cols-1   w-full items-start">
         {data && (
           <>
             <Button
-              className="w-fit ml-auto h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+              className="w-fit ml-auto h-10 rounded-xl text-md primary-gradient cursor-pointer text-white"
               onClick={downloadUserTradeHistory}
             >
               Download Excel <Download />

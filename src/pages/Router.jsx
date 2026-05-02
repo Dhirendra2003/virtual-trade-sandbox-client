@@ -1,7 +1,6 @@
 import { useRoutes, Navigate, BrowserRouter } from 'react-router-dom'
 import AuthPage from './auth/AuthPage'
 import Dashboard from './dashboard/Dashboard'
-import InsideOutlet from './dashboard/InsideOutlet'
 import RouteProtector from '@/components/RouteProtector'
 import RequestUserData from './auth/RequestUserData'
 import Home from './dashboard/Home'
