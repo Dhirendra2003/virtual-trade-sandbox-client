@@ -11,9 +11,9 @@ export default function StockNews({ news = [] }) {
         }}
         plugins={[
           Autoplay({
-            delay: 3000,
+            delay: 2000,
             stopOnMouseEnter: true,
-            stopOnInteraction: true,
+            // stopOnInteraction: true,
           }),
         ]}
         className="w-full min-w-0 max-w-full p-2 "
