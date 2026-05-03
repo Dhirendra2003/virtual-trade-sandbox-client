@@ -59,8 +59,8 @@ export default function News() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="ml-18" />
-        <CarouselNext className="mr-18" />
+        <CarouselPrevious className="ml-18 dark:bg-neutral-800/80 hover:dark:bg-neutral-950" />
+        <CarouselNext className="mr-18 dark:bg-neutral-800/80 hover:dark:bg-neutral-950" />
       </Carousel>
       <NewsPopup news={selectedNews} open={modalOpen} setOpen={setModalOpen} />
     </>
