@@ -29,7 +29,7 @@ const NotificationItem = ({ notification }) => {
   return (
     <>
       <div
-        className={`relative  flex items-center gap-2 hover:bg-purple-500/20 cursor-pointer p-2 rounded-lg transition-colors ${
+        className={`relative w-full flex items-center gap-2 hover:bg-purple-500/20 cursor-pointer p-2 rounded-lg transition-colors ${
           isUnread ? 'bg-purple-500/10' : ''
         }`}
       >
@@ -87,14 +87,14 @@ const Notifications = () => {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="md:w-[400px] sm:w-[300px] lg:w-[500px] shadow-2xl">
+      <PopoverContent align="end" className="w-80 lg:w-[500px] shadow-2xl">
         <div className="grid gap-3">
           <h4 className="leading-none text-purple-700 dark:text-purple-400 text-xs text-right underline underline-offset-8 decoration-purple-700">
             Your Notifications
           </h4>
           {notifications?.data.length > 0 ? (
             <>
-              <div className="flex flex-col gap-2  sm:max-h-[150px] md:max-h-[200px] lg:max-h-[60vh] overflow-y-auto">
+              <div className="flex flex-col gap-2 max-h-[60vh]  lg:max-h-[60vh] overflow-y-auto  ">
                 {notifications?.data?.map(notification => (
                   <NotificationItem key={notification.id} notification={notification} />
                 ))}

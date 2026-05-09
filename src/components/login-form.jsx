@@ -277,7 +277,7 @@ export function LoginForm({ className, path, marketState, ...props }) {
                   Or continue with
                 </FieldSeparator>
 
-                <div className="grid grid-cols-2 w-[90%]   gap-3 items-center mx-auto  rounded-xl">
+                <div className="grid lg:grid-cols-2  sm:grid-cols-1  lg:w-[90%] sm:w-full  gap-3 items-center mx-auto  rounded-xl">
                   <Field>
                     <Button
                       onClick={() => window.open(`${baseURL}/oauth/google`, '_self')}

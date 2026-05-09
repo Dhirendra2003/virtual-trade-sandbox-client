@@ -13,11 +13,11 @@ const Home = () => {
         <SearchBar />
       </div>
 
-      <div className="grid grid-cols-3 gap-4 min-h-[50vh] w-full items-center">
-        <Chart className=" rounded-2xl overflow-hidden h-full" />
+      <div className="grid lg:grid-cols-3 sm:grid-cols-1 gap-4 md:min-h-[50vh] w-full items-center">
+        <Chart className=" rounded-2xl overflow-hidden lg:h-full sm:h-[300px] " />
         <PortFolioWindow />
       </div>
-      <div className="w-full grid grid-cols-3 gap-4 items-start justify-around rounded-xl ">
+      <div className="w-full grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 items-start justify-around rounded-xl ">
         <TrendingStocks type="gainers" />
         <TrendingStocks type="losers" />
         <TradeRecomendations />

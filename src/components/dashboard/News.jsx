@@ -34,7 +34,7 @@ export default function News() {
       >
         <CarouselContent className="px-0 ">
           {data?.data?.map((item, index) => (
-            <CarouselItem key={index} className="basis-1/4 pl-1  lg:basis-2/7 ">
+            <CarouselItem key={index} className="basis-1/2 pl-1  lg:basis-2/7 ">
               <Card
                 onClick={() => {
                   setSelectedNews(item)

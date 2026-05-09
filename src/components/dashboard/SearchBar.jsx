@@ -75,17 +75,17 @@ const SearchBar = () => {
   console.log(user)
 
   return (
-    <div className=" rounded-2xl  glass-card flex items-center justify-between py-3 px-6">
-      <div className="flex items-center gap-4 cursor-pointer">
+    <div className=" rounded-2xl  glass-card flex items-center justify-between py-2 md:py-3 px-3 md:px-6">
+      <div className="flex items-center md:gap-4 gap-1 cursor-pointer">
         <SidebarTrigger className="-ml-1" />
         <div
           onClick={() => {
             navigate('/app/home')
           }}
-          className="flex items-center gap-2 "
+          className="flex items-center gap-2 min-w-10 "
         >
-          <img src={Logo} alt="Virtual Trade Sandbox " className="h-10 w-10  " />
-          <h1 className="text-xs/3 font-bold text-title-text-color">
+          <img src={Logo} alt="Virtual Trade Sandbox " className="md:h-10 md:w-10 h-8 w-8 z-[999]  " />
+          <h1 className="hidden md:block text-xs/3 font-bold text-title-text-color">
             Virtual <br /> Trade <br /> Sandbox
           </h1>
         </div>
@@ -109,7 +109,7 @@ const SearchBar = () => {
         </InputGroup>
         {isInputFocused &&
           (query.length > 0 ? (
-            <div className="absolute top-full w-96 mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
+            <div className="absolute top-full md:w-96 w-[60vw] md:h-auto h-[50vh] overflow-y-auto mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
               {isPending ? (
                 Array.from({ length: 5 }).map((_, index) => (
                   <div className="p-2 hover:bg-selected-bg-purple/50 cursor-pointer my-1" key={index}>
@@ -131,11 +131,11 @@ const SearchBar = () => {
                           setDebounceQuery('')
                         }, 100)
                       }}
-                      className="p-2 hover:bg-selected-bg-purple/50 cursor-pointer w-full flex items-center justify-around "
+                      className="p-2 hover:bg-selected-bg-purple/50 cursor-pointer w-full flex md:flex-row sm:flex-col flex-col items-center justify-around "
                       key={stock?.instrument_key}
                     >
-                      <p className="min-w-[60%]">{stock?.name}</p>
-                      <p className="text-xs text-sidebar-ring ml-2 ">{stock?.trading_symbol}</p>
+                      <p className="min-w-[60%] sm:text-lg text-sm text-left w-full">{stock?.name}</p>
+                      <p className="text-xs text-sidebar-ring ml-2 text-right w-full">{stock?.trading_symbol}</p>
                       <p className="text-md text-sidebar-ring text-right w-full ">{stock?.exchange}</p>
                     </div>
                     <Separator />
@@ -151,7 +151,7 @@ const SearchBar = () => {
             </div>
           ))}
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-0 md:gap-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="flex gap-4">
@@ -159,7 +159,7 @@ const SearchBar = () => {
                 <AvatarImage src={user?.profilePicURL || 'https://github.com/shadcn.png '} alt="shadcn" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <h2 className="font-bold capitalize pt-1">{user?.name || 'User name'}</h2>
+              <h2 className="font-bold hidden md:block capitalize pt-1">{user?.name || 'User name'}</h2>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-48">

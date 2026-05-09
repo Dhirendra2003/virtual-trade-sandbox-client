@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 import { TbPlusMinus } from 'react-icons/tb'
 import { useNavigate } from 'react-router-dom'
 
-const OverviewCard = ({ children, className, colSpan = 'col-span-2' }) => (
+const OverviewCard = ({ children, className, colSpan = 'md:col-span-2 col-span-1' }) => (
   <div
     className={cn(colSpan, ' glass-card p-4 rounded-3xl flex flex-col max-h-40 min-h-38 justify-between', className)}
   >
@@ -41,7 +41,7 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
     <div>
       {/* <h2 className="text-md font-bold text-white primary-gradient w-fit px-3 pt-2 pb-6  rounded-t-xl">{title}</h2> */}
 
-      <div className="  grid grid-cols-7 gap-4 mb-4">
+      <div className="  grid md:grid-cols-7 grid-cols-1 gap-4 mb-4">
         {loadingState ? (
           <div className="flex items-center justify-center h-full col-span-7">
             <Spinner className="size-8" color="purple" />
@@ -92,7 +92,7 @@ const ProfolioOverview = ({ data, loadingState, title = '', showAnalysisButton =
               </div>
             </OverviewCard>
 
-            <OverviewCard colSpan="col-span-3">
+            <OverviewCard colSpan="md:col-span-3 col-span-1">
               <div className="flex justify-between">
                 <div>
                   <Label>Unrealized P&L</Label>

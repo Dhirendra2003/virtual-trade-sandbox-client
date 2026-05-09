@@ -18,7 +18,7 @@ const AuthPage = () => {
     <div className="primary-gradient">
       <div className="glass-bg flex min-h-svh flex-col items-center justify-center gap-6 p-6 ">
         <div className="flex w-full max-w-md flex-col gap-6">
-          <div className="fixed top-10 left-10 flex items-center gap-2 ">
+          <div className="lg:fixed md:fixed sm:relative md:top-10 md:left-10  flex items-center justify-center gap-2 ">
             <img src={Logo} alt="Virtual Trade Sandbox " className="h-10 w-10  " />
             <h1 className="text-xs/3 font-bold text-title-text-color">
               Virtual <br /> Trade <br /> Sandbox

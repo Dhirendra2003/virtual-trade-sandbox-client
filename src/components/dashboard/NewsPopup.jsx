@@ -20,7 +20,7 @@ export default function NewsPopup({ news, open, setOpen }) {
         <DialogHeader>
           <DialogTitle className="leading-tight">{news?.title}</DialogTitle>
           {news?.topics?.length > 0 && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               {news?.topics?.map(topic => (
                 <Badge className="text-xs bg-purple-500" key={topic}>
                   {topic}
@@ -33,10 +33,10 @@ export default function NewsPopup({ news, open, setOpen }) {
             {news?.source} | {moment(news?.pub_date).format('DD-MM-YYYY')}
           </DialogDescription>
         </DialogHeader>
-        <div className="flex gap-2">
+        <div className="flex sm:flex-row sm:items-center sm:justify-center flex-col gap-2">
           <img
             src={encodeURI(news?.image_url)}
-            className="w-[50%] max-h-[50vh] rounded-xl object-contain text-sm text-center font-medium    bg-gray-200 text-gray-500 "
+            className="w-[50%] max-h-[50vh] rounded-xl object-contain text-sm text-center font-medium mx-auto bg-gray-200 text-gray-500 "
             alt={news?.title}
           />
           <div className="flex flex-col gap-1 px-3 pt-2 min-w-0 flex-1 overflow-hidden">

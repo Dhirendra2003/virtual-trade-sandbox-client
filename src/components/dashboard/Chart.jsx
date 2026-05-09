@@ -326,7 +326,7 @@ const Chart = ({ className = '', stockId, zoomEnabled = true }) => {
   return (
     <div
       ref={elemRef}
-      className={`${maximize ? 'bg-div-bg-color flex flex-col w-full items-center justify-center' : 'glass-card col-span-2 relative'}  ${className}`}
+      className={`${maximize ? 'bg-div-bg-color flex flex-col w-full items-center justify-center' : 'glass-card lg:col-span-2 sm:col-span-1 col-span-1 relative'}  ${className}`}
     >
       <Button
         className="absolute bottom-3 z-50 right-3 rounded-xl primary-gradient cursor-pointer"
