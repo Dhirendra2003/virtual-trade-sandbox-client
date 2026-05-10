@@ -1,0 +1,15 @@
+# =============================================
+# robots.txt — Virtual Trade Sandbox
+# https://virtual-trade-sandbox.vercel.app/
+# =============================================
+
+# Allow all crawlers to index public content
+User-agent: *
+Allow: /
+
+# Block crawlers from auth & private app routes
+Disallow: /authenticate/
+Disallow: /app/
+
+# Sitemap location (update if you generate one)
+Sitemap: https://virtual-trade-sandbox.vercel.app/sitemap.xml
