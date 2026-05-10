@@ -106,12 +106,12 @@ const PaymentBox = () => {
         <>
           <div className="space-y-4">
             {/* Quick Amounts */}
-            <div className="flex w-fit gap-4">
+            <div className="flex w-fit gap-4 flex-wrap">
               {quickAmounts.map(amt => (
                 <button
                   key={amt}
                   onClick={() => setAmount(prev => Number(prev) + amt)}
-                  className="flex-1 py-3 px-4 border-2 border-green-200 dark:border-green-700 rounded-full text-main-green font-bold bg-green-100/50 dark:bg-green-900/50 cursor-pointer transition-all text-center whitespace-nowrap hover:scale-105 hover:bg-green-200/50 active:scale-95 active:bg-green-300/50"
+                  className="flex-1 py-3 px-4 border-2 max-w-[150px] border-green-200 dark:border-green-700 rounded-full text-main-green font-bold bg-green-100/50 dark:bg-green-900/50 cursor-pointer transition-all text-center whitespace-nowrap hover:scale-105 hover:bg-green-200/50 active:scale-95 active:bg-green-300/50"
                 >
                   + ₹ {amt.toLocaleString()}
                 </button>
@@ -149,7 +149,7 @@ const PaymentBox = () => {
               Select Payment Method
             </label>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
               {/* UPI Method – coming soon */}
               <div
                 className="relative flex items-center p-4 rounded-2xl border-2 cursor-not-allowed transition-all gap-3 border-slate-100/50 bg-slate-50/20 grayscale opacity-50"

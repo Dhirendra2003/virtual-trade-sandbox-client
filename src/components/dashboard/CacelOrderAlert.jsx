@@ -24,9 +24,11 @@ export default function CancelOrderAlert({ triggerButton }) {
             This action cannot be undone. This will permanently delete your account from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="flex gap-4 flex-col-reverse md:flex-row">
           <AlertDialogCancel className="h-8 rounded-xl text-md  cursor-pointer">Go Back</AlertDialogCancel>
-          <AlertDialogAction variant="none">{triggerButton}</AlertDialogAction>
+          <AlertDialogAction variant="none" className=" !px-0 !mx-0 ">
+            {triggerButton}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

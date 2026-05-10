@@ -20,7 +20,7 @@ const WatchlistTable = ({ columns, data, setSelectedStock, selectedStock, loadin
         </div>
       ) : (
         <>
-          <div className="overflow-y-auto h-[calc(100vh-180px)]">
+          <div className="overflow-y-auto md:h-[calc(100vh-180px)]">
             <Table>
               <TableHeader className="sticky top-0 z-10 ">
                 {table.getHeaderGroups().map(headerGroup => (

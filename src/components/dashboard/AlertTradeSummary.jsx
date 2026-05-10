@@ -71,9 +71,11 @@ export default function AlertTradeSummary({
             </p>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="flex md:flex-row flex-col-reverse gap-4">
           <AlertDialogCancel className="h-10 rounded-xl text-md  cursor-pointer">Cancel</AlertDialogCancel>
-          <AlertDialogAction variant="none">{button}</AlertDialogAction>
+          <AlertDialogAction variant="none" className=" !px-0 !mx-0">
+            {button}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

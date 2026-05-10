@@ -7,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { IoMdExit } from 'react-icons/io'
 import { axiosInstance } from '../API/axios'
@@ -18,6 +19,7 @@ import { Link } from 'react-router-dom'
 export default function NavMain({ items, currentPath }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { setOpenMobile, isMobile } = useSidebar()
   return (
     <SidebarGroup className="h-full ">
       <SidebarGroupContent className="flex flex-col gap-2 justify-between h-full">
@@ -30,7 +32,13 @@ export default function NavMain({ items, currentPath }) {
                 asChild
                 isActive={currentPath !== item.key}
               >
-                <Link to={item.url} className="bg-purple-600 text-white">
+                <Link 
+                  to={item.url} 
+                  className="bg-purple-600 text-white"
+                  onClick={() => {
+                    if (isMobile) setOpenMobile(false)
+                  }}
+                >
                   {item.icon && (
                     <item.icon
                       className={`${currentPath === item.key ? 'text-white' : 'text-purple-700 dark:text-purple-400'}`}
@@ -44,6 +52,7 @@ export default function NavMain({ items, currentPath }) {
         </SidebarMenu>
         <Button
           onClick={() => {
+            if (isMobile) setOpenMobile(false)
             axiosInstance
               .get('/user/logout')
               .then(res => {

@@ -35,14 +35,14 @@ const Stock = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid grid-cols-3 gap-4 w-full ">
-        <div className="col-span-2">
-          <div className="h-[60vh]">
-            <Chart stockId={id} className=" rounded-2xl overflow-hidden h-full" />
+      <div className="md:grid grid-cols-3 flex flex-col-reverse sm:flex-row gap-4 w-full ">
+        <div className="md:col-span-2 col-span-1">
+          <div className="md:h-[60vh]  ">
+            <Chart stockId={id} className=" rounded-2xl overflow-hidden lg:h-full sm:h-[500px]" />
           </div>
           <StockDetails />
         </div>
-        <div className="col-span-1 sticky top-20 self-start">
+        <div className="col-span-1 md:sticky relative top-0 md:top-20 self-start">
           <BuySellWindow />
         </div>
       </div>

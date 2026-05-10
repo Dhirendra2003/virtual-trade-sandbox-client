@@ -29,12 +29,18 @@ const Watchlist = () => {
   const [selectedStock, setSelectedStock] = useState(null)
   const columns = [
     {
-      accessorKey: 'Stock.trading_symbol',
-      header: 'Symbol',
-    },
-    {
       accessorKey: 'Stock.name',
       header: 'Stock Name',
+      cell: ({ row }) => {
+        return (
+          <div className="flex flex-col text-left">
+            <p className="text-sm font-medium capitalize whitespace-normal break-words">{row?.original?.Stock.name}</p>
+            <p className="text-xs text-slate-600 whitespace-normal break-words">
+              {row?.original?.Stock.trading_symbol}
+            </p>
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'Stock.segment',
@@ -127,11 +133,11 @@ const Watchlist = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid grid-cols-4 gap-4  w-full items-start">
+      <div className="md:grid grid-cols-4 flex flex-col gap-4  w-full items-start">
         <Chart
           zoomEnabled={false}
           stockId={selectedStock}
-          className=" rounded-2xl overflow-hidden h-[calc(100vh-115px)] "
+          className=" rounded-2xl overflow-hidden md:h-[calc(100vh-115px)] "
         />
         {watchlistData && (
           <WatchlistTable

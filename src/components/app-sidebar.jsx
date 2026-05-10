@@ -1,5 +1,5 @@
 import Logo from '/logo_v1.png'
-import { BarChart2, LayoutDashboard, ListOrdered, ChartPie, IndianRupee, User, History, Bell } from 'lucide-react'
+import { BarChart2, LayoutDashboard, ListOrdered, ChartPie, IndianRupee, User, History, Bell, X } from 'lucide-react'
 import NavMain from './nav-main.jsx'
 import {
   Sidebar,
@@ -9,8 +9,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import { useLocation } from 'react-router-dom'
+import { Button } from '@/components/ui/button'
 
 const data = {
   user: {
@@ -75,19 +77,33 @@ export default function AppSidebar({ ...props }) {
   console.log('location', pathname)
   const exactPath = pathname.split('/')[2]
   console.log('exactPath', exactPath)
+  const { setOpenMobile, isMobile, toggleSidebar } = useSidebar()
+
   return (
     <Sidebar collapsible="offcanvas" {...props} className="max-w-40">
       <SidebarHeader className="py-4 ">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild className=" h-10">
-              <div className="hover:bg-transparent  ">
-                <img src={Logo} alt="Virtual Trade Sandbox " className="h-8 w-8  " />
-                <h1 className="text-[10px]/3 font-bold text-title-text-color">Virtual Trade Sandbox</h1>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <div className="flex items-center justify-between">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild className=" h-10">
+                <div className="hover:bg-transparent  ">
+                  <img src={Logo} alt="Virtual Trade Sandbox " className="h-8 w-8  " />
+                  <h1 className="text-[10px]/3 font-bold text-title-text-color">Virtual Trade Sandbox</h1>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-7"
+              onClick={() => setOpenMobile(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} currentPath={exactPath} />

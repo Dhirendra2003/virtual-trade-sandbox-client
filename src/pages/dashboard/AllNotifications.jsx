@@ -127,13 +127,13 @@ const AllNotifications = () => {
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="grid grid-cols-1 gap-2 w-full items-start">
+      <div className="grid grid-cols-1  w-full items-start">
         {data && (
           <>
-            <div className="flex justify-end mb-2">
+            <div className="flex justify-end ">
               <Button
                 disabled={!hasUnread || isPending}
-                className="w-fit h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer disabled:opacity-50 text-white"
+                className="w-fit h-10 rounded-xl text-md primary-gradient cursor-pointer disabled:opacity-50 text-white"
                 onClick={() => markAllRead()}
               >
                 {isPending ? 'Marking...' : 'Mark All as Read'}

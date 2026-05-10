@@ -24,7 +24,7 @@ const StockDetails = () => {
   return (
     <>
       {(data?.data?.companyDescription || data?.data?.companyName) && (
-        <div className="grid grid-cols-4 gap-4 my-4">
+        <div className="md:grid md:grid-cols-4 flex flex-col  justify-center gap-4 my-4 w-full">
           <div
             className={`glass-card p-2 rounded-2xl  col-span-3 ${data?.data?.riskMeter ? 'col-span-3' : 'col-span-4'}`}
           >
@@ -47,7 +47,7 @@ const StockDetails = () => {
           </div>
 
           {data?.data?.riskMeter && (
-            <div className="glass-card p-2 rounded-2xl">
+            <div className="glass-card w-full p-2 rounded-2xl mx-auto">
               <Riskometer categoryName={data?.data?.riskMeter?.categoryName} stdDev={data?.data?.riskMeter?.stdDev} />
             </div>
           )}
@@ -60,7 +60,11 @@ const StockDetails = () => {
             {/* map peerCompanyList */}
             {data?.data?.peerCompanyList?.map((peer, index) => (
               <div key={index} className="flex  flex-col items-center justify-start gap-2 ">
-                <img src={peer?.imageUrl} className="h-17 w-17 object-contain rounded-full shadow-md border-2" alt="" />
+                <img
+                  src={peer?.imageUrl}
+                  className="md:h-17 md:w-17 h-14 w-14 object-contain rounded-full shadow-md border-2"
+                  alt={peer?.companyName}
+                />
                 <p className="text-xs capitalize text-center">{peer?.companyName}</p>
               </div>
             ))}

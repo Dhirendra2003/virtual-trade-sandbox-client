@@ -20,8 +20,8 @@ export default function StockNews({ news = [] }) {
       >
         <CarouselContent className="px-0 ">
           {news?.map((item, index) => (
-            <CarouselItem key={index} className="basis-1/2 pl-1  lg:basis-1/2 ">
-              <Card className="pt-0 pb-4 border-2 rounded-3xl  transition-all duration-300 ease-in-out  ">
+            <CarouselItem key={index} className="basis-2/3 pl-1  lg:basis-1/2 ">
+              <Card className="pt-0 pb-4 border-2 rounded-3xl  transition-all duration-300 ease-in-out h-full ">
                 <CardContent className="flex flex-col  p-2 overflow-hidden ">
                   <img
                     src={encodeURI(

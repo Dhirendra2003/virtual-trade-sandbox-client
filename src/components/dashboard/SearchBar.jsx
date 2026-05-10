@@ -109,7 +109,7 @@ const SearchBar = () => {
         </InputGroup>
         {isInputFocused &&
           (query.length > 0 ? (
-            <div className="absolute top-full md:w-96 w-[60vw] md:h-auto h-[50vh] overflow-y-auto mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
+            <div className="absolute top-full left-[50%] -translate-x-1/2 md:w-xl w-[60vw]  max-h-[60vh] overflow-y-auto mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
               {isPending ? (
                 Array.from({ length: 5 }).map((_, index) => (
                   <div className="p-2 hover:bg-selected-bg-purple/50 cursor-pointer my-1" key={index}>
@@ -146,7 +146,7 @@ const SearchBar = () => {
               )}
             </div>
           ) : (
-            <div className="absolute top-full  w-96 mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
+            <div className="absolute top-full left-[50%] -translate-x-1/2 md:w-xl w-[60vw] mt-2 bg-div-bg-color border border-sidebar-ring rounded-lg shadow-lg">
               <h1 className="p-2 text-slate-500">type something .... </h1>
             </div>
           ))}

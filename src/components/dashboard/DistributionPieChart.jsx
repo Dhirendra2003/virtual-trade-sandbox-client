@@ -2,6 +2,7 @@ import { AgCharts } from 'ag-charts-react'
 // import { ModuleRegistry, PieSeriesModule, LegendModule } from 'ag-charts-enterprise'
 import { LegendModule, DonutSeriesModule, ModuleRegistry } from 'ag-charts-community'
 import { useSelector } from 'react-redux'
+import { Separator } from '@/components/ui/separator'
 
 // ModuleRegistry.registerModules([PieSeriesModule, LegendModule])
 ModuleRegistry.registerModules([DonutSeriesModule, LegendModule])
@@ -42,16 +43,18 @@ const MiniDonut = ({ title, chartData, emptyText = 'No data', isDark }) => {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-2">
       <p className="text-[11px] font-bold text-sub-title-text-color uppercase tracking-wide mb-1">{title}</p>
       {hasData ? (
         <>
-          <div className="relative w-48 h-48">
+          <div className="relative w-48 h-48 mx-auto  ">
             <AgCharts options={options} className="w-full h-full" />
             {/* center label */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="text-center">
-                <p className="text-[10px] font-bold text-sub-title-text-color leading-tight">₹{(total / 1000).toFixed(0)}K</p>
+                <p className="text-[10px] font-bold text-sub-title-text-color leading-tight">
+                  ₹{(total / 1000).toFixed(0)}K
+                </p>
               </div>
             </div>
           </div>
@@ -92,16 +95,16 @@ const DistributionPieChart = ({ data }) => {
   return (
     <div className="glass-card rounded-2xl p-4 flex flex-col gap-4 min-h-[320px]">
       <h2 className="text-sm font-bold text-sub-title-text-color">Capital Distribution</h2>
-      <div className="flex justify-around gap-4 overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-around  gap-4 overflow-hidden ">
         <MiniDonut title="By Duration" chartData={durationData} emptyText="No duration data" isDark={isDark} />
-
+        <Separator className="bg-slate-500/60 h-14 md:h-20 md:hidden" />
         <MiniDonut
           title="Delivery Allocation"
           chartData={deliveryData}
           emptyText="No delivery trades"
           isDark={isDark}
         />
-
+        <Separator className="bg-slate-500/60 h-14 md:h-20 md:hidden " />
         <MiniDonut
           title="Intraday Allocation"
           chartData={intradayData}

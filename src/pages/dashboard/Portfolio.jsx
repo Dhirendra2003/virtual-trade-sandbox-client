@@ -140,7 +140,7 @@ const Portfolio = () => {
               }}
               button={
                 <Button
-                  className="h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer text-white"
+                  className="h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer text-white w-full"
                   onClick={() =>
                     mutateSettleTrade.mutate({
                       instrument_key: ogRow?.instrument_key,
@@ -249,7 +249,7 @@ const Portfolio = () => {
           return (
             <Button
               className={
-                'rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700  hover:primary-gradient hover:dark:bg-purple-800 hover:dark:text-white dark:border-purple-400 dark:text-purple-400'
+                'rounded-xl p-4 transition-all duration-500 ease-in-out cursor-pointer border-purple-800 hover:bg-purple-800 hover:text-white text-purple-700  hover:primary-gradient hover:dark:bg-purple-800 hover:dark:text-white dark:border-purple-400 dark:text-purple-400 md:w-fit w-full'
               }
               variant="outline"
               onClick={() => {
@@ -261,7 +261,7 @@ const Portfolio = () => {
           )
         }
         return (
-          <div className="ml-auto flex flex-col ">
+          <div className="ml-auto flex flex-col md:w-full w-fit">
             <CancelOrderAlert triggerButton={<CancelButtonWithAction />} />
           </div>
         )

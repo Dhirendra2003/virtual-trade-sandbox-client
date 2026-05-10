@@ -50,7 +50,7 @@ const BuySellWindow = () => {
     return (
       <Button
         // disabled={!formikLogin.isValid}
-        className="h-10 rounded-xl text-md mt-1 primary-gradient cursor-pointer"
+        className="h-10 w-full bg-red-300 rounded-xl text-md  primary-gradient cursor-pointer text-white  px-0 mx-0"
         type="submit"
         onClick={() =>
           registerTradeMutation.mutate({
@@ -66,7 +66,7 @@ const BuySellWindow = () => {
     )
   }
   return (
-    <div className="col-span-1 glass-card lg:p-4 md:p-2 rounded-2xl">
+    <div className="col-span-1 glass-card lg:p-4 md:p-2 p-3 rounded-2xl">
       <div className="flex  justify-between items-start">
         <div>
           <p className="text-xs text-faded-bold-text">Symbol</p>
